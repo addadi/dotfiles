@@ -1,4 +1,4 @@
 dotfiles
 ========
 
-dotfilesof various tools
+dotfiles of various tools
