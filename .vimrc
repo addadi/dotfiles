@@ -329,7 +329,7 @@
     " }
 
     " Yankring Settings {
-        let g:yankring_manual_clipboard_check = 0
+        let g:yankring_manual_clipboard_check = 1
     " }
 
     " TaskList Settings {
