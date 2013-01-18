@@ -177,6 +177,9 @@ rmkernel () {
         return 0
 }
 
+# Screen settings http://unix.stackexchange.com/questions/28430/screen-status-bar-to-display-current-directory-for-zsh-bash-shell
+PROMPT_COMMAND='echo -ne "\033k\033\134\033k${HOSTNAME}[`basename ${PWD}`]\033\134"'
+
 # modular .bashrc as per http://www.turnkeylinux.org/blog/generic-shell-hooks
 run_scripts()
 {
