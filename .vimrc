@@ -269,18 +269,17 @@
 
 " VAM {
     fun! SetupVAM()
-      let vam_install_path = expand('$HOME') . '/.vim/vim-addons'
-      exec 'set runtimepath+='.vam_install_path.'/vim-addon-manager'
-      if !filereadable(vam_install_path.'/vim-addon-manager/.git/config')
-         \&& 1 == confirm("Clone VAM into ".vam_install_path."?","&Y\n&N")
-        call mkdir(vam_install_path, 'p')
-        execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '.shellescape(vam_install_path, 1).'/vim-addon-manager'
-        " VAM runs helptags automatically when you install or update 
-        " plugins
-        exec 'helptags '.fnameescape(vam_install_path.'/vim-addon-manager/doc')
+      let c = get(g:, 'vim_addon_manager', {})
+      let g:vim_addon_manager = c
+      let c.plugin_root_dir = expand('$HOME') . '/.vim/vim-addons'
+      let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
+      " let g:vim_addon_manager = { your config here see "commented version" example and help
+      if !isdirectory(c.plugin_root_dir.'/vim-addon-manager/autoload')
+      execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '
+                  \       shellescape(c.plugin_root_dir.'/vim-addon-manager', 1)
       endif
       call vam#ActivateAddons(["github:addadi/vim-autocomplpop", "fugitive", "L9", "The_NERD_Commenter", 
-                    \"The_NERD_tree", "snipmate", "snipmate-snippets", "sparkup", "SuperTab%182", 
+                    \"The_NERD_tree", "github:garbas/vim-snipmate", "github:honza/vim-snippets", "sparkup", "SuperTab%182", 
                     \"surround", "Syntastic", "Tagbar", "delimitMate", "AutoTag", "unimpaired",
                     \"YankRing", "Colour_Sampler_Pack", "Better_Javascript_Indentation", "repeat",
                     \"TaskList","Tabular", "extradite", "JavaScript_Indent", "github:addadi/EasyGrep",
