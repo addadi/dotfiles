@@ -279,10 +279,10 @@
       endif
       call vam#ActivateAddons(["github:addadi/vim-autocomplpop", "fugitive", "L9", "The_NERD_Commenter", 
                     \"The_NERD_tree", "github:garbas/vim-snipmate", "github:honza/vim-snippets", "sparkup", "SuperTab%182", 
-                    \"surround", "Syntastic", "Tagbar", "delimitMate", "AutoTag", "unimpaired",
+                    \"surround", "Syntastic", "Tagbar", "delimitMate", "AutoTag", "unimpaired", "github:marijnh/tern_for_vim",
                     \"YankRing", "Colour_Sampler_Pack", "Better_Javascript_Indentation", "repeat",
                     \"TaskList","Tabular", "extradite", "JavaScript_Indent", "github:addadi/EasyGrep",
-                    \"bufexplorer.zip", "Conque_Shell", "Powerline", "rooter", "JSON",
+                    \"bufexplorer.zip", "Conque_Shell", "Powerline", "rooter", "JSON", "github:jpalardy/vim-slime",
                     \"github:teramako/jscomplete-vim",
                     \"ctrlp", "endline", "session%3150", "Smartgf"], {'auto_install' : 0})
       " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
