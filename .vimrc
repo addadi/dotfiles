@@ -273,17 +273,16 @@
       let g:vim_addon_manager = c
       let c.plugin_root_dir = expand('$HOME') . '/.vim/vim-addons'
       let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
-      " let g:vim_addon_manager = { your config here see "commented version" example and help
       if !isdirectory(c.plugin_root_dir.'/vim-addon-manager/autoload')
       execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '
                   \       shellescape(c.plugin_root_dir.'/vim-addon-manager', 1)
       endif
       call vam#ActivateAddons(["github:addadi/vim-autocomplpop", "fugitive", "L9", "The_NERD_Commenter", 
                     \"The_NERD_tree", "github:garbas/vim-snipmate", "github:honza/vim-snippets", "sparkup", "SuperTab%182", 
-                    \"surround", "Syntastic", "Tagbar", "delimitMate", "AutoTag", "unimpaired",
+                    \"surround", "Syntastic", "Tagbar", "delimitMate", "AutoTag", "unimpaired", "github:marijnh/tern_for_vim",
                     \"YankRing", "Colour_Sampler_Pack", "Better_Javascript_Indentation", "repeat",
                     \"TaskList","Tabular", "extradite", "JavaScript_Indent", "github:addadi/EasyGrep",
-                    \"bufexplorer.zip", "Conque_Shell", "Powerline", "rooter", "JSON",
+                    \"bufexplorer.zip", "Conque_Shell", "Powerline", "rooter", "JSON", "github:jpalardy/vim-slime",
                     \"github:teramako/jscomplete-vim", "github:clausreinke/scoped_tags", 
                     \"ctrlp", "endline", "session%3150", "Smartgf"], {'auto_install' : 0})
       " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
