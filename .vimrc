@@ -273,7 +273,6 @@
       let g:vim_addon_manager = c
       let c.plugin_root_dir = expand('$HOME') . '/.vim/vim-addons'
       let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
-      " let g:vim_addon_manager = { your config here see "commented version" example and help
       if !isdirectory(c.plugin_root_dir.'/vim-addon-manager/autoload')
       execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '
                   \       shellescape(c.plugin_root_dir.'/vim-addon-manager', 1)
@@ -284,7 +283,7 @@
                     \"YankRing", "Colour_Sampler_Pack", "Better_Javascript_Indentation", "repeat",
                     \"TaskList","Tabular", "extradite", "JavaScript_Indent", "github:addadi/EasyGrep",
                     \"bufexplorer.zip", "Conque_Shell", "Powerline", "rooter", "JSON",
-                    \"github:teramako/jscomplete-vim", "github:clausreinke/scoped_tags", 
+                    \"github:teramako/jscomplete-vim",
                     \"ctrlp", "endline", "session%3150", "Smartgf"], {'auto_install' : 0})
       " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
       "  - look up source from pool (<c-x><c-p> complete plugin names):
@@ -302,7 +301,7 @@
     " option2:  au GUIEnter * call SetupVAM()
     " See BUGS sections below [*]
     " Vim 7.0 users see BUGS section [3]
-"}
+" }
 
 " Plugin Settings {
     let b:match_ignorecase = 1 " case is stupid
