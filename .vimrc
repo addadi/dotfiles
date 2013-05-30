@@ -284,7 +284,7 @@
                     \"TaskList","Tabular", "extradite", "JavaScript_Indent", "github:addadi/EasyGrep",
                     \"bufexplorer.zip", "Conque_Shell", "Powerline", "rooter", "JSON", "github:jpalardy/vim-slime",
                     \"github:teramako/jscomplete-vim", "github:clausreinke/scoped_tags", 
-                    \"ctrlp", "endline", "session%3150", "Smartgf"], {'auto_install' : 0})
+                    \"ctrlp", "endline", "session%3150", "vim-misc", "Smartgf"], {'auto_install' : 0})
       " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
       "  - look up source from pool (<c-x><c-p> complete plugin names):
       "    ActivateAddons(["foo",  ..
