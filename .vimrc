@@ -232,8 +232,8 @@
         autocmd filetype html,xml set listchars-=tab:>. "unhighlighting tabs
     " }
     " Javascript {
-        autocmd FileType javascript setl omnifunc=jscomplete#CompleteJS
-        "autocmd FileType javascript setl omnifunc=javascriptcomplete#CompleteJS
+        "autocmd FileType javascript setl omnifunc=jscomplete#CompleteJS
+        autocmd FileType javascript setl omnifunc=javascriptcomplete#CompleteJS
         " folding from http://amix.dk/blog/post/19132
         au FileType javascript call JavaScriptFold()
         au FileType javascript setl fen
@@ -277,14 +277,21 @@
       execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '
                   \       shellescape(c.plugin_root_dir.'/vim-addon-manager', 1)
       endif
-      call vam#ActivateAddons(["github:addadi/vim-autocomplpop", "fugitive", "L9", "The_NERD_Commenter", 
-                    \"The_NERD_tree", "github:garbas/vim-snipmate", "github:honza/vim-snippets", "sparkup", "SuperTab%182", 
-                    \"surround", "Syntastic", "Tagbar", "delimitMate", "AutoTag", "unimpaired", "github:marijnh/tern_for_vim",
+      call vam#ActivateAddons(["fugitive", "The_NERD_Commenter", 
+                    \"The_NERD_tree", "sparkup", "SuperTab%182", 
+                    \"surround", "Syntastic", "Tagbar", "delimitMate", "AutoTag", "unimpaired",
                     \"YankRing", "Colour_Sampler_Pack", "Better_Javascript_Indentation", "repeat",
                     \"TaskList","Tabular", "extradite", "JavaScript_Indent", "github:addadi/EasyGrep",
                     \"bufexplorer.zip", "Conque_Shell", "Powerline", "rooter", "JSON", "github:jpalardy/vim-slime",
-                    \"github:teramako/jscomplete-vim", "github:clausreinke/scoped_tags", 
                     \"ctrlp", "endline", "session%3150", "vim-misc", "Smartgf"], {'auto_install' : 0})
+      " Completion plugins
+      call vam#ActivateAddons(["github:addadi/vim-autocomplpop", "L9",
+                    \"github:teramako/jscomplete-vim", "vim-snippets", 
+                    \"github:MarcWeber/ultisnips"
+                    \], {'auto_install' : 0})
+      "call vam#ActivateAddons(["github:addadi/vim-autocomplpop", "L9",
+                    "\"github:teramako/jscomplete-vim", "github:MarcWeber/ultisnips", "vim-snippets", 
+                    "\"neosnippet", "neocomplcache" ], {'auto_install' : 0})
       " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
       "  - look up source from pool (<c-x><c-p> complete plugin names):
       "    ActivateAddons(["foo",  ..
