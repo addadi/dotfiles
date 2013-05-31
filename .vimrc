@@ -277,37 +277,60 @@
       execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '
                   \       shellescape(c.plugin_root_dir.'/vim-addon-manager', 1)
       endif
-      call vam#ActivateAddons(["fugitive", "The_NERD_Commenter", 
-                    \"The_NERD_tree", "sparkup", "SuperTab%182", 
-                    \"surround", "Syntastic", "Tagbar", "delimitMate", "AutoTag", "unimpaired",
-                    \"YankRing", "Colour_Sampler_Pack", "Better_Javascript_Indentation", "repeat",
-                    \"TaskList","Tabular", "extradite", "JavaScript_Indent", "github:addadi/EasyGrep",
-                    \"bufexplorer.zip", "Conque_Shell", "Powerline", "rooter", "JSON", "github:jpalardy/vim-slime",
-                    \"ctrlp", "endline", "session%3150", "vim-misc", "Smartgf"], {'auto_install' : 0})
-      " Completion plugins
-      call vam#ActivateAddons(["github:addadi/vim-autocomplpop", "L9",
+      " git related
+      call vam#ActivateAddons(["fugitive", "extradite"
+                    \], {'auto_install' : 0})
+      " files and buffers related
+      call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp", "Smartgf"
+                    \], {'auto_install' : 0})
+      " html related
+      call vam#ActivateAddons(["sparkup"
+                    \], {'auto_install' : 0})
+      " javascript related
+      call vam#ActivateAddons(["Better_Javascript_Indentation", "JavaScript_Indent"
+                    \], {'auto_install' : 0})
+      " json related
+      call vam#ActivateAddons(["JSON"
+                    \], {'auto_install' : 0})
+      " tabs completion related
+      call vam#ActivateAddons(["SuperTab%182", "Tabular", "github:addadi/vim-autocomplpop", "L9",
                     \"github:teramako/jscomplete-vim", "vim-snippets", 
                     \"github:MarcWeber/ultisnips"
                     \], {'auto_install' : 0})
-      "call vam#ActivateAddons(["github:addadi/vim-autocomplpop", "L9",
-                    "\"github:teramako/jscomplete-vim", "github:MarcWeber/ultisnips", "vim-snippets", 
-                    "\"neosnippet", "neocomplcache" ], {'auto_install' : 0})
-      " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
-      "  - look up source from pool (<c-x><c-p> complete plugin names):
-      "    ActivateAddons(["foo",  ..
-      "  - name rewritings: 
-      "    ..ActivateAddons(["github:foo", .. => github://foo/vim-addon-foo
-      "    ..ActivateAddons(["github:user/repo", .. => github://user/repo
-      " Also see section "2.2. names of addons and addon sources" in VAM's documentation
-    endfun
+      " comments related
+      call vam#ActivateAddons(["The_NERD_Commenter"
+                    \], {'auto_install' : 0})
+      " project and session related
+      call vam#ActivateAddons(["TaskList", "rooter", "session%3150"
+                    \], {'auto_install' : 0})
+      " REPL related
+      call vam#ActivateAddons(["github:jpalardy/vim-slime"
+                    \], {'auto_install' : 0})
+      " colorscheme and UI related
+      call vam#ActivateAddons(["Colour_Sampler_Pack", "Powerline"
+                    \], {'auto_install' : 0})
+      " syntax checking and code analysis
+      call vam#ActivateAddons(["Syntastic", "Tagbar", "AutoTag"
+                    \], {'auto_install' : 0})
+      " parsting
+      call vam#ActivateAddons(["YankRing"
+                    \], {'auto_install' : 0})
+      " code search
+      call vam#ActivateAddons(["github:addadi/EasyGrep"
+                    \], {'auto_install' : 0})
+      " complete delimaters - to be checked!
+      call vam#ActivateAddons(["delimitMate", "unimpaired", "endline"
+                    \], {'auto_install' : 0})
+      " not clear
+      call vam#ActivateAddons(["vim-misc"
+                    \], {'auto_install' : 0})
+      " the rest utils
+      call vam#ActivateAddons([
+                    \"surround", 
+                    \"repeat"
+                    \], {'auto_install' : 0})
+  endfun
     call SetupVAM()
-    " experimental [E1]: load plugins lazily depending on filetype, See
-    " NOTES
-    " experimental [E2]: run after gui has been started (gvim) [3]
-    " option1:  au VimEnter * call SetupVAM()
-    " option2:  au GUIEnter * call SetupVAM()
-    " See BUGS sections below [*]
-    " Vim 7.0 users see BUGS section [3]
 "}
 
 " Plugin Settings {
