@@ -281,19 +281,10 @@
       call vam#ActivateAddons(["fugitive", "extradite"
                     \], {'auto_install' : 0})
       " files and buffers related
-      call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp", "Smartgf"
-                    \], {'auto_install' : 0})
-      " html related
-      call vam#ActivateAddons(["sparkup"
-                    \], {'auto_install' : 0})
-      " javascript related
-      call vam#ActivateAddons(["Better_Javascript_Indentation", "JavaScript_Indent"
-                    \], {'auto_install' : 0})
-      " json related
-      call vam#ActivateAddons(["JSON"
+      call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp"
                     \], {'auto_install' : 0})
       " tabs completion related
-      call vam#ActivateAddons(["SuperTab%182", "Tabular", "github:addadi/vim-autocomplpop", "L9",
+      call vam#ActivateAddons(["SuperTab%1643", "Tabular", "github:addadi/vim-autocomplpop", "L9",
                     \"github:teramako/jscomplete-vim", "vim-snippets", 
                     \"github:MarcWeber/ultisnips"
                     \], {'auto_install' : 0})
@@ -312,11 +303,20 @@
       " syntax checking and code analysis
       call vam#ActivateAddons(["Syntastic", "Tagbar", "AutoTag"
                     \], {'auto_install' : 0})
+      " html related
+      call vam#ActivateAddons(["sparkup"
+                    \], {'auto_install' : 0})
+      " javascript related
+      call vam#ActivateAddons(["Better_Javascript_Indentation", "JavaScript_Indent"
+                    \], {'auto_install' : 0})
+      " json related
+      call vam#ActivateAddons(["JSON"
+                    \], {'auto_install' : 0})
       " parsting
       call vam#ActivateAddons(["YankRing"
                     \], {'auto_install' : 0})
-      " code search
-      call vam#ActivateAddons(["github:addadi/EasyGrep"
+      " code search - TO BE Checked!!!!
+      call vam#ActivateAddons(["github:addadi/EasyGrep" ,"Smartgf"
                     \], {'auto_install' : 0})
       " complete delimaters - to be checked!
       call vam#ActivateAddons(["delimitMate", "unimpaired", "endline"
