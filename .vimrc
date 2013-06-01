@@ -233,7 +233,7 @@
     " }
     " Javascript {
         "autocmd FileType javascript setl omnifunc=jscomplete#CompleteJS
-        autocmd FileType javascript setl omnifunc=tern#Complete
+        "autocmd FileType javascript setl omnifunc=tern#Complete
         " folding from http://amix.dk/blog/post/19132
         au FileType javascript call JavaScriptFold()
         au FileType javascript setl fen
@@ -268,74 +268,80 @@
 "  }
 
 " VAM {
-    fun! SetupVAM()
+  fun! SetupVAM()
       let c = get(g:, 'vim_addon_manager', {})
       let g:vim_addon_manager = c
       let c.plugin_root_dir = expand('$HOME') . '/.vim/vim-addons'
       let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
       if !isdirectory(c.plugin_root_dir.'/vim-addon-manager/autoload')
-      execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '
-                  \       shellescape(c.plugin_root_dir.'/vim-addon-manager', 1)
+          execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '
+                      \       shellescape(c.plugin_root_dir.'/vim-addon-manager', 1)
       endif
       " git related
       call vam#ActivateAddons(["fugitive", "extradite"
-                    \], {'auto_install' : 0})
+                  \], {'auto_install' : 0})
       " files and buffers related
       call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp"
-                    \], {'auto_install' : 0})
+                  \], {'auto_install' : 0})
       " tabs completion related
-      "call vam#ActivateAddons(["neocomplcache", "neosnippet",
-                    "\"vim-snippets"
-                    "\], {'auto_install' : 0})
+      call vam#ActivateAddons(["neocomplcache", "neosnippet",
+                  \"vim-snippets"
+                  \], {'auto_install' : 0})
       " comments related
       call vam#ActivateAddons(["The_NERD_Commenter"
-                    \], {'auto_install' : 0})
+                  \], {'auto_install' : 0})
       " project and session related
       call vam#ActivateAddons(["TaskList", "rooter", "session%3150"
-                    \], {'auto_install' : 0})
+                  \], {'auto_install' : 0})
+      " required for session%3150
+      call vam#ActivateAddons(["vim-misc"
+                  \], {'auto_install' : 0})
       " REPL related
       call vam#ActivateAddons(["github:jpalardy/vim-slime"
-                    \], {'auto_install' : 0})
+                  \], {'auto_install' : 0})
       " colorscheme and UI related
       call vam#ActivateAddons(["Colour_Sampler_Pack", "Powerline"
-                    \], {'auto_install' : 0})
+                  \], {'auto_install' : 0})
       " syntax checking and code analysis
       call vam#ActivateAddons(["Syntastic", "Tagbar", "AutoTag"
-                    \], {'auto_install' : 0})
-      " html related
-      call vam#ActivateAddons(["sparkup"
-                    \], {'auto_install' : 0})
-      " javascript related
-      call vam#ActivateAddons(["vim-javascript",
-                  \"github:marijnh/tern_for_vim"
                   \], {'auto_install' : 0})
-      " json related
-      call vam#ActivateAddons(["JSON"
-                    \], {'auto_install' : 0})
+      "" html related
+      "call vam#ActivateAddons(["github:tristen/vim-sparkup"
+                  "\], {'auto_install' : 0})
+      "" javascript related
+      "call vam#ActivateAddons(["vim-javascript",
+                  "\"github:marijnh/tern_for_vim"
+                  "\], {'auto_install' : 0})
+      "" json related
+      "call vam#ActivateAddons(["github:elzr/vim-json"
+                  "\], {'auto_install' : 0})
       " parsting
       call vam#ActivateAddons(["YankRing"
-                    \], {'auto_install' : 0})
+                  \], {'auto_install' : 0})
       " code search - TO BE Checked!!!!
       call vam#ActivateAddons(["github:addadi/EasyGrep" ,"Smartgf"
-                    \], {'auto_install' : 0})
-      " complete delimaters - to be checked!
-      call vam#ActivateAddons(["delimitMate", "unimpaired", "endline"
-                    \], {'auto_install' : 0})
-      " not clear
-      call vam#ActivateAddons(["vim-misc"
-                    \], {'auto_install' : 0})
+                  \], {'auto_install' : 0})
+      " complete delimaters and unimpaired - should learn more about it
+      call vam#ActivateAddons(["delimitMate", "unimpaired"
+                  \], {'auto_install' : 0})
       " the rest utils
       call vam#ActivateAddons([
-                    \"surround", "Tabular", 
-                    \"repeat"
-                    \], {'auto_install' : 0})
+                  \"surround", "Tabular", 
+                  \"repeat"
+                  \], {'auto_install' : 0})
   endfun
-    call SetupVAM()
+  call SetupVAM()
+  let ft_addons = {
+              \ '^\%(html\|htm\)$': [ 'github:tristen/vim-sparkup' ],
+              \ 'javascript': [ 'github:marijnh/tern_for_vim' ],
+              \ 'json': [ 'github:elzr/vim-json' ]
+              \ }
+  au FileType * for l in values(filter(copy(ft_addons), string(expand('<amatch>')).' =~ v:key')) | call vam#ActivateAddons(l, {'force_loading_plugins_now':1}) | endfor
 "}
 
 " Plugin Settings {
     let b:match_ignorecase = 1 " case is stupid
-    let perl_extended_vars=1 " highlight advanced perl vars
+    "let perl_extended_vars=1 " highlight advanced perl vars
                               " inside strings
 
     " Fugitive Settings {
@@ -381,20 +387,6 @@
     noremap <Leader>o :OpenSession<CR>
     " }
 
-    " endline Settings {
-    let g:Endlines = {
-                \'erlang': '.',
-                \'java': ';',
-                \'javascript': ';',
-                \'ocaml': ';;',
-                \'perl': ';',
-                \'php': ';',
-                \'python': ':',
-                \'sml': ';'
-                \}
-    "let g:EndlineMapping (<'F9'>)
-    " }
-
     " ctrlp Settings {
     let g:ctrlp_map = '<Leader>f'
     " }
@@ -403,66 +395,72 @@
     colorscheme wombat256
     " }
 
-    "" neocomplcache Settings {
-    "" Use neocomplcache.
-    "let g:neocomplcache_enable_at_startup = 1
-    "" Use smartcase.
-    "let g:neocomplcache_enable_smart_case = 1
-    "" Set minimum syntax keyword length.
-    "let g:neocomplcache_min_syntax_length = 3
+    " neocomplcache Settings {
+    " Use neocomplcache.
+    let g:neocomplcache_enable_at_startup = 1
+    " Use smartcase.
+    let g:neocomplcache_enable_smart_case = 1
+    " Set minimum syntax keyword length.
+    let g:neocomplcache_min_syntax_length = 1
+    let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
-    "" Enable heavy features.
-    ""Use camel case completion.
-    "let g:neocomplcache_enable_camel_case_completion = 1
-    ""Use underbar completion.
-    "let g:neocomplcache_enable_underbar_completion = 1"
+    " Enable heavy features.
+    "Use camel case completion.
+    let g:neocomplcache_enable_camel_case_completion = 1
+    "Use underbar completion.
+    let g:neocomplcache_enable_underbar_completion = 1"
 
-    "" Define dictionary.
-    "let g:neocomplcache_dictionary_filetype_lists = {
-                "\ 'default' : ''
-                "\ }
+    " Define dictionary.
+    let g:neocomplcache_dictionary_filetype_lists = {
+                \ 'default' : ''
+                \ }
 
-    "" Define keyword.
-    "if !exists('g:neocomplcache_keyword_patterns')
-        "let g:neocomplcache_keyword_patterns = {}
-    "endif
-    "let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+    if !exists('g:neocomplcache_omni_patterns')
+        let g:neocomplcache_omni_patterns = {}
+    endif
+    let g:neocomplcache_omni_patterns.javascript = ''
 
-    "" Plugin key-mappings.
-    "inoremap <expr><C-g>     neocomplcache#undo_completion()
-    "inoremap <expr><C-l>     neocomplcache#complete_common_string()
+    " Define keyword.
+    if !exists('g:neocomplcache_keyword_patterns')
+        let g:neocomplcache_keyword_patterns = {}
+    endif
+    let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
-    "" Recommended key-mappings.
-    "" <CR>: close popup and save indent.
-    "inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    "function! s:my_cr_function()
-        "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
-    "endfunction
-    "" <TAB>: completion.
-    "inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-    "" <C-h>, <BS>: close popup and delete backword char.
-    "inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-    "inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-    "inoremap <expr><C-y>  neocomplcache#close_popup()
-    "inoremap <expr><C-e>  neocomplcache#cancel_popup()
-    "" Close popup by <Space>.
-    ""inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() : "\<Space>"
+    " Plugin key-mappings.
+    inoremap <expr><C-g>     neocomplcache#undo_completion()
+    inoremap <expr><C-l>     neocomplcache#complete_common_string()
 
-    "" For cursor moving in insert mode(Not recommended)
-    ""inoremap <expr><Left>  neocomplcache#close_popup() . "\<Left>"
-    ""inoremap <expr><Right> neocomplcache#close_popup() . "\<Right>"
-    ""inoremap <expr><Up>    neocomplcache#close_popup() . "\<Up>"
-    ""inoremap <expr><Down>  neocomplcache#close_popup() . "\<Down>"
-    "" Or set this.
-    ""let g:neocomplcache_enable_cursor_hold_i = 1
-    "" Or set this.
-    ""let g:neocomplcache_enable_insert_char_pre = 1
+    " Recommended key-mappings.
+    " <CR>: close popup and save indent.
+    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+    function! s:my_cr_function()
+        return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+    endfunction
+    " <TAB>: completion.
+    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+    " <C-h>, <BS>: close popup and delete backword char.
+    inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+    inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+    inoremap <expr><C-y>  neocomplcache#close_popup()
+    inoremap <expr><C-e>  neocomplcache#cancel_popup()
+    " Close popup by <Space>.
+    "inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() : "\<Space>"
 
-    "" AutoComplPop like behavior.
-    "let g:neocomplcache_enable_auto_select = 1
-    "" }
+    " For cursor moving in insert mode(Not recommended)
+    "inoremap <expr><Left>  neocomplcache#close_popup() . "\<Left>"
+    "inoremap <expr><Right> neocomplcache#close_popup() . "\<Right>"
+    "inoremap <expr><Up>    neocomplcache#close_popup() . "\<Up>"
+    "inoremap <expr><Down>  neocomplcache#close_popup() . "\<Down>"
+    " Or set this.
+    "let g:neocomplcache_enable_cursor_hold_i = 1
+    " Or set this.
+    "let g:neocomplcache_enable_insert_char_pre = 1
 
-    "" neosnippet Settings {
+    " AutoComplPop like behavior.
+    let g:neocomplcache_enable_auto_select = 1
+    " }
+
+    " neosnippet Settings {
     "" Plugin key-mappings.
      "imap <C-k>     <Plug>(neosnippet_expand_or_jump)
      "smap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -483,8 +481,7 @@
 
     "" Enable snipMate compatibility feature.
      "let g:neosnippet#enable_snipmate_compatibility = 1
-    
-    "" " Tell Neosnippet about the other snippets
+     "" Tell Neosnippet about the other snippets
      "let g:neosnippet#snippets_directory='~/.vim/vim-addons/vim-snippets/snippets'"
     "" }
 
