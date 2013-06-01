@@ -233,7 +233,7 @@
     " }
     " Javascript {
         "autocmd FileType javascript setl omnifunc=jscomplete#CompleteJS
-        autocmd FileType javascript setl omnifunc=javascriptcomplete#CompleteJS
+        autocmd FileType javascript setl omnifunc=tern#Complete
         " folding from http://amix.dk/blog/post/19132
         au FileType javascript call JavaScriptFold()
         au FileType javascript setl fen
@@ -284,10 +284,9 @@
       call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp"
                     \], {'auto_install' : 0})
       " tabs completion related
-      call vam#ActivateAddons(["SuperTab%1643", "Tabular", "github:addadi/vim-autocomplpop", "L9",
-                    \"github:teramako/jscomplete-vim", "vim-snippets", 
-                    \"github:MarcWeber/ultisnips"
-                    \], {'auto_install' : 0})
+      "call vam#ActivateAddons(["neocomplcache", "neosnippet",
+                    "\"vim-snippets"
+                    "\], {'auto_install' : 0})
       " comments related
       call vam#ActivateAddons(["The_NERD_Commenter"
                     \], {'auto_install' : 0})
@@ -307,8 +306,9 @@
       call vam#ActivateAddons(["sparkup"
                     \], {'auto_install' : 0})
       " javascript related
-      call vam#ActivateAddons(["Better_Javascript_Indentation", "JavaScript_Indent"
-                    \], {'auto_install' : 0})
+      call vam#ActivateAddons(["vim-javascript",
+                  \"github:marijnh/tern_for_vim"
+                  \], {'auto_install' : 0})
       " json related
       call vam#ActivateAddons(["JSON"
                     \], {'auto_install' : 0})
@@ -326,7 +326,7 @@
                     \], {'auto_install' : 0})
       " the rest utils
       call vam#ActivateAddons([
-                    \"surround", 
+                    \"surround", "Tabular", 
                     \"repeat"
                     \], {'auto_install' : 0})
   endfun
@@ -369,7 +369,7 @@
     " }
 
     " JSComplete Settings {
-        let g:jscomplete_use = ['dom', 'moz', 'es6th', 'jscript', 'xpcom']
+        "let g:jscomplete_use = ['dom', 'moz', 'es6th', 'jscript', 'xpcom']
     " }
 
     " session Settings {
@@ -401,6 +401,96 @@
 
     " colorscheme Settings {
     colorscheme wombat256
+    " }
+
+    "" neocomplcache Settings {
+    "" Use neocomplcache.
+    "let g:neocomplcache_enable_at_startup = 1
+    "" Use smartcase.
+    "let g:neocomplcache_enable_smart_case = 1
+    "" Set minimum syntax keyword length.
+    "let g:neocomplcache_min_syntax_length = 3
+
+    "" Enable heavy features.
+    ""Use camel case completion.
+    "let g:neocomplcache_enable_camel_case_completion = 1
+    ""Use underbar completion.
+    "let g:neocomplcache_enable_underbar_completion = 1"
+
+    "" Define dictionary.
+    "let g:neocomplcache_dictionary_filetype_lists = {
+                "\ 'default' : ''
+                "\ }
+
+    "" Define keyword.
+    "if !exists('g:neocomplcache_keyword_patterns')
+        "let g:neocomplcache_keyword_patterns = {}
+    "endif
+    "let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+
+    "" Plugin key-mappings.
+    "inoremap <expr><C-g>     neocomplcache#undo_completion()
+    "inoremap <expr><C-l>     neocomplcache#complete_common_string()
+
+    "" Recommended key-mappings.
+    "" <CR>: close popup and save indent.
+    "inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+    "function! s:my_cr_function()
+        "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+    "endfunction
+    "" <TAB>: completion.
+    "inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+    "" <C-h>, <BS>: close popup and delete backword char.
+    "inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+    "inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+    "inoremap <expr><C-y>  neocomplcache#close_popup()
+    "inoremap <expr><C-e>  neocomplcache#cancel_popup()
+    "" Close popup by <Space>.
+    ""inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() : "\<Space>"
+
+    "" For cursor moving in insert mode(Not recommended)
+    ""inoremap <expr><Left>  neocomplcache#close_popup() . "\<Left>"
+    ""inoremap <expr><Right> neocomplcache#close_popup() . "\<Right>"
+    ""inoremap <expr><Up>    neocomplcache#close_popup() . "\<Up>"
+    ""inoremap <expr><Down>  neocomplcache#close_popup() . "\<Down>"
+    "" Or set this.
+    ""let g:neocomplcache_enable_cursor_hold_i = 1
+    "" Or set this.
+    ""let g:neocomplcache_enable_insert_char_pre = 1
+
+    "" AutoComplPop like behavior.
+    "let g:neocomplcache_enable_auto_select = 1
+    "" }
+
+    "" neosnippet Settings {
+    "" Plugin key-mappings.
+     "imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+     "smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+     "xmap <C-k>     <Plug>(neosnippet_expand_target)
+    
+     "" SuperTab like snippets behavior.
+     "imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+     "\ "\<Plug>(neosnippet_expand_or_jump)"
+     "\: pumvisible() ? "\<C-n>" : "\<TAB>"
+     "smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+     "\ "\<Plug>(neosnippet_expand_or_jump)"
+     "\: "\<TAB>"
+    
+     "" For snippet_complete marker.
+     "if has('conceal')
+       "set conceallevel=2 concealcursor=i
+       "endif
+
+    "" Enable snipMate compatibility feature.
+     "let g:neosnippet#enable_snipmate_compatibility = 1
+    
+    "" " Tell Neosnippet about the other snippets
+     "let g:neosnippet#snippets_directory='~/.vim/vim-addons/vim-snippets/snippets'"
+    "" }
+
+    " marijnh/tern_for_vim Settings {
+    let g:tern_map_keys=1
+    let g:tern_show_argument_hints='on_hold'
     " }
 
 " }
