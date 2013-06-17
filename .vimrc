@@ -326,7 +326,7 @@
                   \], {'auto_install' : 1})
       " the rest utils
       call vam#ActivateAddons([
-                  \"surround", "Tabular", 
+                  \"surround", "Tabular", "Gundo",
                   \"repeat"
                   \], {'auto_install' : 1})
   endfun
@@ -402,7 +402,7 @@
     let g:neocomplcache_enable_smart_case = 1
     " Set minimum syntax keyword length.
     let g:neocomplcache_min_syntax_length = 1
-    "let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+    let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
     " Enable heavy features.
     "Use camel case completion.
@@ -415,10 +415,10 @@
                 \ 'default' : ''
                 \ }
 
-    "if !exists('g:neocomplcache_omni_patterns')
-        "let g:neocomplcache_omni_patterns = {}
-    "endif
-    "let g:neocomplcache_omni_patterns.javascript = ''
+    if !exists('g:neocomplcache_omni_patterns')
+        let g:neocomplcache_omni_patterns = {}
+    endif
+    let g:neocomplcache_omni_patterns.javascript = ''
 
     " Define keyword.
     if !exists('g:neocomplcache_keyword_patterns')
@@ -488,6 +488,10 @@
     " marijnh/tern_for_vim Settings {
     let g:tern_map_keys=1
     let g:tern_show_argument_hints='on_hold'
+    " }
+
+    " Gundo Settings {
+    nnoremap <F5> :GundoToggle<CR>
     " }
 
 " }
