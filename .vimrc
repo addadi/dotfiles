@@ -233,7 +233,7 @@
     " }
     " Javascript {
         "autocmd FileType javascript setl omnifunc=jscomplete#CompleteJS
-        "autocmd FileType javascript setl omnifunc=tern#Complete
+        autocmd FileType javascript setl omnifunc=tern#Complete
         " folding from http://amix.dk/blog/post/19132
         au FileType javascript call JavaScriptFold()
         au FileType javascript setl fen
@@ -269,7 +269,7 @@
 
 " VAM {
   fun! SetupVAM()
-      let c = get(g:, 'vim_addon_manager', {})
+      let c = get(g:, 'vim_addon_manager', { })
       let g:vim_addon_manager = c
       let c.plugin_root_dir = expand('$HOME') . '/.vim/vim-addons'
       let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
@@ -279,32 +279,32 @@
       endif
       " git related
       call vam#ActivateAddons(["fugitive", "extradite"
-                  \], {'auto_install' : 0})
+                  \], {'auto_install' : 1})
       " files and buffers related
       call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp"
-                  \], {'auto_install' : 0})
+                  \], {'auto_install' : 1})
       " tabs completion related
       call vam#ActivateAddons(["neocomplcache", "neosnippet",
                   \"vim-snippets"
-                  \], {'auto_install' : 0})
+                  \], {'auto_install' : 1})
       " comments related
       call vam#ActivateAddons(["The_NERD_Commenter"
-                  \], {'auto_install' : 0})
+                  \], {'auto_install' : 1})
       " project and session related
       call vam#ActivateAddons(["TaskList", "rooter", "session%3150"
-                  \], {'auto_install' : 0})
+                  \], {'auto_install' : 1})
       " required for session%3150
       call vam#ActivateAddons(["vim-misc"
-                  \], {'auto_install' : 0})
+                  \], {'auto_install' : 1})
       " REPL related
       call vam#ActivateAddons(["github:jpalardy/vim-slime"
-                  \], {'auto_install' : 0})
+                  \], {'auto_install' : 1})
       " colorscheme and UI related
       call vam#ActivateAddons(["Colour_Sampler_Pack", "Powerline"
-                  \], {'auto_install' : 0})
+                  \], {'auto_install' : 1})
       " syntax checking and code analysis
       call vam#ActivateAddons(["Syntastic", "Tagbar", "AutoTag"
-                  \], {'auto_install' : 0})
+                  \], {'auto_install' : 1})
       "" html related
       "call vam#ActivateAddons(["github:tristen/vim-sparkup"
                   "\], {'auto_install' : 0})
@@ -317,18 +317,18 @@
                   "\], {'auto_install' : 0})
       " parsting
       call vam#ActivateAddons(["YankRing"
-                  \], {'auto_install' : 0})
+                  \], {'auto_install' : 1})
       " code search - TO BE Checked!!!!
       call vam#ActivateAddons(["github:addadi/EasyGrep" ,"Smartgf"
-                  \], {'auto_install' : 0})
+                  \], {'auto_install' : 1})
       " complete delimaters and unimpaired - should learn more about it
       call vam#ActivateAddons(["delimitMate", "unimpaired"
-                  \], {'auto_install' : 0})
+                  \], {'auto_install' : 1})
       " the rest utils
       call vam#ActivateAddons([
                   \"surround", "Tabular", 
                   \"repeat"
-                  \], {'auto_install' : 0})
+                  \], {'auto_install' : 1})
   endfun
   call SetupVAM()
   let ft_addons = {
@@ -402,23 +402,23 @@
     let g:neocomplcache_enable_smart_case = 1
     " Set minimum syntax keyword length.
     let g:neocomplcache_min_syntax_length = 1
-    let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+    "let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
     " Enable heavy features.
     "Use camel case completion.
     let g:neocomplcache_enable_camel_case_completion = 1
     "Use underbar completion.
-    let g:neocomplcache_enable_underbar_completion = 1"
+    let g:neocomplcache_enable_underbar_completion = 1
 
     " Define dictionary.
     let g:neocomplcache_dictionary_filetype_lists = {
                 \ 'default' : ''
                 \ }
 
-    if !exists('g:neocomplcache_omni_patterns')
-        let g:neocomplcache_omni_patterns = {}
-    endif
-    let g:neocomplcache_omni_patterns.javascript = ''
+    "if !exists('g:neocomplcache_omni_patterns')
+        "let g:neocomplcache_omni_patterns = {}
+    "endif
+    "let g:neocomplcache_omni_patterns.javascript = ''
 
     " Define keyword.
     if !exists('g:neocomplcache_keyword_patterns')
@@ -457,33 +457,33 @@
     "let g:neocomplcache_enable_insert_char_pre = 1
 
     " AutoComplPop like behavior.
-    let g:neocomplcache_enable_auto_select = 1
+    let g:neocomplcache_enable_auto_select = 0
     " }
 
-    " neosnippet Settings {
-    "" Plugin key-mappings.
-     "imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-     "smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-     "xmap <C-k>     <Plug>(neosnippet_expand_target)
+     "neosnippet Settings {
+    " Plugin key-mappings.
+     imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+     smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+     xmap <C-k>     <Plug>(neosnippet_expand_target)
     
-     "" SuperTab like snippets behavior.
-     "imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-     "\ "\<Plug>(neosnippet_expand_or_jump)"
-     "\: pumvisible() ? "\<C-n>" : "\<TAB>"
-     "smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-     "\ "\<Plug>(neosnippet_expand_or_jump)"
-     "\: "\<TAB>"
+     " SuperTab like snippets behavior.
+     imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+     \ "\<Plug>(neosnippet_expand_or_jump)"
+     \: pumvisible() ? "\<C-n>" : "\<TAB>"
+     smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+     \ "\<Plug>(neosnippet_expand_or_jump)"
+     \: "\<TAB>"
     
-     "" For snippet_complete marker.
-     "if has('conceal')
-       "set conceallevel=2 concealcursor=i
-       "endif
+     " For snippet_complete marker.
+     if has('conceal')
+         set conceallevel=2 concealcursor=i
+     endif
 
-    "" Enable snipMate compatibility feature.
-     "let g:neosnippet#enable_snipmate_compatibility = 1
-     "" Tell Neosnippet about the other snippets
-     "let g:neosnippet#snippets_directory='~/.vim/vim-addons/vim-snippets/snippets'"
-    "" }
+    " Enable snipMate compatibility feature.
+     let g:neosnippet#enable_snipmate_compatibility = 1
+     " Tell Neosnippet about the other snippets
+     let g:neosnippet#snippets_directory='~/.vim/vim-addons/vim-snippets/snippets'"
+    " }
 
     " marijnh/tern_for_vim Settings {
     let g:tern_map_keys=1
