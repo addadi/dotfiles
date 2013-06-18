@@ -297,7 +297,7 @@
       call vam#ActivateAddons(["vim-misc"
                   \], {'auto_install' : 1})
       " REPL related
-      call vam#ActivateAddons(["github:jpalardy/vim-slime"
+      call vam#ActivateAddons(["conque-repl", "Conque_Shell"
                   \], {'auto_install' : 1})
       " colorscheme and UI related
       call vam#ActivateAddons(["Colour_Sampler_Pack", "Powerline"
@@ -402,7 +402,7 @@
     let g:neocomplcache_enable_smart_case = 1
     " Set minimum syntax keyword length.
     let g:neocomplcache_min_syntax_length = 1
-    let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+    "let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
     " Enable heavy features.
     "Use camel case completion.
@@ -491,7 +491,11 @@
     " }
 
     " Gundo Settings {
-    nnoremap <F5> :GundoToggle<CR>
+    nnoremap <F9> :GundoToggle<CR>
+    " }
+    
+    " Conque_shell Settings {
+    nnoremap <Leader>ctn :ConqueTermVSplit node<CR>
     " }
 
 " }
