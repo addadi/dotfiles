@@ -2,10 +2,10 @@ startup_message off
 attrcolor b ".I"
 termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 defbce "on"
-#caption always "%{= kw}%-w%{= BW}%n %t%{-}%+w %-= @%H - %d/%m - %c"
+caption always "%{= kw}%-w%{= BW}%n %t%{-}%+w %-= @%H - %d/%m - %c"
 termcapinfo xterm* ti@:te@
-caption always "%{=r gk}%-w%{=b wb}%50>%n%f* %t%{-}%+Lw%<%{- Wk} %-= %l @%H - %d/%m - %c"
-shelltitle '] | bash'
+#caption always "%{=r gk}%-w%{=b wb}%50>%n%f* %t%{-}%+Lw%<%{- Wk} %-= %l @%H - %d/%m - %c"
+#shelltitle '] | bash'
 
 # caption description:
 # caption always "%?%F%{-b bc}%:%{-b bb}%?%C|%D|%M %d|%H%?%F%{+u wb}%? %L=%-Lw%45>%{+b by}%n%f* %t%{-}%+Lw%-0<"
