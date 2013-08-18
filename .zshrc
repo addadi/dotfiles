@@ -123,3 +123,5 @@ run_scripts()
     done
 }
 #run_scripts ~/.bashrc.d
+#
+alias -g tmux="tmux -2"
