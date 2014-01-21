@@ -291,7 +291,7 @@
       call vam#ActivateAddons(["The_NERD_Commenter"
                   \], {'auto_install' : 1})
       " project and session related
-      call vam#ActivateAddons(["TaskList", "rooter", "session%3150"
+      call vam#ActivateAddons(["TaskList", "vim-rooter", "session%3150"
                   \], {'auto_install' : 1})
       " required for session%3150
       call vam#ActivateAddons(["vim-misc"
@@ -300,7 +300,7 @@
       call vam#ActivateAddons(["conque-repl", "Conque_Shell"
                   \], {'auto_install' : 1})
       " colorscheme and UI related
-      call vam#ActivateAddons(["Colour_Sampler_Pack", "Powerline"
+      call vam#ActivateAddons(["Colour_Sampler_Pack", "vim-powerline"
                   \], {'auto_install' : 1})
       " syntax checking and code analysis
       call vam#ActivateAddons(["Syntastic", "Tagbar", "AutoTag"
