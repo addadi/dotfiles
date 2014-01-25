@@ -41,3 +41,6 @@
     tool = vimdiff
         # Include summaries of merged commits in newly created merge commit messages
     log = true
+[remote "origin"]
+	push = +refs/tags/*:refs/tags/*
+	push = +refs/heads/*:refs/heads/*
