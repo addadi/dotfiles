@@ -294,8 +294,8 @@
       call vam#ActivateAddons(["TaskList", "vim-rooter", "session%3150"
                   \], {'auto_install' : 1})
       " required for session%3150
-      call vam#ActivateAddons(["vim-misc"
-                  \], {'auto_install' : 1})
+      "call vam#ActivateAddons(["vim-misc"
+                  "\], {'auto_install' : 1})
       " REPL related
       call vam#ActivateAddons(["conque-repl", "Conque_Shell"
                   \], {'auto_install' : 1})
