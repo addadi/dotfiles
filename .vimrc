@@ -300,7 +300,7 @@
       call vam#ActivateAddons(["conque-repl", "Conque_Shell"
                   \], {'auto_install' : 1})
       " colorscheme and UI related
-      call vam#ActivateAddons(["Colour_Sampler_Pack", "vim-powerline"
+      call vam#ActivateAddons(["Colour_Sampler_Pack", "powerline"
                   \], {'auto_install' : 1})
       " syntax checking and code analysis
       call vam#ActivateAddons(["Syntastic", "Tagbar", "AutoTag"
