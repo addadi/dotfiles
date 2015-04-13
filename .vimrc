@@ -221,52 +221,6 @@
 " }
 " }
 
-" Autocommands {
-    " Various Languages {
-        autocmd FileType python set omnifunc=pythoncomplete#Complete
-        autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-        autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-        autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-        autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-        autocmd FileType c set omnifunc=ccomplete#Complete
-        autocmd filetype html,xml set listchars-=tab:>. "unhighlighting tabs
-    " }
-    " Javascript {
-        "autocmd FileType javascript setl omnifunc=jscomplete#CompleteJS
-        autocmd FileType javascript setl omnifunc=tern#Complete
-        " folding from http://amix.dk/blog/post/19132
-        au FileType javascript call JavaScriptFold()
-        au FileType javascript setl fen
-        autocmd FileType javascript set sw=4
-        autocmd FileType javascript set ts=4
-        autocmd FileType javascript set sts=4
-        autocmd FileType javascript set textwidth=79
-    " }
-    " JSON {
-        au! BufRead,BufNewFile *.json set filetype=json 
-        augroup json_autocmd 
-            autocmd! 
-            autocmd FileType json set autoindent 
-            autocmd FileType json set formatoptions=tcq2l 
-            autocmd FileType json set textwidth=78 shiftwidth=2 
-            autocmd FileType json set softtabstop=2 tabstop=8 
-            autocmd FileType json set expandtab 
-            autocmd FileType json set foldmethod=syntax 
-        augroup END 
-        "autocmd FileType javascript setl omnifunc=javascriptcomplete#CompleteJS
-        " folding from http://amix.dk/blog/post/19132
-        au FileType json call JavaScriptFold()
-        au FileType json setl fen
-    " }
-    " vimrc {
-        " from vim cast 24
-        " Source the vimrc file after saving it
-        if has("autocmd")
-            autocmd! bufwritepost .vimrc source $MYVIMRC
-        endif
-    " }
-"  }
-
 " VAM {
   fun! SetupVAM()
       let c = get(g:, 'vim_addon_manager', { })
@@ -501,6 +455,52 @@
     " }
 
 " }
+
+" Autocommands {
+    " Various Languages {
+        autocmd FileType python set omnifunc=pythoncomplete#Complete
+        autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+        autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+        autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+        autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+        autocmd FileType c set omnifunc=ccomplete#Complete
+        autocmd filetype html,xml set listchars-=tab:>. "unhighlighting tabs
+    " }
+    " Javascript {
+        "autocmd FileType javascript setl omnifunc=jscomplete#CompleteJS
+        autocmd FileType javascript setl omnifunc=tern#Complete
+        " folding from http://amix.dk/blog/post/19132
+        au FileType javascript call JavaScriptFold()
+        au FileType javascript setl fen
+        autocmd FileType javascript set sw=4
+        autocmd FileType javascript set ts=4
+        autocmd FileType javascript set sts=4
+        autocmd FileType javascript set textwidth=79
+    " }
+    " JSON {
+        au! BufRead,BufNewFile *.json set filetype=json 
+        augroup json_autocmd 
+            autocmd! 
+            autocmd FileType json set autoindent 
+            autocmd FileType json set formatoptions=tcq2l 
+            autocmd FileType json set textwidth=78 shiftwidth=2 
+            autocmd FileType json set softtabstop=2 tabstop=8 
+            autocmd FileType json set expandtab 
+            autocmd FileType json set foldmethod=syntax 
+        augroup END 
+        "autocmd FileType javascript setl omnifunc=javascriptcomplete#CompleteJS
+        " folding from http://amix.dk/blog/post/19132
+        au FileType json call JavaScriptFold()
+        au FileType json setl fen
+    " }
+    " vimrc {
+        " from vim cast 24
+        " Source the vimrc file after saving it
+        if has("autocmd")
+            autocmd! bufwritepost .vimrc source $MYVIMRC
+        endif
+    " }
+"  }
 
 "" GUI Settings {
 "if has("gui_running")
