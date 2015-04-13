@@ -283,7 +283,7 @@
       " the rest utils
       call vam#ActivateAddons([
                   \"surround", "Tabular", "Gundo",
-                  \"repeat", "SudoEdit"
+                  \"repeat", "SudoEdit", "Indent_Guides"
                   \], {'auto_install' : 1})
   endfun
   call SetupVAM()
