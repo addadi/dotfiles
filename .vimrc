@@ -296,7 +296,7 @@
       "" required for session%3150
       "call vam#ActivateAddons(["vim-misc"
                   "\], {'auto_install' : 1})
-      call vam#ActivateAddons(["TaskList", "vim-rooter", "Session-Viminfo-Management"
+      call vam#ActivateAddons(["TaskList", "vim-rooter"
                   \], {'auto_install' : 1})
       " REPL related
       call vam#ActivateAddons(["conque-repl", "Conque_Shell"
@@ -490,9 +490,6 @@
     " marijnh/tern_for_vim Settings {
     let g:tern_map_keys=1
     let g:tern_show_argument_hints='on_hold'
-    if has('win32unix')
-        let  g:tern#command = ['/usr/local/bin/console /cygdrive/c/nodejs/node /cygdrive/c/Users/ADDADI/.vim/vim-addons/github-marijnh-tern_for_vim/node_modules/tern/bin/tern', '--no-port-file']
-    endif
     " }
 
     " Gundo Settings {
