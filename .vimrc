@@ -453,7 +453,11 @@
     " }
     
     " Conque_shell Settings {
-    nnoremap <Leader>ctn :ConqueTermVSplit node<CR>
+    if has('win32unix')
+        nnoremap <Leader>ctn :ConqueTermVSplit console node<CR>
+    else
+        nnoremap <Leader>ctn :ConqueTermVSplit node<CR>
+    endif
     " }
 
     " Cosco Settings {
