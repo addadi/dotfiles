@@ -289,7 +289,7 @@
   call SetupVAM()
   let ft_addons = {
               \ '^\%(html\|htm\)$': [ 'github:tristen/vim-sparkup' ],
-              \ 'javascript': [ 'github:marijnh/tern_for_vim' ],
+              \ 'javascript': [ 'github:marijnh/tern_for_vim', 'Cosco' ],
               \ 'json': [ 'github:elzr/vim-json' ]
               \ }
   au FileType * for l in values(filter(copy(ft_addons), string(expand('<amatch>')).' =~ v:key')) | call vam#ActivateAddons(l, {'force_loading_plugins_now':1}) | endfor
@@ -454,6 +454,11 @@
     
     " Conque_shell Settings {
     nnoremap <Leader>ctn :ConqueTermVSplit node<CR>
+    " }
+
+    " Cosco Settings {
+    autocmd FileType javascript,css, nnoremap <silent> <Leader>; :call cosco#commaOrSemiColon()<CR>
+    autocmd FileType javascript,css, inoremap <silent> <Leader>; <c-o>:call cosco#commaOrSemiColon()<CR>
     " }
 
 " }
