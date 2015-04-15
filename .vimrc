@@ -239,7 +239,7 @@
                   \], {'auto_install' : 1})
       " tabs completion related
       call vam#ActivateAddons(["neocomplete", "neosnippet",
-                  \"vim-snippets"
+                  \"vim-snippets", "neosnippet-snippets"
                   \], {'auto_install' : 1})
       " comments related
       call vam#ActivateAddons(["The_NERD_Commenter"
