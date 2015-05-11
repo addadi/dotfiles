@@ -5,7 +5,15 @@ ZSH=$HOME/src/dotfiles/oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="essembeh"
+case `uname` in
+    CYGWIN*)
+        ZSH_THEME="robbyrussell"
+        ;;
+    Linux)
+        ZSH_THEME="essembeh"
+        ;;
+esac
+#ZSH_THEME="essembeh"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
