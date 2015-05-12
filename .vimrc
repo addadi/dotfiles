@@ -275,7 +275,7 @@
       "call vam#ActivateAddons(["github:elzr/vim-json"
                   "\], {'auto_install' : 0})
       " parsting
-      call vam#ActivateAddons(["YankRing"
+      call vam#ActivateAddons(["YankRing", "github:junegunn/vim-peekaboo"
                   \], {'auto_install' : 1})
       " code search - TO BE Checked!!!!
       call vam#ActivateAddons(["github:addadi/EasyGrep" ,"Smartgf"
