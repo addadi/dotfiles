@@ -193,21 +193,21 @@
     set foldmarker={,} " Fold C style code (only use this as default
                         " if you use a high foldlevel)
     set foldmethod=marker " Fold on the marker
-    "set foldlevel=100 " Don't autofold anything (but I can still
-                      " fold manually)
-    set foldopen=block,hor,mark,percent,quickfix,tag " what movements
-                                                      " open folds
-    "function SimpleFoldText() " {
-        "return getline(v:foldstart).' '
-    "endfunction " }
-    "set foldtext=SimpleFoldText() " Custom fold text function
-                                   "" (cleaner than default)
-    function! JavaScriptFold() 
+    ""set foldlevel=100 " Don't autofold anything (but I can still
+                      "" fold manually)
+    "set foldopen=block,hor,mark,percent,quickfix,tag " what movements
+                                                      "" open folds
+    ""function SimpleFoldText() " {
+        ""return getline(v:foldstart).' '
+    ""endfunction " }
+    ""set foldtext=SimpleFoldText() " Custom fold text function
+                                   """ (cleaner than default)
+    function! JavaScriptFold() "{
         setl foldmethod=syntax
         setl foldlevelstart=1
         syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
 
-        function! FoldText()
+        function! FoldText()"}
             return substitute(getline(v:foldstart), '{.*', '{...}', '')
         endfunction
         setl foldtext=FoldText()
@@ -218,7 +218,7 @@
     "(the default behavior).
     nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
     vnoremap <Space> zf
-" }
+ "}
 " }
 
 " VAM {
@@ -255,6 +255,9 @@
       " REPL related
       call vam#ActivateAddons(["conque-repl", "Conque_Shell"
                   \], {'auto_install' : 1})
+      " folding related
+      "call vam#ActivateAddons(["FastFold"
+                  "\], {'auto_install' : 1})
       " colorscheme and UI related
       call vam#ActivateAddons(["Colour_Sampler_Pack", "vim-airline"
                   \], {'auto_install' : 1})
@@ -289,7 +292,7 @@
   call SetupVAM()
   let ft_addons = {
               \ '^\%(html\|htm\)$': [ 'github:tristen/vim-sparkup' ],
-              \ 'javascript': [ 'github:marijnh/tern_for_vim', 'Cosco' ],
+              \ 'javascript': [ 'github:marijnh/tern_for_vim', 'Cosco', 'vim-javascript' ],
               \ 'json': [ 'github:elzr/vim-json' ]
               \ }
   au FileType * for l in values(filter(copy(ft_addons), string(expand('<amatch>')).' =~ v:key')) | call vam#ActivateAddons(l, {'force_loading_plugins_now':1}) | endfor
@@ -498,7 +501,7 @@
             autocmd FileType json set textwidth=78 shiftwidth=2 
             autocmd FileType json set softtabstop=2 tabstop=8 
             autocmd FileType json set expandtab 
-            autocmd FileType json set foldmethod=syntax 
+            "autocmd FileType json set foldmethod=syntax 
         augroup END 
         "autocmd FileType javascript setl omnifunc=javascriptcomplete#CompleteJS
         " folding from http://amix.dk/blog/post/19132
