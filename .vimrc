@@ -523,6 +523,8 @@
         if has("autocmd")
             autocmd! bufwritepost .vimrc source $MYVIMRC
         endif
+        " source vimrc"
+        nmap sv :so $MYVIMRC<CR>
     " }
 "  }
 
