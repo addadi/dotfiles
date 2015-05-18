@@ -133,3 +133,5 @@ run_scripts()
 #run_scripts ~/.bashrc.d
 #
 alias -g tmux="tmux -2"
+
+export EDITOR='vim'
