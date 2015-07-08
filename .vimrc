@@ -292,7 +292,7 @@
   call SetupVAM()
   let ft_addons = {
               \ '^\%(html\|htm\)$': [ 'github:tristen/vim-sparkup' ],
-              \ 'javascript': [ 'github:marijnh/tern_for_vim', 'Cosco', 'vim-javascript', 'vim-jsbeautify' ],
+              \ 'javascript': [ 'github:marijnh/tern_for_vim', 'Cosco', 'vim-javascript', 'vim-jsbeautify', 'vim-jsdoc' ],
               \ 'json': [ 'github:elzr/vim-json' ]
               \ }
   au FileType * for l in values(filter(copy(ft_addons), string(expand('<amatch>')).' =~ v:key')) | call vam#ActivateAddons(l, {'force_loading_plugins_now':1}) | endfor
