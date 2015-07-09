@@ -478,6 +478,11 @@
     autocmd FileType css vnoremap <buffer> <Leader>sb :call RangeCSSBeautify()<cr>
     " }
 
+    " jsdoc Settings {
+     let g:jsdoc_allow_input_prompt=1
+     let g:jsdoc_additional_descriptions=1
+    " }
+
 " }
 
 " Autocommands {
