@@ -259,7 +259,8 @@
       "call vam#ActivateAddons(["FastFold"
                   "\], {'auto_install' : 1})
       " colorscheme and UI related
-      call vam#ActivateAddons(["Colour_Sampler_Pack", "vim-airline"
+      call vam#ActivateAddons(["Colour_Sampler_Pack", "vim-airline",
+                  \"github:vim-airline/vim-airline-themes"
                   \], {'auto_install' : 1})
       " syntax checking and code analysis
       call vam#ActivateAddons(["Syntastic", "Tagbar", "AutoTag"
