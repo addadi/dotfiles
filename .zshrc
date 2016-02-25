@@ -69,3 +69,4 @@ run_scripts()
 alias -g tmux="tmux -2"
 
 export EDITOR='vim'
+export PATH="$HOME/bin:$PATH"
