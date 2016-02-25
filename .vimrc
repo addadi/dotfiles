@@ -495,6 +495,8 @@
         autocmd FileType php set omnifunc=phpcomplete#CompletePHP
         autocmd FileType c set omnifunc=ccomplete#Complete
         autocmd filetype html,xml set listchars-=tab:>. "unhighlighting tabs
+        "Flagging Unnecessary Whitespace
+        au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
     " }
     " Javascript {
         "autocmd FileType javascript setl omnifunc=jscomplete#CompleteJS
@@ -522,6 +524,16 @@
         " folding from http://amix.dk/blog/post/19132
         au FileType json call JavaScriptFold()
         au FileType json setl fen
+    " }
+    " Python {
+        au BufNewFile,BufRead *.py
+                    \ set tabstop=4
+                    \ set softtabstop=4
+                    \ set shiftwidth=4
+                    \ set textwidth=79
+                    \ set expandtab
+                    \ set autoindent
+                    \ set fileformat=unix
     " }
     " vimrc {
         " from vim cast 24
