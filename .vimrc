@@ -294,7 +294,8 @@
   let ft_addons = {
               \ '^\%(html\|htm\)$': [ 'github:tristen/vim-sparkup' ],
               \ 'javascript': [ 'github:marijnh/tern_for_vim', 'Cosco', 'vim-javascript', 'vim-jsbeautify', 'vim-jsdoc' ],
-              \ 'json': [ 'github:elzr/vim-json' ]
+              \ 'json': [ 'github:elzr/vim-json' ],
+              \ 'python': ['Python-mode-klen']
               \ }
   au FileType * for l in values(filter(copy(ft_addons), string(expand('<amatch>')).' =~ v:key')) | call vam#ActivateAddons(l, {'force_loading_plugins_now':1}) | endfor
 "}
@@ -495,8 +496,6 @@
         autocmd FileType php set omnifunc=phpcomplete#CompletePHP
         autocmd FileType c set omnifunc=ccomplete#Complete
         autocmd filetype html,xml set listchars-=tab:>. "unhighlighting tabs
-        "Flagging Unnecessary Whitespace
-        au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
     " }
     " Javascript {
         "autocmd FileType javascript setl omnifunc=jscomplete#CompleteJS
@@ -526,14 +525,19 @@
         au FileType json setl fen
     " }
     " Python {
-        au BufNewFile,BufRead *.py
-                    \ set tabstop=4
-                    \ set softtabstop=4
-                    \ set shiftwidth=4
-                    \ set textwidth=79
-                    \ set expandtab
-                    \ set autoindent
-                    \ set fileformat=unix
+        " Use the below highlight group when displaying bad whitespace is desired.
+        highlight BadWhitespace ctermbg=red guibg=red
+        " Display tabs at the beginning of a line in Python mode as bad.
+        au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
+	" Make trailing whitespace be flagged as bad.
+	au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+	au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
+        au BufNewFile,BufRead *.py set tabstop=4
+        au BufNewFile,BufRead *.py set softtabstop=4
+        au BufNewFile,BufRead *.py set shiftwidth=4
+        au BufNewFile,BufRead *.py set textwidth=79
+        au BufNewFile,BufRead *.py set expandtab
+        au BufNewFile,BufRead *.py set autoindent
     " }
     " vimrc {
         " from vim cast 24
