@@ -5,10 +5,64 @@
 " https://github.com/sohorx/dotfiles/blob/61f7b39f202fc4dd6886920a8b9df028748805cc/vimperator/vimperatorrc.local.vim
 "
 
-"source! "C:\\Users\\ADDADI\\.vimperatorrc.local"
-
 set defsearch="duckduckgo"
 
+nnoremap s :tabopen<Space>duckduckgo<Space>
+vmap s y<Esc><Esc>:tabopen<Space>duckduckgo<Space><C-p><CR>
+
+" change the mapleader from \ to ,
+let mapleader=","
+" ignore case if search pattern is all lowercase, case-sensitive otherwise
+set smartcase
+" highlight search terms
+set hlsearch
+" show search matches as you type
+set incsearch
+
+nnoremap p :panorama<Space>
+nnoremap ps :panorama<Space>switch<Space>
+nnoremap pl :panorama<Space>list<Space>
+nnoremap push :panorama<Space>pushtab<Space>
+nnoremap push! :panorama<Space>pushtab!<Space>
+nnoremap pull :panorama<Space>pulltab<Space>
+nnoremap j 10j
+nnoremap k 10k
+set hintchars=asdfghjklqwertyuiop
+" easy tab navigation
+noremap <C-k> gt
+noremap <C-j> gT
+
+" for statusline-toolbar.js
+style -name toolbar-background chrome://* #liberator-customize-toolbar { padding-left: 5px !important; -moz-appearance: none !important; }
+
+" for sbmcommentviewer.js
+style -name sbmcommentviewer chrome://* .liberator-sbmcommentsviewer-content { border-color: #ccc !important; }
+
+"javascript to hide statusbar
+noremap <silent> <F2> :js toggle_bottombar()<CR>
+" JS BEGIN {{{
+:js << EOF
+function toggle_bottombar(p) {
+    var bb = document.getElementById('liberator-bottombar');
+    if (!bb)
+        return;
+    if (p == 'on') {
+        bb.style.height = '';
+        bb.style.overflow = '';
+        return;
+    }
+    if (p == 'off') {
+        bb.style.height = '0px';
+        bb.style.overflow = 'hidden';
+        return;
+    }
+    bb.style.height = (bb.style.height == '') ? '0px' : '';
+    bb.style.overflow = (bb.style.height == '') ? '' : 'hidden';
+};
+EOF
+
+" Gmail.
+autocmd LocationChange mail.google.com/(mail|a)/ :fmap -d 4 c / j k n p o u e x s r a # [ ] z ? gi gs gt gd ga gc
 
 " Highlight:
 
@@ -78,40 +132,3 @@ hi HintElem             background-color: #fffac6; border-radius: 2px;
 hi Hint                 font-family: sans-serif; font-size: 11px; font-weight: bold; background: #6BA7EF; text-shadow: 0 1px #1D3C66; text-transform: uppercase; color: white; background-color: red; padding: 2px 5px; border-radius: 3px; border: 1px solid #3366AD;
 
 
-nnoremap s :tabopen<Space>duckduckgo<Space>
-vmap s y<Esc><Esc>:tabopen<Space>duckduckgo<Space><C-p><CR>
-
-nnoremap ps :panorama<Space>switch<Space>
-nnoremap p :panorama<Space>
-nnoremap j 10j
-nnoremap k 10k
-set hintchars=asdfghjklqwertyuiop
-
-" for statusline-toolbar.js
-style -name toolbar-background chrome://* #liberator-customize-toolbar { padding-left: 5px !important; -moz-appearance: none !important; }
-
-" for sbmcommentviewer.js
-style -name sbmcommentviewer chrome://* .liberator-sbmcommentsviewer-content { border-color: #ccc !important; }
-
-"javascript to hide statusbar
-noremap <silent> <F2> :js toggle_bottombar()<CR>
-" JS BEGIN {{{
-:js << EOF
-function toggle_bottombar(p) {
-    var bb = document.getElementById('liberator-bottombar');
-    if (!bb)
-        return;
-    if (p == 'on') {
-        bb.style.height = '';
-        bb.style.overflow = '';
-        return;
-    }
-    if (p == 'off') {
-        bb.style.height = '0px';
-        bb.style.overflow = 'hidden';
-        return;
-    }
-    bb.style.height = (bb.style.height == '') ? '0px' : '';
-    bb.style.overflow = (bb.style.height == '') ? '' : 'hidden';
-};
-EOF
