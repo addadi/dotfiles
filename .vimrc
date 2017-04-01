@@ -263,7 +263,7 @@
                   \"github:vim-airline/vim-airline-themes"
                   \], {'auto_install' : 1})
       " syntax checking and code analysis
-      call vam#ActivateAddons(["Syntastic", "Tagbar", "AutoTag"
+      call vam#ActivateAddons(["ALE_-_Asynchronous_Lint_Engine", "Tagbar", "AutoTag"
                   \], {'auto_install' : 1})
       "" html related
       "call vam#ActivateAddons(["github:tristen/vim-sparkup"
@@ -313,16 +313,16 @@
                     \ endif
         " }
 
-    " Syntastic Settings {
-        let g:syntastic_check_on_open=1
-        let g:syntastic_echo_current_error=1
-        let g:syntastic_enable_signs=1
-        let g:syntastic_enable_highlighting = 1
-        let g:syntastic_auto_loc_list=1
-        let g:syntastic_loc_list_height=3
-        let g:syntastic_javascript_checkers = ['eslint']
-        "autocmd InsertLeave SyntasticCheck
-    " }
+    "" Syntastic Settings {
+        "let g:syntastic_check_on_open=1
+        "let g:syntastic_echo_current_error=1
+        "let g:syntastic_enable_signs=1
+        "let g:syntastic_enable_highlighting = 1
+        "let g:syntastic_auto_loc_list=1
+        "let g:syntastic_loc_list_height=3
+        "let g:syntastic_javascript_checkers = ['eslint']
+        ""autocmd InsertLeave SyntasticCheck
+    "" }
 
     " Yankring Settings {
         let g:yankring_manual_clipboard_check = 1
