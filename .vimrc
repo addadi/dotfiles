@@ -279,7 +279,7 @@
       call vam#ActivateAddons(["YankRing", "github:junegunn/vim-peekaboo"
                   \], {'auto_install' : 1})
       " code search - TO BE Checked!!!!
-      call vam#ActivateAddons(["github:addadi/EasyGrep" ,"Smartgf"
+      call vam#ActivateAddons(["EasyGrep" ,"Smartgf"
                   \], {'auto_install' : 1})
       " complete delimaters and unimpaired - should learn more about it
       call vam#ActivateAddons(["delimitMate", "unimpaired"
