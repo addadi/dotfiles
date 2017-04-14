@@ -238,7 +238,7 @@
       call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp-py-matcher"
                   \], {'auto_install' : 1})
       " tabs completion related
-      call vam#ActivateAddons(["neocomplete", "neosnippet",
+      call vam#ActivateAddons(["github:maralla/completor.vim", "neosnippet",
                   \"vim-snippets"
                   \], {'auto_install' : 1})
       " comments related
@@ -359,71 +359,79 @@
     colorscheme jellybeans
     " }
 
-    " neocomplete Settings {
-    " Use neocomplete.
-    let g:neocomplete#enable_at_startup = 1
-    " Use smartcase.
-    let g:neocomplete#enable_smart_case = 1
-    " Set minimum syntax keyword length.
-    let g:neocomplete#sources#syntax#min_keyword_length = 2
-    let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+    "" neocomplete Settings {
+    "" Use neocomplete.
+    "let g:neocomplete#enable_at_startup = 1
+    "" Use smartcase.
+    "let g:neocomplete#enable_smart_case = 1
+    "" Set minimum syntax keyword length.
+    "let g:neocomplete#sources#syntax#min_keyword_length = 2
+    "let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
-    " Enable heavy features.
-    "Use camel case completion. DELETED on neocomplete
-    "let g:neocomplete_enable_camel_case_completion = 1
-    "Use underbar completion. DELETED on neocomplete
-    "let g:neocomplete_enable_underbar_completion = 1
+    """ Enable heavy features.
+    ""Use camel case completion. DELETED on neocomplete
+    ""let g:neocomplete_enable_camel_case_completion = 1
+    ""Use underbar completion. DELETED on neocomplete
+    ""let g:neocomplete_enable_underbar_completion = 1
 
-    " Define dictionary.
-    let g:neocomplete#sources#dictionary#dictionaries = {
-                \ 'default' : ''
-                \ }
+    "" Define dictionary.
+    "let g:neocomplete#sources#dictionary#dictionaries = {
+                "\ 'default' : ''
+                "\ }
 
-    " Enable heavy omni completion.
-    if !exists('g:neocomplete#sources#omni#input_patterns')
-        let g:neocomplete#sources#omni#input_patterns = {}
-    endif
-    let g:neocomplete#sources#omni#input_patterns.javascript = '\h\w*\|[^. \t]\.\w*'
+    "" Enable heavy omni completion.
+    "if !exists('g:neocomplete#sources#omni#input_patterns')
+        "let g:neocomplete#sources#omni#input_patterns = {}
+    "endif
+    "let g:neocomplete#sources#omni#input_patterns.javascript = '\h\w*\|[^. \t]\.\w*'
 
-    " Define keyword.
-    if !exists('g:neocomplete#keyword_patterns')
-        let g:neocomplete#keyword_patterns = {}
-    endif
-    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+    "" Define keyword.
+    "if !exists('g:neocomplete#keyword_patterns')
+        "let g:neocomplete#keyword_patterns = {}
+    "endif
+    "let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-    " Plugin key-mappings.
-    inoremap <expr><C-g>     neocomplete#undo_completion()
-    inoremap <expr><C-l>     neocomplete#complete_common_string()
+    "" Plugin key-mappings.
+    "inoremap <expr><C-g>     neocomplete#undo_completion()
+    "inoremap <expr><C-l>     neocomplete#complete_common_string()
 
-    " Recommended key-mappings.
-    " <CR>: close popup and save indent.
-    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    function! s:my_cr_function()
-        return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-    endfunction
-    " <TAB>: completion.
-    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-    " <C-h>, <BS>: close popup and delete backword char.
-    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><C-y>  neocomplete#close_popup()
-    inoremap <expr><C-e>  neocomplete#cancel_popup()
-    " Close popup by <Space>.
-    "inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+    "" Recommended key-mappings.
+    "" <CR>: close popup and save indent.
+    "inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+    "function! s:my_cr_function()
+        "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+    "endfunction
+    "" <TAB>: completion.
+    "inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+    "" <C-h>, <BS>: close popup and delete backword char.
+    "inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+    "inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+    "inoremap <expr><C-y>  neocomplete#close_popup()
+    "inoremap <expr><C-e>  neocomplete#cancel_popup()
+    "" Close popup by <Space>.
+    ""inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
 
-    " For cursor moving in insert mode(Not recommended)
-    "inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
-    "inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
-    "inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
-    "inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
-    " Or set this.
-    "let g:neocomplete#enable_cursor_hold_i = 1
-    " Or set this.
-    "let g:neocomplete#enable_insert_char_pre = 1
+    "" For cursor moving in insert mode(Not recommended)
+    ""inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
+    ""inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
+    ""inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
+    ""inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
+    "" Or set this.
+    ""let g:neocomplete#enable_cursor_hold_i = 1
+    "" Or set this.
+    ""let g:neocomplete#enable_insert_char_pre = 1
 
-    " AutoComplPop like behavior.
-    let g:neocomplete#enable_auto_select = 0
-    " }
+    "" AutoComplPop like behavior.
+    "let g:neocomplete#enable_auto_select = 0
+    "" }
+
+    "completor.vim Settings {
+    "let g:completor_node_binary = '/usr/bin/node'
+    "inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+    "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+    "inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
+    "}
+
 
      "neosnippet Settings {
     " Plugin key-mappings.
