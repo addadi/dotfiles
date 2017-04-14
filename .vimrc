@@ -235,7 +235,7 @@
       call vam#ActivateAddons(["fugitive", "extradite"
                   \], {'auto_install' : 1})
       " files and buffers related
-      call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp"
+      call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp-py-matcher"
                   \], {'auto_install' : 1})
       " tabs completion related
       call vam#ActivateAddons(["neocomplete", "neosnippet",
