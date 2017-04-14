@@ -235,7 +235,7 @@
       call vam#ActivateAddons(["fugitive", "extradite"
                   \], {'auto_install' : 1})
       " files and buffers related
-      call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp-py-matcher"
+      call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp"
                   \], {'auto_install' : 1})
       " tabs completion related
       call vam#ActivateAddons(["github:maralla/completor.vim", "neosnippet", "neosnippet-snippets",
@@ -319,6 +319,12 @@
 
     " JSComplete Settings {
         "let g:jscomplete_use = ['dom', 'moz', 'es6th', 'jscript', 'xpcom']
+    " }
+
+    " ALE Settings {
+    let g:ale_linters = {
+                \   'javascript': ['eslint'],
+                \}
     " }
 
     " session Settings {
