@@ -238,8 +238,8 @@
       call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp-py-matcher"
                   \], {'auto_install' : 1})
       " tabs completion related
-      call vam#ActivateAddons(["github:maralla/completor.vim", "neosnippet",
-                  \"vim-snippets"
+      call vam#ActivateAddons(["github:maralla/completor.vim", "neosnippet", "neosnippet-snippets",
+                  \"github:maralla/completor-neosnippet", "vim-snippets"
                   \], {'auto_install' : 1})
       " comments related
       call vam#ActivateAddons(["The_NERD_Commenter"
@@ -426,7 +426,6 @@
     "" }
 
     "completor.vim Settings {
-    "let g:completor_node_binary = '/usr/bin/node'
     "inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
     "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
     "inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
