@@ -265,17 +265,7 @@
       " syntax checking and code analysis
       call vam#ActivateAddons(["ALE_-_Asynchronous_Lint_Engine", "Tagbar", "AutoTag"
                   \], {'auto_install' : 1})
-      "" html related
-      "call vam#ActivateAddons(["github:tristen/vim-sparkup"
-                  "\], {'auto_install' : 0})
-      "" javascript related
-      "call vam#ActivateAddons(["vim-javascript",
-                  "\"github:marijnh/tern_for_vim"
-                  "\], {'auto_install' : 0})
-      "" json related
-      "call vam#ActivateAddons(["github:elzr/vim-json"
-                  "\], {'auto_install' : 0})
-      " parsting
+      " pasting
       call vam#ActivateAddons(["YankRing", "github:junegunn/vim-peekaboo"
                   \], {'auto_install' : 1})
       " code search - TO BE Checked!!!!
@@ -313,17 +303,6 @@
                     \ endif
         " }
 
-    "" Syntastic Settings {
-        "let g:syntastic_check_on_open=1
-        "let g:syntastic_echo_current_error=1
-        "let g:syntastic_enable_signs=1
-        "let g:syntastic_enable_highlighting = 1
-        "let g:syntastic_auto_loc_list=1
-        "let g:syntastic_loc_list_height=3
-        "let g:syntastic_javascript_checkers = ['eslint']
-        ""autocmd InsertLeave SyntasticCheck
-    "" }
-
     " Yankring Settings {
         let g:yankring_manual_clipboard_check = 1
     " }
@@ -358,79 +337,6 @@
     " colorscheme Settings {
     colorscheme jellybeans
     " }
-
-    "" neocomplete Settings {
-    "" Use neocomplete.
-    "let g:neocomplete#enable_at_startup = 1
-    "" Use smartcase.
-    "let g:neocomplete#enable_smart_case = 1
-    "" Set minimum syntax keyword length.
-    "let g:neocomplete#sources#syntax#min_keyword_length = 2
-    "let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
-    """ Enable heavy features.
-    ""Use camel case completion. DELETED on neocomplete
-    ""let g:neocomplete_enable_camel_case_completion = 1
-    ""Use underbar completion. DELETED on neocomplete
-    ""let g:neocomplete_enable_underbar_completion = 1
-
-    "" Define dictionary.
-    "let g:neocomplete#sources#dictionary#dictionaries = {
-                "\ 'default' : ''
-                "\ }
-
-    "" Enable heavy omni completion.
-    "if !exists('g:neocomplete#sources#omni#input_patterns')
-        "let g:neocomplete#sources#omni#input_patterns = {}
-    "endif
-    "let g:neocomplete#sources#omni#input_patterns.javascript = '\h\w*\|[^. \t]\.\w*'
-
-    "" Define keyword.
-    "if !exists('g:neocomplete#keyword_patterns')
-        "let g:neocomplete#keyword_patterns = {}
-    "endif
-    "let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-    "" Plugin key-mappings.
-    "inoremap <expr><C-g>     neocomplete#undo_completion()
-    "inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-    "" Recommended key-mappings.
-    "" <CR>: close popup and save indent.
-    "inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    "function! s:my_cr_function()
-        "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-    "endfunction
-    "" <TAB>: completion.
-    "inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-    "" <C-h>, <BS>: close popup and delete backword char.
-    "inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    "inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-    "inoremap <expr><C-y>  neocomplete#close_popup()
-    "inoremap <expr><C-e>  neocomplete#cancel_popup()
-    "" Close popup by <Space>.
-    ""inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
-
-    "" For cursor moving in insert mode(Not recommended)
-    ""inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
-    ""inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
-    ""inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
-    ""inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
-    "" Or set this.
-    ""let g:neocomplete#enable_cursor_hold_i = 1
-    "" Or set this.
-    ""let g:neocomplete#enable_insert_char_pre = 1
-
-    "" AutoComplPop like behavior.
-    "let g:neocomplete#enable_auto_select = 0
-    "" }
-
-    "completor.vim Settings {
-    "inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-    "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-    "inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
-    "}
-
 
      "neosnippet Settings {
     " Plugin key-mappings.
@@ -557,27 +463,3 @@
         nmap sv :so $MYVIMRC<CR>
     " }
 "  }
-
-"" GUI Settings {
-"if has("gui_running")
-"    " Basics {
-"        colorscheme metacosm " my color scheme (only works in GUI)
-"        set columns=180 " perfect size for me
-"        set guifont=Consolas:h10 " My favorite font
-"        set guioptions=ce 
-"        "              ||
-"        "              |+-- use simple dialogs rather than pop-ups
-"        "              +  use GUI tabs, not console style tabs
-"        set lines=55 " perfect size for me
-"        set mousehide " hide the mouse cursor when typing
-"    " }
-"
-"    " Font Switching Binds {
-"        map <F8> <ESC>:set guifont=Consolas:h8<CR>
-"        map <F9> <ESC>:set guifont=Consolas:h10<CR>
-"        map <F10> <ESC>:set guifont=Consolas:h12<CR>
-"        map <F11> <ESC>:set guifont=Consolas:h16<CR>
-"        map <F12> <ESC>:set guifont=Consolas:h20<CR>
-"    " }
-"endif
-"" }
