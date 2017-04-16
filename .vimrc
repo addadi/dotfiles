@@ -232,15 +232,17 @@
                       \       shellescape(c.plugin_root_dir.'/vim-addon-manager', 1)
       endif
       " git related
-      call vam#ActivateAddons(["fugitive", "extradite"
+      call vam#ActivateAddons(["fugitive", "extradite", "vim-gitgutter"
                   \], {'auto_install' : 1})
       " files and buffers related
       call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp"
                   \], {'auto_install' : 1})
       " tabs completion related
-      call vam#ActivateAddons(["github:maralla/completor.vim", "neosnippet", "neosnippet-snippets",
-                  \"github:maralla/completor-neosnippet", "vim-snippets"
+      call vam#ActivateAddons(["github:maralla/completor.vim", "UltiSnips",  "vim-snippets"
                   \], {'auto_install' : 1})
+      "call vam#ActivateAddons(["github:maralla/completor.vim", "neosnippet", "neosnippet-snippets",
+                  "\"github:maralla/completor-neosnippet", "vim-snippets"
+                  "\], {'auto_install' : 1})
       " comments related
       call vam#ActivateAddons(["The_NERD_Commenter"
                   \], {'auto_install' : 1})
@@ -283,7 +285,8 @@
   call SetupVAM()
   let ft_addons = {
               \ '^\%(html\|htm\)$': [ 'github:tristen/vim-sparkup' ],
-              \ 'javascript': [ 'github:marijnh/tern_for_vim', 'Cosco', 'vim-javascript', 'vim-jsbeautify', 'vim-jsdoc' ],
+              \ 'javascript': [ 'github:marijnh/tern_for_vim', 'Cosco', 'vim-javascript', 'vim-jsbeautify',
+              \ 'vim-jsdoc', 'github:ahmedelgabri/vim-ava-snippets' ],
               \ 'json': [ 'github:elzr/vim-json' ],
               \ 'python': ['Python-mode-klen']
               \ }
@@ -403,6 +406,12 @@
     " jsdoc Settings {
      let g:jsdoc_allow_input_prompt=1
      let g:jsdoc_additional_descriptions=1
+    " }
+
+    " UltiSnips Settings {
+    let g:UltiSnipsExpandTrigger="<tab>"
+    let g:UltiSnipsJumpForwardTrigger="<tab>"
+    let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
     " }
 
 " }
