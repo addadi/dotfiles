@@ -16,9 +16,10 @@ set hlsearch
 set incsearch
 
 " ignnore keys on some sites
-autocmd LocationChange .*                               :fmapc!
-autocmd LocationChange mail.google.com/(mail|a)/        :fmaps c / j k n p o u e x s r a # [ ] ? gi gs gt gd ga gc
-autocmd LocationChange www\.inoreader\.com/        :fmaps j k n p o v a r u m f
+command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
+lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r <S-i>  a # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a # [ ] ? gi gs gt gd ga gc
+lazy fmaps -e=vkeydown -u='www\.inoreader\.com/' j k n p o v a r u m f
 
 " plugin management
 let g:plugin_loader_roots = '/home/addadi/.vimperator/vimperator-plugins'
@@ -76,11 +77,9 @@ function toggle_bottombar(p) {
 EOF
 
 " Highlight:
-
-highlight StatusLine            color: #969696; background: #0e0e0e; font-weight: normal; font-family: sans-serif; font-size: 10px; border-top-style: dashed; border-top-width: 1px; border-color: #000000; padding-top: 1px; \
-                                margin-bottom: -2px; margin-top: -2px;
+highlight StatusLine            color: #969696; background: #0e0e0e; font-weight: normal; font-family: sans-serif; font-size: 10px; border-top-style: dashed; border-top-width: 1px; border-color: #000000; padding-top: 1px; margin-bottom: -2px; margin-top: -2px;
 highlight CmdLine               color: #a8a8a8; background: #060606;
-highlight CmdLine>*                             background: #0e0e0e; font-family: sans-serif; font-size: 10px; border-top-style: dashed; border-top-width: 1px; border-color: #000000; margin-top: -2px;
+"highlight CmdLine>*                             background: #0e0e0e; font-family: sans-serif; font-size: 10px; border-top-style: dashed; border-top-width: 1px; border-color: #000000; margin-top: -2px;
 highlight Title                 color: #808080; background: #060606; font-weight: bold; font-family: sans-serif;
 highlight CompTitle             color: #808080; background: #060606; font-weight: bold; font-family: sans-serif;
 highlight CompTitle>*           color: #808080; padding: 1px 0.5ex; font-family: sans-serif; font-size: 10px; 
@@ -96,26 +95,17 @@ highlight CompItem[selected]    color: #e0e0e0; background: #bf2220; font-weight
 highlight CompItem>*                            height: 10px; min-height: 10px; padding: 0 0.5ex; font-family: sans-serif; font-size: 10px;
 highlight CompDesc              color: #a8a8a8; width: 500px; max-width: 500px; font-family: sans-serif;
 highlight CompItem              color: #a8a8a8; background: #0e0e0e; font-family: sans-serif;
-highlight Hint                  color: #6094aa; background-color: #0e0e0e; font-size:10px; padding:2px; opacity: 0.75; border-radius: 2px;
-highlight HintElem              color: #395966; background-color: #0e0e0e; border-radius: 2px; opacity:0.9;
+highlight Hint                  color: #ffffff; background-color: #c0392b; font-size:10px; padding:2px; opacity: 0.75; border-radius: 2px;
+highlight HintElem              background-color: #f0eb78; border-radius: 2px; opacity:0.9;
 highlight HintActive            color: #e0e0e0; background-color: #bf2220; font-weight: bold; border-radius: 2px; opacity: 0.9;
 highlight InfoMsg               color: #724281; background: #0e0e0e; font-family: sans-serif;
 highlight Filter                color: #808080; background: #426675; border: 1px; font-family: sans-serif;
-"highlight Help                  color: #a8a8a8; background-color: #0e0e0e; font-size: 8pt; line-height: 1.4em; font-family: sans-serif; font-size: 120%; 
-"highlight HelpArg               color: #86aef0; font-family: sans-serif;
-"highlight HelpEx                color: #86aef0; display: inline-block; font-weight: bold; font-family: sans-serif;
-"highlight HelpKey               color: #426675; font-family: sans-serif;
-"highlight HelpOptionalArg       color: #5b5b74; font-family: sans-serif;
-"highlight HelpSpec              color: #c19de5; display: block; margin-left: -10em; float: left; clear: left;  font-family: sans-serif;
-"highlight HelpString            color: #729251; display: inline-block; font-weight: normal; vertical-align: text-top; font-family: sans-serif;
-"highlight HelpInfoLabel         color: #724281; display: inline-block; width: 6em; vertical-align: text-top;  font-family: sans-serif;
 highlight ContentSeparator                      display: none;
 highlight InfoMsg               color: #724281; font-family: sans-serif;
 highlight Mapping               color: #724281; font-family: sans-serif;
 highlight Null                  color: #426675; font-family: sans-serif;
 highlight Number                color: #426675; font-family: sans-serif;
 highlight Tag                   color: #426675; font-family: sans-serif;
-"highlight HelpTopic             color: #426675; font-family: sans-serif;
 highlight Function              color: #426675; font-family: sans-serif;
 highlight Indicator             color: #426675; font-family: sans-serif;
 highlight WarningMsg            color: #9a2a2a; font-family: sans-serif;
