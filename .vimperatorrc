@@ -19,7 +19,7 @@ set incsearch
 command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
 lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r <S-i>  a # [ ] ? gi gs gt gd ga gc
 lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a # [ ] ? gi gs gt gd ga gc
-lazy fmaps -e=vkeydown -u='www\.inoreader\.com/' j k n p o v a r u m f
+lazy fmaps -e=vkeydown -u='www\.inoreader\.com/' j k n p o v a r u m f ? w gt
 
 " plugin management
 let g:plugin_loader_roots = '/home/addadi/.vimperator/vimperator-plugins'
@@ -46,6 +46,8 @@ qmark f http://www.facebook.com/
 qmark i http://www.inoreader.com/
 qmark p http://getpocket.com/
 qmark m https://mail.google.com/
+qmark l https://www.linkedin.com/
+qmark y https://news.ycombinator.com/
 
 " for statusline-toolbar.js
 style -name toolbar-background chrome://* #liberator-customize-toolbar { padding-left: 5px !important; -moz-appearance: none !important; }
@@ -55,6 +57,7 @@ style -name sbmcommentviewer chrome://* .liberator-sbmcommentsviewer-content { b
 
 "javascript to hide statusbar
 noremap <silent> <F2> :js toggle_bottombar()<CR>
+
 " JS BEGIN {{{
 :js << EOF
 function toggle_bottombar(p) {
@@ -75,6 +78,7 @@ function toggle_bottombar(p) {
     bb.style.overflow = (bb.style.height == '') ? '' : 'hidden';
 };
 EOF
+" JS END }}}
 
 " Highlight:
 highlight StatusLine            color: #969696; background: #0e0e0e; font-weight: normal; font-family: sans-serif; font-size: 10px; border-top-style: dashed; border-top-width: 1px; border-color: #000000; padding-top: 1px; margin-bottom: -2px; margin-top: -2px;
@@ -95,7 +99,7 @@ highlight CompItem[selected]    color: #e0e0e0; background: #bf2220; font-weight
 highlight CompItem>*                            height: 10px; min-height: 10px; padding: 0 0.5ex; font-family: sans-serif; font-size: 10px;
 highlight CompDesc              color: #a8a8a8; width: 500px; max-width: 500px; font-family: sans-serif;
 highlight CompItem              color: #a8a8a8; background: #0e0e0e; font-family: sans-serif;
-highlight Hint                  color: #ffffff; background-color: #c0392b; font-size:10px; padding:2px; opacity: 0.75; border-radius: 2px;
+highlight Hint                  color: #ffffff; background-color: #c0392b; font-size:12px; padding:2px; opacity: 0.75; border-radius: 2px;
 highlight HintElem              background-color: #f0eb78; border-radius: 2px; opacity:0.9;
 highlight HintActive            color: #e0e0e0; background-color: #bf2220; font-weight: bold; border-radius: 2px; opacity: 0.9;
 highlight InfoMsg               color: #724281; background: #0e0e0e; font-family: sans-serif;
