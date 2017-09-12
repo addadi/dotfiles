@@ -15,11 +15,12 @@ set hlsearch
 " show search matches as you type
 set incsearch
 
-" ignnore keys on some sites
+" ignore keys on some sites
 command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
 lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r <S-i>  a # [ ] ? gi gs gt gd ga gc
 lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a # [ ] ? gi gs gt gd ga gc
 lazy fmaps -e=vkeydown -u='www\.inoreader\.com/' j k n p o v a r u m f ? w gt
+lazy fmaps -e=vkeydown -u='.*\.ipynb.*' a b x c v z d , s l h i q f y m r 1 2 3 4 5 6 j k
 
 " plugin management
 let g:plugin_loader_roots = '/home/addadi/.vimperator/vimperator-plugins'
@@ -48,6 +49,7 @@ qmark p http://getpocket.com/
 qmark m https://mail.google.com/
 qmark l https://www.linkedin.com/
 qmark y https://news.ycombinator.com/
+qmark r https://m.reddit.com/
 
 " for statusline-toolbar.js
 style -name toolbar-background chrome://* #liberator-customize-toolbar { padding-left: 5px !important; -moz-appearance: none !important; }
