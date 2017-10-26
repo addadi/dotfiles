@@ -279,7 +279,8 @@
       " the rest utils
       call vam#ActivateAddons([
                   \"surround", "Tabular", "Gundo",
-                  \"repeat", "SudoEdit", "Indent_Guides"
+                  \"repeat", "SudoEdit", "Indent_Guides",
+                  \"github:rhysd/devdocs.vim"
                   \], {'auto_install' : 1})
   endfun
   call SetupVAM()
@@ -413,6 +414,10 @@
     let g:UltiSnipsExpandTrigger="<tab>"
     let g:UltiSnipsJumpForwardTrigger="<tab>"
     let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+    " }
+    
+    " devdocs Settings {
+    nmap K <Plug>(devdocs-under-cursor)
     " }
 
 " }
