@@ -235,7 +235,7 @@
       call vam#ActivateAddons(["fugitive", "extradite", "vim-gitgutter"
                   \], {'auto_install' : 1})
       " files and buffers related
-      call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "ctrlp"
+      call vam#ActivateAddons(["The_NERD_tree", "bufexplorer.zip", "github:junegunn/fzf.vim"
                   \], {'auto_install' : 1})
       " tabs completion related
       call vam#ActivateAddons(["github:maralla/completor.vim", "UltiSnips",  "vim-snippets"
@@ -280,7 +280,7 @@
       call vam#ActivateAddons([
                   \"surround", "Tabular", "Gundo",
                   \"repeat", "SudoEdit", "Indent_Guides",
-                  \"github:rhysd/devdocs.vim"
+                  \"github:rhysd/devdocs.vim",
                   \], {'auto_install' : 1})
   endfun
   call SetupVAM()
@@ -339,10 +339,6 @@
     let g:session_autoload='no'
     let g:session_autosave='yes'
     noremap <Leader>o :OpenSession<CR>
-    " }
-
-    " ctrlp Settings {
-    let g:ctrlp_map = '<Leader>f'
     " }
 
     " colorscheme Settings {
@@ -418,6 +414,31 @@
     
     " devdocs Settings {
     nmap K <Plug>(devdocs-under-cursor)
+    " }
+
+    " fzf Settings {
+    nmap <Leader>f :Files<CR>
+    " - down / up / left / right
+    let g:fzf_layout = { 'down': '~40%' }
+    " Customize fzf colors to match your color scheme
+    let g:fzf_colors =
+                \ { 'fg':      ['fg', 'Normal'],
+                \ 'bg':      ['bg', 'Normal'],
+                \ 'hl':      ['fg', 'Comment'],
+                \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+                \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+                \ 'hl+':     ['fg', 'Statement'],
+                \ 'info':    ['fg', 'PreProc'],
+                \ 'prompt':  ['fg', 'Conditional'],
+                \ 'pointer': ['fg', 'Exception'],
+                \ 'marker':  ['fg', 'Keyword'],
+                \ 'spinner': ['fg', 'Label'],
+                \ 'header':  ['fg', 'Comment'] }
+    " [Files] Extra options for fzf
+    "   e.g. File preview using Highlight
+    "        (http://www.andre-simon.de/doku/highlight/en/highlight.html)
+    let g:fzf_files_options =
+                \ '--preview "(highlight -O ansi {} || cat {}) 2> /dev/null | head -'.&lines.'"'
     " }
 
 " }
