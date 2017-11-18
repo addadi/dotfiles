@@ -193,15 +193,7 @@
     set foldmarker={,} " Fold C style code (only use this as default
                         " if you use a high foldlevel)
     set foldmethod=marker " Fold on the marker
-    ""set foldlevel=100 " Don't autofold anything (but I can still
-                      "" fold manually)
-    "set foldopen=block,hor,mark,percent,quickfix,tag " what movements
-                                                      "" open folds
-    ""function SimpleFoldText() " {
-        ""return getline(v:foldstart).' '
-    ""endfunction " }
-    ""set foldtext=SimpleFoldText() " Custom fold text function
-                                   """ (cleaner than default)
+
     function! JavaScriptFold() "{
         setl foldmethod=syntax
         setl foldlevelstart=1
@@ -240,29 +232,14 @@
       " tabs completion related
       call vam#ActivateAddons(["github:maralla/completor.vim", "UltiSnips",  "vim-snippets"
                   \], {'auto_install' : 1})
-      "call vam#ActivateAddons(["github:maralla/completor.vim", "neosnippet", "neosnippet-snippets",
-                  "\"github:maralla/completor-neosnippet", "vim-snippets"
-                  "\], {'auto_install' : 1})
       " comments related
       call vam#ActivateAddons(["The_NERD_Commenter"
                   \], {'auto_install' : 1})
-      " project and session related
-      "call vam#ActivateAddons(["TaskList", "vim-rooter", "session%3150"
-                  "\], {'auto_install' : 1})
-      "" required for session%3150
-      "call vam#ActivateAddons(["vim-misc"
-                  "\], {'auto_install' : 1})
       call vam#ActivateAddons(["TaskList", "vim-rooter"
                   \], {'auto_install' : 1})
-      " REPL related
-      call vam#ActivateAddons(["conque-repl", "Conque_Shell"
-                  \], {'auto_install' : 1})
-      " folding related
-      "call vam#ActivateAddons(["FastFold"
-                  "\], {'auto_install' : 1})
       " colorscheme and UI related
-      call vam#ActivateAddons(["Colour_Sampler_Pack", "vim-airline",
-                  \"github:vim-airline/vim-airline-themes"
+      call vam#ActivateAddons(["Iceberg", "jellybeans", "gruvbox", "badwolf", "yowish",
+                  \"vim-airline","github:vim-airline/vim-airline-themes"
                   \], {'auto_install' : 1})
       " syntax checking and code analysis
       call vam#ActivateAddons(["ALE_-_Asynchronous_Lint_Engine", "Tagbar", "AutoTag"
@@ -345,31 +322,6 @@
     colorscheme jellybeans
     " }
 
-     ""neosnippet Settings {
-    "" Plugin key-mappings.
-     "imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-     "smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-     "xmap <C-k>     <Plug>(neosnippet_expand_target)
-    
-     "" SuperTab like snippets behavior.
-     "imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-     "\ "\<Plug>(neosnippet_expand_or_jump)"
-     "\: pumvisible() ? "\<C-n>" : "\<TAB>"
-     "smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-     "\ "\<Plug>(neosnippet_expand_or_jump)"
-     "\: "\<TAB>"
-    
-"     " For snippet_complete marker.
-     "if has('conceal')
-         "set conceallevel=2 concealcursor=i
-     "endif
-
-    "" Enable snipMate compatibility feature.
-     "let g:neosnippet#enable_snipmate_compatibility = 1
-     "" Tell Neosnippet about the other snippets
-     "let g:neosnippet#snippets_directory='~/.vim/vim-addons/vim-snippets/snippets'"
-"    " }
-
     " marijnh/tern_for_vim Settings {
     let g:tern_map_keys=1
     let g:tern_show_argument_hints='on_hold'
@@ -379,14 +331,6 @@
     nnoremap <F9> :GundoToggle<CR>
     " }
     
-    " Conque_shell Settings {
-    if has('win32unix')
-        nnoremap <Leader>ctn :ConqueTermVSplit console node<CR>
-    else
-        nnoremap <Leader>ctn :ConqueTermVSplit node<CR>
-    endif
-    " }
-
     " Cosco Settings {
     autocmd FileType javascript,css, nnoremap <silent> <Leader>; :call cosco#commaOrSemiColon()<CR>
     autocmd FileType javascript,css, inoremap <silent> <Leader>; <c-o>:call cosco#commaOrSemiColon()<CR>
