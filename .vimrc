@@ -235,7 +235,11 @@
       " comments related
       call vam#ActivateAddons(["The_NERD_Commenter"
                   \], {'auto_install' : 1})
+      " project related
       call vam#ActivateAddons(["TaskList", "vim-rooter"
+                  \], {'auto_install' : 1})
+      " terminal related
+      call vam#ActivateAddons(["vim-slime"
                   \], {'auto_install' : 1})
       " colorscheme and UI related
       call vam#ActivateAddons(["Iceberg", "jellybeans", "gruvbox", "badwolf", "yowish",
@@ -383,6 +387,11 @@
     "        (http://www.andre-simon.de/doku/highlight/en/highlight.html)
     let g:fzf_files_options =
                 \ '--preview "(highlight -O ansi {} || cat {}) 2> /dev/null | head -'.&lines.'"'
+    " }
+
+    " vim-slime Settings {
+    let g:slime_target = "vimterminal"
+    let g:slime_default_config = {"vertical" : 1, "term_finish": "close"}
     " }
 
 " }
