@@ -365,7 +365,7 @@
     " }
 
     " fzf Settings {
-    nmap <Leader>f :Files<CR>
+    nmap <Leader>f :FZF<CR>
     " - down / up / left / right
     let g:fzf_layout = { 'down': '~40%' }
     " Customize fzf colors to match your color scheme
