@@ -391,7 +391,7 @@
 
     " vim-slime Settings {
     let g:slime_target = "vimterminal"
-    let g:slime_default_config = {"vertical" : 1, "term_finish": "close"}
+    let g:slime_vimterminal_config = {"vertical" : 1, "term_finish": "close"}
     " }
 
 " }
