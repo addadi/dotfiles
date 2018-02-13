@@ -67,6 +67,11 @@ run_scripts()
 #run_scripts ~/.bashrc.d
 #
 alias -g tmux="tmux -2"
-
+# Talk to Docker on Windows via WSL
+case `uname -a` in
+    *Microsoft*)
+        export DOCKER_HOST=tcp://0.0.0.0:2375
+        ;;
+esac
 export EDITOR='vim'
 export PATH="$HOME/bin:$PATH"
