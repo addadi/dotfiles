@@ -394,6 +394,10 @@
     let g:slime_vimterminal_config = {"vertical" : 1, "term_finish": "close"}
     " }
 
+    " pycthon-mozde Settings {
+    let g:pymode_lint = 0
+    " }
+
 " }
 
 " Autocommands {
