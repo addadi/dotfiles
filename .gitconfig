@@ -30,7 +30,7 @@
         # Undo a `git push`
     undopush = push -f origin HEAD^:master
 [core]
-    editor = vi -f
+    editor = vim -f
 [color]
     status = auto
     branch = auto
