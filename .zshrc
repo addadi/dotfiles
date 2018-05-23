@@ -74,4 +74,4 @@ case `uname -a` in
         ;;
 esac
 export EDITOR='vim'
-export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/java/bin:$HOME/bin:$PATH"
