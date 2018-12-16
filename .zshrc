@@ -15,6 +15,9 @@ case `uname` in
 esac
 #ZSH_THEME="essembeh"
 
+# Use vi mode
+bindkey -v
+
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
@@ -48,7 +51,7 @@ esac
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git node npm colorize colored-man tmux docker cp systemd vagrant adb yarn archlinux rsync python pip history-substring-search)
+plugins=(git node npm colorize colored-man tmux docker cp systemd vagrant adb yarn archlinux rsync python pip history-substring-search vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
