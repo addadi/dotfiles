@@ -15,9 +15,6 @@ case `uname` in
 esac
 #ZSH_THEME="essembeh"
 
-# Use vi mode
-bindkey -v
-
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
