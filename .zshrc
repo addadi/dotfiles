@@ -5,11 +5,14 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-case `uname` in
+case `uname -a` in
     CYGWIN*)
         ZSH_THEME="robbyrussell"
         ;;
-    Linux)
+    Linux*Microsoft*)
+        ZSH_THEME="robbyrussell"
+        ;;
+    Linux*)
         ZSH_THEME="essembeh"
         ;;
 esac
@@ -75,3 +78,4 @@ case `uname -a` in
 esac
 export EDITOR='vim'
 export PATH="$HOME/java/bin:$HOME/bin:$PATH"
+export DISPLAY=:0
