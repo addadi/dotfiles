@@ -261,7 +261,7 @@
       call vam#ActivateAddons([
                   \"surround", "Tabular", "Gundo",
                   \"repeat", "SudoEdit", "Indent_Guides",
-                  \"github:rhysd/devdocs.vim",
+                  \"github:rhysd/devdocs.vim", "vim-uci",
                   \], {'auto_install' : 1})
   endfun
   call SetupVAM()
