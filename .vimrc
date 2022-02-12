@@ -259,7 +259,7 @@
                   \], {'auto_install' : 1})
       " the rest utils
       call vam#ActivateAddons([
-                  \"surround", "Tabular", "Gundo",
+                  \"surround", "Tabular", "github:sjl/gundo.vim",
                   \"repeat", "SudoEdit", "Indent_Guides",
                   \"github:rhysd/devdocs.vim", "vim-uci",
                   \], {'auto_install' : 1})
