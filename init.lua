@@ -258,17 +258,17 @@ require("lazy").setup({
         },
     },
 
-    {"Mofiqul/adwaita.nvim",
-    lazy = false,
-    priority = 1000,
+{"Mofiqul/adwaita.nvim",
+lazy = false,
+priority = 1000,
 
-    -- configure and set on startup
-    config = function()
-        vim.g.adwaita_darker = true             -- for darker version
-        vim.g.adwaita_disable_cursorline = true -- to disable cursorline
-        vim.g.adwaita_transparent = true        -- makes the background transparent
-        vim.cmd('colorscheme adwaita')
-    end
+-- configure and set on startup
+config = function()
+    vim.g.adwaita_darker = true             -- for darker version
+    vim.g.adwaita_disable_cursorline = true -- to disable cursorline
+    vim.g.adwaita_transparent = true        -- makes the background transparent
+    vim.cmd('colorscheme adwaita')
+end
 },
 
 {"nvim-lualine/lualine.nvim",
@@ -317,40 +317,37 @@ config = function()
 end,
 },
 
-{"preservim/nerdcommenter"
-          },
-          { "kylechui/nvim-surround",
-          version = "*", -- Use for stability; omit to use `main` branch for the latest features
-          event = "VeryLazy",
-          config = function()
-              require("nvim-surround").setup({
-                  -- Configuration here, or leave empty to use defaults
-              })
-          end
-      },
+{"preservim/nerdcommenter"},
+{ "kylechui/nvim-surround",
+version = "*", -- Use for stability; omit to use `main` branch for the latest features
+event = "VeryLazy",
+config = function()
+    require("nvim-surround").setup({
+        -- Configuration here, or leave empty to use defaults
+    })
+end
+},
 
-      -- { "lambdalisue/suda.vim" },
-      { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} 
-  },
-  {"Darazaki/indent-o-matic",
-  config = function()
-      require('indent-o-matic').setup ({
-          -- The values indicated here are the defaults
+    -- { "lambdalisue/suda.vim" },
+{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
+{"Darazaki/indent-o-matic"},
+--{"Darazaki/indent-o-matic",
+--config = function()
+    --require('indent-o-matic').setup ({
+        ---- The values indicated here are the defaults
 
-          -- Number of lines without indentation before giving up (use -1 for infinite)
-          max_lines = 2048,
+        ---- Number of lines without indentation before giving up (use -1 for infinite)
+        --max_lines = 2048,
 
-          -- Space indentations that should be detected
-          standard_widths = { 2, 4, 8 },
+        ---- Space indentations that should be detected
+        --standard_widths = { 2, 4, 8 },
 
-          -- Skip multi-line comments and strings (more accurate detection but less performant)
-          skip_multiline = true,
-      })
-  end
-
-  },
-  { "Raimondi/delimitMate"
-  },
+        ---- Skip multi-line comments and strings (more accurate detection but less performant)
+        --skip_multiline = true,
+    --})
+--end
+  --},
+{ "Raimondi/delimitMate"},
 
   { 'nvim-telescope/telescope.nvim',
   dependencies = { 'nvim-lua/plenary.nvim', 'BurntSushi/ripgrep' },
@@ -618,25 +615,76 @@ end,
   -- - start the debugger with `<leader>dc`
   -- - add breakpoints with `<leader>db`
   -- - terminate the debugger `<leader>dt`
+  -- working config from https://github.com/igorlfs/dotfiles/blob/main/nvim/.config/nvim/lua/plugins/nvim-dap.lua
   {
       "mfussenegger/nvim-dap",
-      keys = {
-          {
-              "<leader>dc",
-              function() require("dap").continue() end,
-              desc = "Start/Continue Debugger",
-          },
-          {
-              "<leader>db",
-              function() require("dap").toggle_breakpoint() end,
-              desc = "Add Breakpoint",
-          },
-          {
-              "<leader>dt",
-              function() require("dap").terminate() end,
-              desc = "Terminate Debugger",
-          },
-      },
+    dependencies = {
+        -- Runs preLaunchTask / postDebugTask if present
+        { "stevearc/overseer.nvim", config = true },
+        "rcarriga/nvim-dap-ui",
+    },
+    keys = {
+        {
+            "<leader>ds",
+            function()
+                local widgets = require("dap.ui.widgets")
+                widgets.centered_float(widgets.scopes, { border = "rounded" })
+            end,
+            desc = "DAP Scopes",
+        },
+        { "<F2>", function() require("dap.ui.widgets").hover(nil, { border = "rounded" }) end },
+        { "<F4>", "<CMD>DapDisconnect<CR>", desc = "DAP Disconnect" },
+        { "<leader>dt", "<CMD>DapTerminate<CR>", desc = "DAP Terminate" },
+        { "<leader>dc", "<CMD>DapContinue<CR>", desc = "DAP Continue" },
+        { "<leader>dl", function() require("dap").run_last() end, desc = "Run Last" },
+        { "<leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
+        { "<leader>db", "<CMD>DapToggleBreakpoint<CR>", desc = "Toggle Breakpoint" },
+        {
+            "<leader>dB",
+            function()
+                vim.ui.input(
+                    { prompt = "Breakpoint condition: " },
+                    function(input) require("dap").set_breakpoint(input) end
+                )
+            end,
+            desc = "Conditional Breakpoint",
+        },
+        { "<leader>dO", "<CMD>DapStepOver<CR>", desc = "Step Over" },
+        { "<leader>di", "<CMD>DapStepInto<CR>", desc = "Step Into" },
+        { "<leader>do", "<CMD>DapStepOut<CR>", desc = "Step Out" },
+    },
+    config = function()
+        -- Signs
+        local sign = vim.fn.sign_define
+
+        local dap_round_groups = { "DapBreakpoint", "DapBreakpointCondition", "DapBreakpointRejected", "DapLogPoint" }
+        for _, group in pairs(dap_round_groups) do
+            sign(group, { text = "●", texthl = group })
+        end
+
+        local dap = require("dap")
+
+        -- Adapters
+        -- Python
+        dap.adapters.python = function(cb, config)
+            if config.request == "attach" then
+                ---@diagnostic disable-next-line: undefined-field
+                local port = (config.connect or config).port
+                ---@diagnostic disable-next-line: undefined-field
+                local host = (config.connect or config).host or "localhost"
+                cb({
+                    type = "server",
+                    port = assert(port, "`connect.port` is required for a python `attach` configuration"),
+                    host = host,
+                })
+            else
+                cb({
+                    type = "executable",
+                    command = "debugpy-adapter",
+                })
+            end
+        end
+    end,      
   },
 
   -- UI for the debugger
@@ -645,11 +693,37 @@ end,
   {
       "rcarriga/nvim-dap-ui",
       dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"},
+      opts = {
+          icons = {
+              expanded = "󰅀",
+              collapsed = "󰅂",
+              current_frame = "󰅂",
+          },
+          layouts = {
+              {
+                  elements = { "console", "watches" },
+                  position = "bottom",
+                  size = 10,
+              },
+          },
+          expand_lines = false,
+          controls = {
+              enabled = true,
+          },
+          floating = {
+              border = "rounded",
+          },
+          render = {
+              indent = 2,
+              -- Hide variable types as C++'s are verbose
+              max_type_length = 0,
+          },
+      },
+      --opts = {},
       keys = {
           { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
           { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
       },
-      opts = {},
       config = function(_, opts)
           local dap = require("dap")
           local dapui = require("dapui")
@@ -686,12 +760,18 @@ end,
 -- - uses the debugpy installation from mason
 {
     "mfussenegger/nvim-dap-python",
-    dependencies = "mfussenegger/nvim-dap",
+    keys = {
+        {
+            mode = "n",
+            "<leader>df",
+            function()
+                require("dap-python").test_method()
+            end,
+        },
+    },
     config = function()
-        -- uses the debugypy installation by mason
-        local debugpyPythonPath = require("mason-registry").get_package("debugpy"):get_install_path()
-        .. "/venv/bin/python3"
-        require("dap-python").setup(debugpyPythonPath, {}) ---@diagnostic disable-line: missing-fields
+        require("dap-python").setup("~/.local/share/nvim/mason/packages/debugpy/venv/bin/python")
+        require("dap-python").test_runner = "pytest"
     end,
 },
 -- select virtual environments
@@ -709,25 +789,25 @@ end,
             --},
             --},
 
-            --{
-                --"linux-cultist/venv-selector.nvim",
-                --dependencies = {
-                    --"neovim/nvim-lspconfig", 
-                    --"mfussenegger/nvim-dap", "mfussenegger/nvim-dap-python", --optional
-                    --{ "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } },
-                --},
-                --lazy = false,
-                --branch = "regexp", -- This is the regexp branch, use this for the new version
-                --config = function()
-                    --require("venv-selector").setup()
-                --end,
-                --keys = {
-                    --{ ",v", "<cmd>VenvSelect<cr>" },
-                --},
-                --opts = {
-                    --dap_enabled = true, -- makes the debugger work with venv
-                --},
-            --},
+{
+    "linux-cultist/venv-selector.nvim",
+    dependencies = {
+        "neovim/nvim-lspconfig", 
+        "mfussenegger/nvim-dap", "mfussenegger/nvim-dap-python", --optional
+        { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } },
+    },
+    lazy = false,
+    branch = "regexp", -- This is the regexp branch, use this for the new version
+    config = function()
+        require("venv-selector").setup()
+    end,
+    keys = {
+        { ",v", "<cmd>VenvSelect<cr>" },
+    },
+    opts = {
+        dap_enabled = true, -- makes the debugger work with venv
+    },
+},
         })
 
 
