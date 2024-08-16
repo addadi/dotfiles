@@ -258,17 +258,17 @@ require("lazy").setup({
         },
     },
 
-{"Mofiqul/adwaita.nvim",
-lazy = false,
-priority = 1000,
+    {"Mofiqul/adwaita.nvim",
+    lazy = false,
+    priority = 1000,
 
--- configure and set on startup
-config = function()
-    vim.g.adwaita_darker = true             -- for darker version
-    vim.g.adwaita_disable_cursorline = true -- to disable cursorline
-    vim.g.adwaita_transparent = true        -- makes the background transparent
-    vim.cmd('colorscheme adwaita')
-end
+    -- configure and set on startup
+    config = function()
+        vim.g.adwaita_darker = true             -- for darker version
+        vim.g.adwaita_disable_cursorline = true -- to disable cursorline
+        vim.g.adwaita_transparent = true        -- makes the background transparent
+        vim.cmd('colorscheme adwaita')
+    end
 },
 
 {"nvim-lualine/lualine.nvim",
@@ -328,7 +328,7 @@ config = function()
 end
 },
 
-    -- { "lambdalisue/suda.vim" },
+-- { "lambdalisue/suda.vim" },
 { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 {"Darazaki/indent-o-matic"},
 --{"Darazaki/indent-o-matic",
@@ -344,70 +344,70 @@ end
 
         ---- Skip multi-line comments and strings (more accurate detection but less performant)
         --skip_multiline = true,
-    --})
---end
-  --},
-{ "Raimondi/delimitMate"},
+        --})
+        --end
+        --},
+        { "Raimondi/delimitMate"},
 
-  { 'nvim-telescope/telescope.nvim',
-  dependencies = { 'nvim-lua/plenary.nvim', 'BurntSushi/ripgrep' },
-  keys = {
-      { "<leader>ff", " <cmd>Telescope find_files<cr>", desc = "Telescope Find Files" },
-      { "<leader>fg", " <cmd>Telescope live_grep<cr>", desc = "Telescope Live Grep" },
-      { "<leader>fb", " <cmd>Telescope buffers<cr>", desc = "Telescope Buffers" },
-      { "<leader>fh", " <cmd>Telescope help_tags<cr>", desc = "Telescope Help Tags" },               
-  }, 
-  },
-  { "debugloop/telescope-undo.nvim",
-  dependencies = { "nvim-telescope/telescope.nvim", },
-  keys = {
-      { -- lazy style key map
-          "<leader>u",
-          "<cmd>Telescope undo<cr>",
-          desc = "undo history",
-      },
-      opts = {
-          extensions = {
-              undo = {
-                  -- telescope-undo.nvim config, see below
-              },
-          },
-      },
-      config = function(_, opts)
-          -- Calling telescope's setup from multiple specs does not hurt, it will happily merge the
-          -- configs for us. We won't use data, as everything is in it's own namespace (telescope
-          -- defaults, as well as each extension).
-          require("telescope").setup(opts)
-          require("telescope").load_extension("undo")
-      end,
-  },
-      },
-      { "gbprod/yanky.nvim",
-      opts = {
-          -- your configuration comes here
-          -- or leave it empty to use the default settings
-          -- refer to the configuration section below
-      },
-      keys = {
-          { "<leader>p", function() require("telescope").extensions.yank_history.yank_history({ }) end, desc = "Open Yank History" },
-          { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
-          { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after cursor" },
-          { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before cursor" },
-          { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after selection" },
-          { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before selection" },
-          { "[y", "<Plug>(YankyCycleForward)", desc = "Cycle forward through yank history" },
-          { "]y", "<Plug>(YankyCycleBackward)", desc = "Cycle backward through yank history" },
-          { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
-          { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
-          { "]P", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
-          { "[P", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
-          { ">p", "<Plug>(YankyPutIndentAfterShiftRight)", desc = "Put and indent right" },
-          { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)", desc = "Put and indent left" },
-          { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)", desc = "Put before and indent right" },
-          { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put before and indent left" },
-          { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after applying a filter" },
-          { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter" },
-      }, 
+        { 'nvim-telescope/telescope.nvim',
+        dependencies = { 'nvim-lua/plenary.nvim', 'BurntSushi/ripgrep' },
+        keys = {
+            { "<leader>ff", " <cmd>Telescope find_files<cr>", desc = "Telescope Find Files" },
+            { "<leader>fg", " <cmd>Telescope live_grep<cr>", desc = "Telescope Live Grep" },
+            { "<leader>fb", " <cmd>Telescope buffers<cr>", desc = "Telescope Buffers" },
+            { "<leader>fh", " <cmd>Telescope help_tags<cr>", desc = "Telescope Help Tags" },               
+        }, 
+    },
+    { "debugloop/telescope-undo.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", },
+    keys = {
+        { -- lazy style key map
+            "<leader>u",
+            "<cmd>Telescope undo<cr>",
+            desc = "undo history",
+        },
+        opts = {
+            extensions = {
+                undo = {
+                    -- telescope-undo.nvim config, see below
+                },
+            },
+        },
+        config = function(_, opts)
+            -- Calling telescope's setup from multiple specs does not hurt, it will happily merge the
+            -- configs for us. We won't use data, as everything is in it's own namespace (telescope
+            -- defaults, as well as each extension).
+            require("telescope").setup(opts)
+            require("telescope").load_extension("undo")
+        end,
+    },
+},
+{ "gbprod/yanky.nvim",
+opts = {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+},
+keys = {
+    { "<leader>p", function() require("telescope").extensions.yank_history.yank_history({ }) end, desc = "Open Yank History" },
+    { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
+    { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after cursor" },
+    { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before cursor" },
+    { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after selection" },
+    { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before selection" },
+    { "[y", "<Plug>(YankyCycleForward)", desc = "Cycle forward through yank history" },
+    { "]y", "<Plug>(YankyCycleBackward)", desc = "Cycle backward through yank history" },
+    { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
+    { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
+    { "]P", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
+    { "[P", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
+    { ">p", "<Plug>(YankyPutIndentAfterShiftRight)", desc = "Put and indent right" },
+    { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)", desc = "Put and indent left" },
+    { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)", desc = "Put before and indent right" },
+    { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put before and indent left" },
+    { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after applying a filter" },
+    { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter" },
+}, 
   },
   -- Python-specific plugins
   {
@@ -618,73 +618,73 @@ end
   -- working config from https://github.com/igorlfs/dotfiles/blob/main/nvim/.config/nvim/lua/plugins/nvim-dap.lua
   {
       "mfussenegger/nvim-dap",
-    dependencies = {
-        -- Runs preLaunchTask / postDebugTask if present
-        { "stevearc/overseer.nvim", config = true },
-        "rcarriga/nvim-dap-ui",
-    },
-    keys = {
-        {
-            "<leader>ds",
-            function()
-                local widgets = require("dap.ui.widgets")
-                widgets.centered_float(widgets.scopes, { border = "rounded" })
-            end,
-            desc = "DAP Scopes",
-        },
-        { "<F2>", function() require("dap.ui.widgets").hover(nil, { border = "rounded" }) end },
-        { "<F4>", "<CMD>DapDisconnect<CR>", desc = "DAP Disconnect" },
-        { "<leader>dt", "<CMD>DapTerminate<CR>", desc = "DAP Terminate" },
-        { "<leader>dc", "<CMD>DapContinue<CR>", desc = "DAP Continue" },
-        { "<leader>dl", function() require("dap").run_last() end, desc = "Run Last" },
-        { "<leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
-        { "<leader>db", "<CMD>DapToggleBreakpoint<CR>", desc = "Toggle Breakpoint" },
-        {
-            "<leader>dB",
-            function()
-                vim.ui.input(
-                    { prompt = "Breakpoint condition: " },
-                    function(input) require("dap").set_breakpoint(input) end
-                )
-            end,
-            desc = "Conditional Breakpoint",
-        },
-        { "<leader>dO", "<CMD>DapStepOver<CR>", desc = "Step Over" },
-        { "<leader>di", "<CMD>DapStepInto<CR>", desc = "Step Into" },
-        { "<leader>do", "<CMD>DapStepOut<CR>", desc = "Step Out" },
-    },
-    config = function()
-        -- Signs
-        local sign = vim.fn.sign_define
+      dependencies = {
+          -- Runs preLaunchTask / postDebugTask if present
+          { "stevearc/overseer.nvim", config = true },
+          "rcarriga/nvim-dap-ui",
+      },
+      keys = {
+          {
+              "<leader>ds",
+              function()
+                  local widgets = require("dap.ui.widgets")
+                  widgets.centered_float(widgets.scopes, { border = "rounded" })
+              end,
+              desc = "DAP Scopes",
+          },
+          { "<F2>", function() require("dap.ui.widgets").hover(nil, { border = "rounded" }) end },
+          { "<F4>", "<CMD>DapDisconnect<CR>", desc = "DAP Disconnect" },
+          { "<leader>dt", "<CMD>DapTerminate<CR>", desc = "DAP Terminate" },
+          { "<leader>dc", "<CMD>DapContinue<CR>", desc = "DAP Continue" },
+          { "<leader>dl", function() require("dap").run_last() end, desc = "Run Last" },
+          { "<leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
+          { "<leader>db", "<CMD>DapToggleBreakpoint<CR>", desc = "Toggle Breakpoint" },
+          {
+              "<leader>dB",
+              function()
+                  vim.ui.input(
+                  { prompt = "Breakpoint condition: " },
+                  function(input) require("dap").set_breakpoint(input) end
+                  )
+              end,
+              desc = "Conditional Breakpoint",
+          },
+          { "<leader>dO", "<CMD>DapStepOver<CR>", desc = "Step Over" },
+          { "<leader>di", "<CMD>DapStepInto<CR>", desc = "Step Into" },
+          { "<leader>do", "<CMD>DapStepOut<CR>", desc = "Step Out" },
+      },
+      config = function()
+          -- Signs
+          local sign = vim.fn.sign_define
 
-        local dap_round_groups = { "DapBreakpoint", "DapBreakpointCondition", "DapBreakpointRejected", "DapLogPoint" }
-        for _, group in pairs(dap_round_groups) do
-            sign(group, { text = "●", texthl = group })
-        end
+          local dap_round_groups = { "DapBreakpoint", "DapBreakpointCondition", "DapBreakpointRejected", "DapLogPoint" }
+          for _, group in pairs(dap_round_groups) do
+              sign(group, { text = "●", texthl = group })
+          end
 
-        local dap = require("dap")
+          local dap = require("dap")
 
-        -- Adapters
-        -- Python
-        dap.adapters.python = function(cb, config)
-            if config.request == "attach" then
-                ---@diagnostic disable-next-line: undefined-field
-                local port = (config.connect or config).port
-                ---@diagnostic disable-next-line: undefined-field
-                local host = (config.connect or config).host or "localhost"
-                cb({
-                    type = "server",
-                    port = assert(port, "`connect.port` is required for a python `attach` configuration"),
-                    host = host,
-                })
-            else
-                cb({
-                    type = "executable",
-                    command = "debugpy-adapter",
-                })
-            end
-        end
-    end,      
+          -- Adapters
+          -- Python
+          dap.adapters.python = function(cb, config)
+              if config.request == "attach" then
+                  ---@diagnostic disable-next-line: undefined-field
+                  local port = (config.connect or config).port
+                  ---@diagnostic disable-next-line: undefined-field
+                  local host = (config.connect or config).host or "localhost"
+                  cb({
+                      type = "server",
+                      port = assert(port, "`connect.port` is required for a python `attach` configuration"),
+                      host = host,
+                  })
+              else
+                  cb({
+                      type = "executable",
+                      command = "debugpy-adapter",
+                  })
+              end
+          end
+      end,      
   },
 
   -- UI for the debugger
@@ -739,125 +739,130 @@ end
           end
           require("dapui").setup(opts)
       end,
-      --keys = {
-          --{
-              --"<leader>du",
-              --function() require("dapui").toggle() end,
-              --desc = "Toggle Debugger UI",
-              --},
-              --},
-              ---- automatically open/close the DAP UI when starting/stopping the debugger
-              --config = function()
-                  --local listener = require("dap").listeners
-                  --listener.after.event_initialized["dapui_config"] = function() require("dapui").open() end
-                  --listener.before.event_terminated["dapui_config"] = function() require("dapui").close() end
-                  --listener.before.event_exited["dapui_config"] = function() require("dapui").close() end
-                  --end,
-},
+  },
 
--- Configuration for the python debugger
--- - configures debugpy for us
--- - uses the debugpy installation from mason
-{
-    "mfussenegger/nvim-dap-python",
-    keys = {
-        {
-            mode = "n",
-            "<leader>df",
-            function()
-                require("dap-python").test_method()
-            end,
+  -- Configuration for the python debugger
+  -- - configures debugpy for us
+  -- - uses the debugpy installation from mason
+  {
+      "mfussenegger/nvim-dap-python",
+      keys = {
+          {
+              mode = "n",
+              "<leader>df",
+              function()
+                  require("dap-python").test_method()
+              end,
+          },
+      },
+      config = function()
+          require("dap-python").setup("~/.local/share/nvim/mason/packages/debugpy/venv/bin/python")
+          require("dap-python").test_runner = "pytest"
+      end,
+  },
+  -- select virtual environments
+  -- - makes pyright and debugpy aware of the selected virtual environment
+  -- - Select a virtual environment with `:VenvSelect`
+  {
+      "linux-cultist/venv-selector.nvim",
+      dependencies = {
+          "neovim/nvim-lspconfig",
+          "nvim-telescope/telescope.nvim",
+          "mfussenegger/nvim-dap-python",
+      },
+      opts = {
+          dap_enabled = true, -- makes the debugger work with venv
+      },
+  },
+
+  {
+      "linux-cultist/venv-selector.nvim",
+      dependencies = {
+          "neovim/nvim-lspconfig", 
+          "mfussenegger/nvim-dap", "mfussenegger/nvim-dap-python", --optional
+          { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } },
+      },
+      lazy = false,
+      branch = "regexp", -- This is the regexp branch, use this for the new version
+      config = function()
+          require("venv-selector").setup()
+      end,
+      keys = {
+          { ",v", "<cmd>VenvSelect<cr>" },
+      },
+      opts = {
+          dap_enabled = true, -- makes the debugger work with venv
+      },
+  },
+      -- Markdown
+    {
+        "iamcco/markdown-preview.nvim",
+        build = function() vim.fn["mkdp#util#install"]() end,
+        ft = "markdown",
+        keys = { { "<A-o>", "<CMD>MarkdownPreviewToggle<CR>", desc = "Toggle Markdown Preview" } },
+    },
+    -- CSV
+    {
+        "emmanueltouzery/decisive.nvim",
+        ft = "csv",
+        keys = {
+            {
+                "<leader><leader>",
+                function() require("decisive").align_csv({}) end,
+                desc = "Align CSV",
+            },
         },
     },
-    config = function()
-        require("dap-python").setup("~/.local/share/nvim/mason/packages/debugpy/venv/bin/python")
-        require("dap-python").test_runner = "pytest"
+})
+
+
+--------------------------------------------------------------------------------
+-- SETUP BASIC PYTHON-RELATED OPTIONS
+
+-- The filetype-autocmd runs a function when opening a file with the filetype
+-- "python". This method allows you to make filetype-specific configurations. In
+-- there, you have to use `opt_local` instead of `opt` to limit the changes to
+-- just that buffer. (As an alternative to using an autocmd, you can also put those
+-- configurations into a file `/after/ftplugin/{filetype}.lua` in your
+-- nvim-directory.)
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "python", -- filetype for which to run the autocmd
+    callback = function()
+        -- use pep8 standards
+        vim.opt_local.expandtab = true
+        vim.opt_local.shiftwidth = 4
+        vim.opt_local.tabstop = 4
+        vim.opt_local.softtabstop = 4
+
+        -- folds based on indentation https://neovim.io/doc/user/fold.html#fold-indent
+        -- if you are a heavy user of folds, consider using `nvim-ufo`
+        vim.opt_local.foldmethod = "indent"
+
+        local iabbrev = function(lhs, rhs) vim.keymap.set("ia", lhs, rhs, { buffer = true }) end
+        -- automatically capitalize boolean values. Useful if you come from a
+        -- different language, and lowercase them out of habit.
+        iabbrev("true", "True")
+        iabbrev("false", "False")
+
+        -- in the same way, we can fix habits regarding comments or None
+        iabbrev("--", "#")
+        iabbrev("null", "None")
+        iabbrev("none", "None")
+        iabbrev("nil", "None")
     end,
-},
--- select virtual environments
--- - makes pyright and debugpy aware of the selected virtual environment
--- - Select a virtual environment with `:VenvSelect`
---{
-    --"linux-cultist/venv-selector.nvim",
-    --dependencies = {
-        --"neovim/nvim-lspconfig",
-        --"nvim-telescope/telescope.nvim",
-        --"mfussenegger/nvim-dap-python",
-        --},
-        --opts = {
-            --dap_enabled = true, -- makes the debugger work with venv
-            --},
-            --},
+})
 
-{
-    "linux-cultist/venv-selector.nvim",
-    dependencies = {
-        "neovim/nvim-lspconfig", 
-        "mfussenegger/nvim-dap", "mfussenegger/nvim-dap-python", --optional
-        { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } },
-    },
-    lazy = false,
-    branch = "regexp", -- This is the regexp branch, use this for the new version
-    config = function()
-        require("venv-selector").setup()
-    end,
-    keys = {
-        { ",v", "<cmd>VenvSelect<cr>" },
-    },
-    opts = {
-        dap_enabled = true, -- makes the debugger work with venv
-    },
-},
-        })
+-- Additional configurations
+vim.g.mapleader = " "
+vim.opt.number = true
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.autoindent = true
+vim.api.nvim_set_option("clipboard", "unnamed")
 
-
-                      --------------------------------------------------------------------------------
-                      -- SETUP BASIC PYTHON-RELATED OPTIONS
-
-                      -- The filetype-autocmd runs a function when opening a file with the filetype
-                      -- "python". This method allows you to make filetype-specific configurations. In
-                      -- there, you have to use `opt_local` instead of `opt` to limit the changes to
-                      -- just that buffer. (As an alternative to using an autocmd, you can also put those
-                      -- configurations into a file `/after/ftplugin/{filetype}.lua` in your
-                      -- nvim-directory.)
-                      vim.api.nvim_create_autocmd("FileType", {
-                          pattern = "python", -- filetype for which to run the autocmd
-                          callback = function()
-                              -- use pep8 standards
-                              vim.opt_local.expandtab = true
-                              vim.opt_local.shiftwidth = 4
-                              vim.opt_local.tabstop = 4
-                              vim.opt_local.softtabstop = 4
-
-                              -- folds based on indentation https://neovim.io/doc/user/fold.html#fold-indent
-                              -- if you are a heavy user of folds, consider using `nvim-ufo`
-                              vim.opt_local.foldmethod = "indent"
-
-                              local iabbrev = function(lhs, rhs) vim.keymap.set("ia", lhs, rhs, { buffer = true }) end
-                              -- automatically capitalize boolean values. Useful if you come from a
-                              -- different language, and lowercase them out of habit.
-                              iabbrev("true", "True")
-                              iabbrev("false", "False")
-
-                              -- in the same way, we can fix habits regarding comments or None
-                              iabbrev("--", "#")
-                              iabbrev("null", "None")
-                              iabbrev("none", "None")
-                              iabbrev("nil", "None")
-                          end,
-                      })
-
-                      -- Additional configurations
-                      vim.g.mapleader = " "
-                      vim.opt.number = true
-                      vim.opt.expandtab = true
-                      vim.opt.shiftwidth = 4
-                      vim.opt.tabstop = 4
-                      vim.opt.softtabstop = 4
-                      vim.opt.autoindent = true
-                      vim.api.nvim_set_option("clipboard", "unnamed")
-
-                      -- Python-specific configurations
-                      --vim.cmd [[
-                      --autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4 colorcolumn=88
-                      --]]
+-- Python-specific configurations
+--vim.cmd [[
+--autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4 colorcolumn=88
+--]]
