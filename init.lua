@@ -328,7 +328,7 @@ config = function()
 end
 },
 
--- { "lambdalisue/suda.vim" },
+ { "lambdalisue/suda.vim" },
 { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 {"Darazaki/indent-o-matic"},
 --{"Darazaki/indent-o-matic",
