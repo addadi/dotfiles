@@ -242,9 +242,26 @@ require("lazy").setup(
             "tpope/vim-fugitive",
             "tpope/vim-sleuth",
             "nvim-tree/nvim-tree.lua",
-            "nvim-lualine/lualine.nvim",
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim"
+        },
+        {
+            "folke/which-key.nvim",
+            event = "VeryLazy",
+            opts = {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            },
+            keys = {
+                {
+                    "<leader>?",
+                    function()
+                        require("which-key").show({ global = false })
+                    end,
+                    desc = "Buffer Local Keymaps (which-key)",
+                },
+            },
         },
         {
             "WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -411,6 +428,25 @@ require("lazy").setup(
                 {"=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter"}
             }
         },
+        {
+            "zbirenbaum/copilot.lua",
+            cmd = "Copilot",
+            build = ":Copilot auth",
+            opts = {
+                suggestion = { enabled = false },
+                panel = { enabled = false },
+                filetypes = {
+                    markdown = true,
+                    help = true,
+                },
+            },
+        },
+        {
+            "zbirenbaum/copilot-cmp",
+            config = function ()
+                require("copilot_cmp").setup()
+            end
+        },
         -- Python-specific plugins
         {
             "neovim/nvim-lspconfig",
@@ -451,8 +487,9 @@ require("lazy").setup(
                     sources = cmp.config.sources(
                         {
                             {name = "nvim_lsp"},
-                            {name = "luasnip"},
+                            {name = "copilot"},
                             {name = "buffer"},
+                            {name = "luasnip"},
                             {name = "path"}
                         }
                     )
@@ -540,7 +577,7 @@ require("lazy").setup(
                     -- this defined how the repl is opened. Here we set the REPL window
                     -- to open in a horizontal split to a bottom, with a height of 10
                     -- cells.
-                    repl_open_cmd = "horizontal bot 10 split",
+                    repl_open_cmd = "vertical botright 80 vsplit",
                     -- This defines which binary to use for the REPL. If `ipython` is
                     -- available, it will use `ipython`, otherwise it will use `python3`.
                     -- since the python repl does not play well with indents, it's
@@ -550,11 +587,21 @@ require("lazy").setup(
                         python = {
                             command = function()
                                 local ipythonAvailable = vim.fn.executable("ipython") == 1
-                                local binary = ipythonAvailable and "ipython" or "python3"
-                                return {binary}
-                            end
+                                if ipythonAvailable then
+                                    return { "ipython", "--no-autoindent" }
+                                else
+                                    return { "python3" }
+                                end
+                            end,
+                            format = python_format
                         }
-                    }
+                    },
+                    -- If the highlight is on, you can change how it looks
+                    -- For the available options, check nvim_set_hl
+                    highlight = {
+                        italic = true
+                    },
+                    ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
                 }
             }
         },
@@ -846,6 +893,13 @@ require("lazy").setup(
                 dap_enabled = true -- makes the debugger work with venv
             }
         },
+        -- additional python text objects
+        -- https://github.com/chrisgrieser/nvim-various-textobjs?
+        {
+            "chrisgrieser/nvim-various-textobjs",
+            event = "UIEnter",
+            opts = { useDefaultKeymaps = true },
+        },
         --  Markdown
         {
             "iamcco/markdown-preview.nvim",
@@ -866,8 +920,86 @@ require("lazy").setup(
                     desc = "Align CSV"
                 }
             }
-        }
-    }
+        },
+        {
+            "yetone/avante.nvim",
+            event = "VeryLazy",
+            build = "make",
+            opts = {
+                provider = "copilot",
+                -- add any opts here
+                mappings = {
+                    ask = "<leader>aa",
+                    edit = "<leader>ae",
+                    refresh = "<leader>ar",
+                    --- @class AvanteConflictMappings
+                    diff = {
+                        ours = "co",
+                        theirs = "ct",
+                        none = "c0",
+                        both = "cb",
+                        next = "]x",
+                        prev = "[x",
+                    },
+                    jump = {
+                        next = "]]",
+                        prev = "[[",
+                    },
+                    submit = {
+                        normal = "<CR>",
+                        insert = "<C-s>",
+                    },
+                    toggle = {
+                        debug = "<leader>ad",
+                        hint = "<leader>ah",
+                    },
+                },
+                hints = { enabled = true },
+                windows = {
+                    wrap = true, -- similar to vim.o.wrap
+                    width = 40, -- default % based on available width
+                    --sidebar_header = {
+                        --align = "center", -- left, center, right for title
+                        --rounded = true,
+                    --},
+                },
+                highlights = {
+                    ---@type AvanteConflictHighlights
+                    diff = {
+                        current = "DiffText",
+                        incoming = "DiffAdd",
+                    },
+                },
+                --- @class AvanteConflictUserConfig
+                diff = {
+                    debug = false,
+                    autojump = true,
+                    ---@type string | fun(): any
+                    list_opener = "copen",
+                },
+            },
+            dependencies = {
+                "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+                "stevearc/dressing.nvim",
+                "nvim-lua/plenary.nvim",
+                "MunifTanjim/nui.nvim",
+                --- The below is optional, make sure to setup it properly if you have lazy=true
+                {
+                    'MeanderingProgrammer/render-markdown.nvim',
+                    opts = {
+                        file_types = { "markdown", "Avante" },
+                    },
+                    ft = { "markdown", "Avante" },
+                },
+            },
+         },
+        {
+            "GCBallesteros/jupytext.nvim",
+            config = true,
+            -- Depending on your nvim distro or config you may need to make the loading not lazy
+            -- lazy=false,
+        },
+     }
 )
 
 --------------------------------------------------------------------------------
@@ -919,7 +1051,8 @@ vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.autoindent = true
-vim.api.nvim_set_option("clipboard", "unnamed")
+vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
 
 -- Python-specific configurations
 --vim.cmd [[
