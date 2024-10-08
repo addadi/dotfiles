@@ -46,7 +46,7 @@ vim.cmd(
     " Make Arrow Keys Useful Again {
     map <down> <ESC>:bn<RETURN>
     map <left> <ESC>:NERDTreeToggle<RETURN>
-    map <right> <ESC>:TagbarToggle<RETURN>
+    " map <right> <ESC>:TagbarToggle<RETURN>
     map <up> <ESC>:bp<RETURN>
     " }
     " paste toggle from http://vim.wikia.com/wiki/Toggle_auto-indenting_for_code_paste
@@ -190,30 +190,30 @@ vim.cmd(
     endfunction
     " }
 
-    " Folding {
-    set foldenable " Turn on folding
-    set foldmarker={,} " Fold C style code (only use this as default
-    " if you use a high foldlevel)
-    set foldmethod=marker " Fold on the marker
-
-    function! JavaScriptFold() "{
-    setl foldmethod=syntax
-    setl foldlevelstart=1
-    syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-
-    function! FoldText()"}
-    return substitute(getline(v:foldstart), '{.*', '{...}', '')
-    endfunction
-    setl foldtext=FoldText()
-    endfunction
-    "From http://vim.wikia.com/wiki/Folding
-    "In normal mode, press Space to toggle the current fold open/closed.
-    "However, if the cursor is not in a fold, move to the right 
-    "(the default behavior).
-    nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-    vnoremap <Space> zf
-    "}
-    " }
+"    " Folding {
+"    set foldenable " Turn on folding
+"    set foldmarker={,} " Fold C style code (only use this as default
+"    " if you use a high foldlevel)
+"    set foldmethod=marker " Fold on the marker
+"
+"    function! JavaScriptFold() "{
+"    setl foldmethod=syntax
+"    setl foldlevelstart=1
+"    syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
+"
+"    function! FoldText()"}
+"    return substitute(getline(v:foldstart), '{.*', '{...}', '')
+"    endfunction
+"    setl foldtext=FoldText()
+"    endfunction
+"    "From http://vim.wikia.com/wiki/Folding
+"    "In normal mode, press Space to toggle the current fold open/closed.
+"    "However, if the cursor is not in a fold, move to the right 
+"    "(the default behavior).
+"    nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+"    vnoremap <Space> zf
+"    "}
+"    " }
 
 ]]
 )
@@ -338,15 +338,15 @@ require("lazy").setup(
                 }
             end
         },
-        {"preservim/nerdcommenter"},
-        {
-            "kylechui/nvim-surround",
-            version = "*", -- Use for stability; omit to use `main` branch for the latest features
-            event = "VeryLazy",
-            config = function()
-                require("nvim-surround").setup({})
-            end
-        },
+        --{"preservim/nerdcommenter"},
+        --{
+            --"kylechui/nvim-surround",
+            --version = "*", -- Use for stability; omit to use `main` branch for the latest features
+            --event = "VeryLazy",
+            --config = function()
+                --require("nvim-surround").setup({})
+            --end
+        --},
         {"lambdalisue/suda.vim"},
         {"lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {}},
         {"Darazaki/indent-o-matic"},
@@ -447,6 +447,53 @@ require("lazy").setup(
                 require("copilot_cmp").setup()
             end
         },
+        {
+            "stevearc/aerial.nvim",
+            opts = function()
+                --local icons = vim.deepcopy(LazyVim.config.icons.kinds)
+
+                -- HACK: fix lua's weird choice for `Package` for control
+                -- structures like if/else/for/etc.
+                --icons.lua = { Package = icons.Control }
+
+                ---@type table<string, string[]>|false
+                local filter_kind = false
+                --if LazyVim.config.kind_filter then
+                    --filter_kind = assert(vim.deepcopy(LazyVim.config.kind_filter))
+                    --filter_kind._ = filter_kind.default
+                    --filter_kind.default = nil
+                --end
+
+                local opts = {
+                    attach_mode = "global",
+                    backends = { "lsp", "treesitter", "markdown", "man" },
+                    show_guides = true,
+                    layout = {
+                        resize_to_content = false,
+                        win_opts = {
+                            winhl = "Normal:NormalFloat,FloatBorder:NormalFloat,SignColumn:SignColumnSB",
+                            signcolumn = "yes",
+                            statuscolumn = " ",
+                        },
+                    },
+                    icons = icons,
+                    filter_kind = filter_kind,
+                    -- stylua: ignore
+                    guides = {
+                        mid_item   = "├╴",
+                        last_item  = "└╴",
+                        nested_top = "│ ",
+                        whitespace = "  ",
+                    },
+                }
+                return opts
+            end,
+            keys = {
+                { "<leader>cs", "<cmd>AerialToggle<cr>", desc = "Aerial (Symbols)" },
+            },
+            lazy = true, -- Ensure the plugin is loaded lazily
+            event = { "BufReadPost", "BufNewFile" }, -- Optional: you can load it on file events or keep it key-based only
+        },
         -- Python-specific plugins
         {
             "neovim/nvim-lspconfig",
@@ -517,14 +564,14 @@ require("lazy").setup(
         -- - Formatting is triggered via `<leader>f`, but also automatically on save
         {
             "stevearc/conform.nvim",
-            event = "BufWritePre", -- load the plugin before saving
+            event = "bufwritepre", -- load the plugin before saving
             keys = {
                 {
                     "<leader>c",
                     function()
                         require("conform").format({lsp_fallback = true})
                     end,
-                    desc = "Format"
+                    desc = "format"
                 }
             },
             opts = {
@@ -532,15 +579,18 @@ require("lazy").setup(
                     -- first use isort and then black
                     python = {"isort", "black"},
                     -- "inject" is a special formatter from conform.nvim, which
-                    -- formats treesitter-injected code. Basically, this makes
+                    -- formats treesitter-injected code. basically, this makes
                     -- conform.nvim format python codeblocks inside a markdown file.
-                    markdown = {"inject"}
+                    markdown = {"inject"},
+                    javascript = { "prettierd", "prettier", stop_after_first = true },
+                    json = { "prettier" },
+                    charts = { "prettier --parser json" }, -- treat mongodb atlas charts exports `.charts` like `.json`
                 },
                 -- enable format-on-save
                 format_on_save = {
                     -- when no formatter is setup for a filetype, fallback to formatting
-                    -- via the LSP. This is relevant e.g. for taplo (toml LSP), where the
-                    -- LSP can handle the formatting for us
+                    -- via the lsp. this is relevant e.g. for taplo (toml lsp), where the
+                    -- lsp can handle the formatting for us
                     lsp_fallback = true
                 }
             }
@@ -941,6 +991,12 @@ require("lazy").setup(
                         next = "]x",
                         prev = "[x",
                     },
+                    suggestion = {
+                        accept = "<M-l>",
+                        next = "<M-]>",
+                        prev = "<M-[>",
+                        dismiss = "<C-]>",
+                    },
                     jump = {
                         next = "]]",
                         prev = "[[",
@@ -1052,7 +1108,9 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.autoindent = true
 vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
-vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+--vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, { noremap = true, silent = true })
+vim.keymap.set('n', '<Right>', ':AerialToggle!<CR>', { noremap = true, silent = true })
+
 
 -- Python-specific configurations
 --vim.cmd [[
