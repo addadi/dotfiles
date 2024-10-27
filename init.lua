@@ -1116,3 +1116,16 @@ vim.keymap.set('n', '<Right>', ':AerialToggle!<CR>', { noremap = true, silent = 
 --vim.cmd [[
 --autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4 colorcolumn=88
 --]]
+
+-- configuration for Windows Subsystem for Linux (WSL) 
+in_wsl = os.getenv('WSL_DISTRO_NAME') ~= nil
+
+if in_wsl then
+
+    vim.g.clipboard = {
+        name = 'wsl clipboard',
+        copy =  { ["+"] = { "clip.exe" },   ["*"] = { "clip.exe" } },
+        paste = { ["+"] = { "nvim_paste" }, ["*"] = { "nvim_paste" } },
+        cache_enabled = true
+    }
+end
