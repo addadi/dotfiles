@@ -338,15 +338,15 @@ require("lazy").setup(
                 }
             end
         },
-        --{"preservim/nerdcommenter"},
-        --{
-            --"kylechui/nvim-surround",
-            --version = "*", -- Use for stability; omit to use `main` branch for the latest features
-            --event = "VeryLazy",
-            --config = function()
-                --require("nvim-surround").setup({})
-            --end
-        --},
+        {"preservim/nerdcommenter"},
+        {
+            "kylechui/nvim-surround",
+            version = "*", -- Use for stability; omit to use `main` branch for the latest features
+            event = "VeryLazy",
+            config = function()
+                require("nvim-surround").setup({})
+            end
+        },
         {"lambdalisue/suda.vim"},
         {"lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {}},
         {"Darazaki/indent-o-matic"},
@@ -516,12 +516,20 @@ require("lazy").setup(
                 "hrsh7th/cmp-buffer",
                 "hrsh7th/cmp-path",
                 "hrsh7th/cmp-cmdline",
+                "hrsh7th/cmp-vsnip",
+                "hrsh7th/vim-vsnip",
                 "saadparwaiz1/cmp_luasnip",
                 "L3MON4D3/LuaSnip"
             },
             config = function()
                 local cmp = require("cmp")
                 cmp.setup {
+                    snippet = {
+                        expand = function(args)
+                            vim.fn["vsnip#anonymous"](args.body)
+                            --require('luasnip').lsp_expand(args.body)
+                        end,
+                    },
                     mapping = cmp.mapping.preset.insert(
                         {
                             ["<C-b>"] = cmp.mapping.scroll_docs(-4),
@@ -534,24 +542,25 @@ require("lazy").setup(
                     sources = cmp.config.sources(
                         {
                             {name = "nvim_lsp"},
+                            {name = 'vsnip'},
+                            --{name = "luasnip"},
                             {name = "copilot"},
                             {name = "buffer"},
-                            {name = "luasnip"},
                             {name = "path"}
                         }
                     )
                 }
-            end
+            end,
         },
-        {
-            "saadparwaiz1/cmp_luasnip",
-            dependencies = {
-                "L3MON4D3/LuaSnip"
-            },
-            config = function()
-                require("luasnip.loaders.from_vscode").lazy_load()
-            end
-        },
+        --{
+            --"saadparwaiz1/cmp_luasnip",
+            --dependencies = {
+                --"L3MON4D3/LuaSnip"
+            --},
+            --config = function()
+                --require("luasnip.loaders.from_vscode").lazy_load()
+            --end
+        --},
         {
             "folke/trouble.nvim",
             config = function()
@@ -1100,7 +1109,6 @@ vim.api.nvim_create_autocmd(
 )
 
 -- Additional configurations
-vim.g.mapleader = " "
 vim.opt.number = true
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
@@ -1108,7 +1116,7 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.autoindent = true
 vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
---vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { noremap = true, silent = true })
 vim.keymap.set('n', '<Right>', ':AerialToggle!<CR>', { noremap = true, silent = true })
 
 
