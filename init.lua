@@ -45,8 +45,7 @@ vim.cmd(
 
     " Make Arrow Keys Useful Again {
     map <down> <ESC>:bn<RETURN>
-    map <left> <ESC>:NERDTreeToggle<RETURN>
-    " map <right> <ESC>:TagbarToggle<RETURN>
+    " map <left> <ESC>:NERDTreeToggle<RETURN>
     map <up> <ESC>:bp<RETURN>
     " }
     " paste toggle from http://vim.wikia.com/wiki/Toggle_auto-indenting_for_code_paste
@@ -375,7 +374,8 @@ require("lazy").setup(
                 {"<leader>ff", " <cmd>Telescope find_files<cr>", desc = "Telescope Find Files"},
                 {"<leader>fg", " <cmd>Telescope live_grep<cr>", desc = "Telescope Live Grep"},
                 {"<leader>fb", " <cmd>Telescope buffers<cr>", desc = "Telescope Buffers"},
-                {"<leader>fh", " <cmd>Telescope help_tags<cr>", desc = "Telescope Help Tags"}
+                {"<leader>fh", " <cmd>Telescope help_tags<cr>", desc = "Telescope Help Tags"},
+                {"<leader>ss", "<cmd>Telescope aerial<cr>", desc = "Goto Symbol (Aerial)",}
             }
         },
         {
@@ -428,18 +428,76 @@ require("lazy").setup(
                 {"=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter"}
             }
         },
+        --{
+            --"zbirenbaum/copilot.lua",
+            --cmd = "Copilot",
+            --build = ":Copilot auth",
+            --opts = {
+                --suggestion = {
+                    --enabled = not vim.g.ai_cmp,
+                    --auto_trigger = true,
+                    --keymap = {
+                        --accept = false, -- handled by nvim-cmp / blink.cmp
+                        --next = "<M-]>",
+                        --prev = "<M-[>",
+                    --},
+                --},
+                --panel = { enabled = false },
+                --filetypes = {
+                    --markdown = true,
+                    --help = true,
+                --},
+            --},
+        --},
         {
             "zbirenbaum/copilot.lua",
             cmd = "Copilot",
-            build = ":Copilot auth",
-            opts = {
-                suggestion = { enabled = false },
-                panel = { enabled = false },
-                filetypes = {
-                    markdown = true,
-                    help = true,
-                },
-            },
+            event = "InsertEnter",
+            config = function()
+                require("copilot").setup({
+                    panel = {
+                        enabled = true,
+                        auto_refresh = false,
+                        keymap = {
+                            jump_prev = "[[",
+                            jump_next = "]]",
+                            accept = "<CR>",
+                            refresh = "gr",
+                            open = "<M-CR>"
+                        },
+                        layout = {
+                            position = "bottom", -- | top | left | right | horizontal | vertical
+                            ratio = 0.4
+                        },
+                    },
+                    suggestion = {
+                        enabled = true,
+                        auto_trigger = false,
+                        hide_during_completion = true,
+                        debounce = 75,
+                        keymap = {
+                            accept = "<M-l>",
+                            accept_word = false,
+                            accept_line = false,
+                            next = "<M-]>",
+                            prev = "<M-[>",
+                            dismiss = "<C-]>",
+                        },
+                    },
+                    filetypes = {
+                        yaml = false,
+                        markdown = false,
+                        help = false,
+                        gitcommit = false,
+                        gitrebase = false,
+                        hgcommit = false,
+                        svn = false,
+                        cvs = false,
+                        ["."] = false,
+                    },
+                    copilot_node_command = 'node', -- Node.js version must be > 18.x
+                    server_opts_overrides = {},})
+            end,
         },
         {
             "zbirenbaum/copilot-cmp",
@@ -542,9 +600,10 @@ require("lazy").setup(
                     sources = cmp.config.sources(
                         {
                             {name = "nvim_lsp"},
-                            {name = 'vsnip'},
                             --{name = "luasnip"},
                             {name = "copilot"},
+                            {name = 'vsnip'},
+                }, {
                             {name = "buffer"},
                             {name = "path"}
                         }
@@ -552,6 +611,7 @@ require("lazy").setup(
                 }
             end,
         },
+        { "rafamadriz/friendly-snippets" },
         --{
             --"saadparwaiz1/cmp_luasnip",
             --dependencies = {
@@ -926,22 +986,9 @@ require("lazy").setup(
             dependencies = {
                 "neovim/nvim-lspconfig",
                 "nvim-telescope/telescope.nvim",
-                "mfussenegger/nvim-dap-python"
+                "mfussenegger/nvim-dap-python",
+                "nvim-telescope/telescope.nvim",
             },
-            opts = {
-                dap_enabled = true -- makes the debugger work with venv
-            }
-        },
-        {
-            "linux-cultist/venv-selector.nvim",
-            dependencies = {
-                "neovim/nvim-lspconfig",
-                "mfussenegger/nvim-dap",
-                "mfussenegger/nvim-dap-python", --optional
-                {"nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = {"nvim-lua/plenary.nvim"}}
-            },
-            lazy = false,
-            branch = "regexp", -- This is the regexp branch, use this for the new version
             config = function()
                 require("venv-selector").setup()
             end,
@@ -952,6 +999,26 @@ require("lazy").setup(
                 dap_enabled = true -- makes the debugger work with venv
             }
         },
+        --{
+            --"linux-cultist/venv-selector.nvim",
+            --dependencies = {
+                --"neovim/nvim-lspconfig",
+                --"mfussenegger/nvim-dap",
+                --"mfussenegger/nvim-dap-python", --optional
+                --{"nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = {"nvim-lua/plenary.nvim"}}
+            --},
+            --lazy = false,
+            --branch = "regexp", -- This is the regexp branch, use this for the new version
+            --config = function()
+                --require("venv-selector").setup()
+            --end,
+            --keys = {
+                --{",v", "<cmd>VenvSelect<cr>"}
+            --},
+            --opts = {
+                --dap_enabled = true -- makes the debugger work with venv
+            --}
+        --},
         -- additional python text objects
         -- https://github.com/chrisgrieser/nvim-various-textobjs?
         {
@@ -986,7 +1053,19 @@ require("lazy").setup(
             build = "make",
             opts = {
                 provider = "copilot",
+                copilot = {
+                    model = "claude-3.5-sonnet",
+                    -- max_tokens = 4096,
+                },
                 -- add any opts here
+                behaviour = {
+                    auto_suggestions = true, -- Experimental stage
+                    auto_set_highlight_group = true,
+                    auto_set_keymaps = true,
+                    auto_apply_diff_after_generation = false,
+                    support_paste_from_clipboard = true,
+                    minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
+                },
                 mappings = {
                     ask = "<leader>aa",
                     edit = "<leader>ae",
@@ -1037,10 +1116,13 @@ require("lazy").setup(
                 },
                 --- @class AvanteConflictUserConfig
                 diff = {
-                    debug = false,
                     autojump = true,
                     ---@type string | fun(): any
                     list_opener = "copen",
+                    --- Override the 'timeoutlen' setting while hovering over a diff (see :help timeoutlen).
+                    --- Helps to avoid entering operator-pending mode with diff mappings starting with `c`.
+                    --- Disable by setting to -1.
+                    override_timeoutlen = 500,
                 },
             },
             dependencies = {
@@ -1048,6 +1130,25 @@ require("lazy").setup(
                 "stevearc/dressing.nvim",
                 "nvim-lua/plenary.nvim",
                 "MunifTanjim/nui.nvim",
+                "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+                "zbirenbaum/copilot.lua", -- for providers='copilot'
+                {
+                    -- support for image pasting
+                    "HakonHarnes/img-clip.nvim",
+                    event = "VeryLazy",
+                    opts = {
+                        -- recommended settings
+                        default = {
+                            embed_image_as_base64 = false,
+                            prompt_for_file_name = false,
+                            drag_and_drop = {
+                                insert_mode = true,
+                            },
+                            -- required for Windows users
+                            use_absolute_path = true,
+                        },
+                    },
+                },
                 --- The below is optional, make sure to setup it properly if you have lazy=true
                 {
                     'MeanderingProgrammer/render-markdown.nvim',
