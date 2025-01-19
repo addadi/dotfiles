@@ -553,20 +553,59 @@ require("lazy").setup(
             event = { "BufReadPost", "BufNewFile" }, -- Optional: you can load it on file events or keep it key-based only
         },
         -- Python-specific plugins
+        --{
+            --"neovim/nvim-lspconfig",
+            --config = function()
+                --require("lspconfig").pyright.setup {
+                    --settings = {
+                        --python = {
+                            --analysis = {
+                                --typeCheckingMode = "basic"
+                            --}
+                        --}
+                    --}
+                --}
+            --end
+        --},
         {
             "neovim/nvim-lspconfig",
-            config = function()
-                require("lspconfig").pyright.setup {
-                    settings = {
-                        python = {
-                            analysis = {
-                                typeCheckingMode = "basic"
-                            }
-                        }
-                    }
-                }
-            end
-        },
+            opts = {
+                servers = {
+                    ruff = {
+                        cmd_env = { RUFF_TRACE = "messages" },
+                        init_options = {
+                            settings = {
+                                logLevel = "error",
+                            },
+                        },
+                        keys = {
+                            {
+                                "<leader>co",
+                                LazyVim.lsp.action["source.organizeImports"],
+                                desc = "Organize Imports",
+                            },
+                        },
+                    },
+                    ruff_lsp = {
+                        keys = {
+                            {
+                                "<leader>co",
+                                LazyVim.lsp.action["source.organizeImports"],
+                                desc = "Organize Imports",
+                            },
+                        },
+                    },
+                },
+                setup = {
+                    [ruff] = function()
+                        LazyVim.lsp.on_attach(function(client, _)
+                            -- Disable hover in favor of Pyright
+                            client.server_capabilities.hoverProvider = false
+                        end, ruff)
+                    end,
+                },
+            },
+        }, 
         {
             "hrsh7th/nvim-cmp",
             dependencies = {
@@ -664,6 +703,30 @@ require("lazy").setup(
                 }
             }
         },
+        {
+            "benlubas/molten-nvim",
+            version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
+            --dependencies = { "3rd/image.nvim" },
+            build = ":UpdateRemotePlugins",
+            init = function()
+                -- these are examples, not defaults. Please see the readme
+                --vim.g.molten_image_provider = "image.nvim"
+                vim.g.molten_output_win_max_height = 20
+            end,
+        },
+        --{
+            ---- see the image.nvim readme for more information about configuring this plugin
+            --"3rd/image.nvim",
+            --opts = {
+                --backend = "kitty", -- whatever backend you would like to use
+                --max_width = 100,
+                --max_height = 12,
+                --max_height_window_percentage = math.huge,
+                --max_width_window_percentage = math.huge,
+                --window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
+                --window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+            --},
+        --},
         -----------------------------------------------------------------------------
         -- PYTHON REPL
         -- A basic REPL that opens up as a horizontal split
@@ -981,34 +1044,14 @@ require("lazy").setup(
         -- select virtual environments
         -- - makes pyright and debugpy aware of the selected virtual environment
         -- - Select a virtual environment with `:VenvSelect`
-        {
-            "linux-cultist/venv-selector.nvim",
-            dependencies = {
-                "neovim/nvim-lspconfig",
-                "nvim-telescope/telescope.nvim",
-                "mfussenegger/nvim-dap-python",
-                "nvim-telescope/telescope.nvim",
-            },
-            config = function()
-                require("venv-selector").setup()
-            end,
-            keys = {
-                {",v", "<cmd>VenvSelect<cr>"}
-            },
-            opts = {
-                dap_enabled = true -- makes the debugger work with venv
-            }
-        },
         --{
             --"linux-cultist/venv-selector.nvim",
             --dependencies = {
                 --"neovim/nvim-lspconfig",
-                --"mfussenegger/nvim-dap",
-                --"mfussenegger/nvim-dap-python", --optional
-                --{"nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = {"nvim-lua/plenary.nvim"}}
+                --"nvim-telescope/telescope.nvim",
+                --"mfussenegger/nvim-dap-python",
+                --"nvim-telescope/telescope.nvim",
             --},
-            --lazy = false,
-            --branch = "regexp", -- This is the regexp branch, use this for the new version
             --config = function()
                 --require("venv-selector").setup()
             --end,
@@ -1019,12 +1062,33 @@ require("lazy").setup(
                 --dap_enabled = true -- makes the debugger work with venv
             --}
         --},
+        {
+            "linux-cultist/venv-selector.nvim",
+            dependencies = {
+                "neovim/nvim-lspconfig",
+                "mfussenegger/nvim-dap",
+                "mfussenegger/nvim-dap-python", --optional
+                {"nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = {"nvim-lua/plenary.nvim"}}
+            },
+            lazy = false,
+            branch = "regexp", -- This is the regexp branch, use this for the new version
+            config = function()
+                require("venv-selector").setup()
+            end,
+            keys = {
+                {",v", "<cmd>VenvSelect<cr>"}
+            },
+            opts = {
+                dap_enabled = true -- makes the debugger work with venv
+            }
+        },
         -- additional python text objects
         -- https://github.com/chrisgrieser/nvim-various-textobjs?
         {
             "chrisgrieser/nvim-various-textobjs",
             event = "UIEnter",
             opts = { useDefaultKeymaps = true },
+            --opts = { keymaps.useDefaults = true },
         },
         --  Markdown
         {
@@ -1055,8 +1119,28 @@ require("lazy").setup(
                 provider = "copilot",
                 copilot = {
                     model = "claude-3.5-sonnet",
-                    -- max_tokens = 4096,
+                    timeout = 30000, -- Timeout in milliseconds
+                    max_tokens = 4096,
                 },
+                --provider = "openai",
+                --auto_suggestions_provider = "openai", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
+                --openai = {
+                    --endpoint = "https://api.deepseek.com/v3",
+                    --model = "deepseek-chat",
+                    --timeout = 30000, -- Timeout in milliseconds
+                    --temperature = 0,
+                    --max_tokens = 4096,
+                    --["local"] = false,
+                --}, 
+                --provider = "deepseek",
+                --vendors = {
+                    --deepseek = {
+                        --__inherited_from = "openai",
+                        --api_key_name = "sk-79c9a4b8298f48ae897693c2899d4216",
+                        --endpoint = "https://api.deepseek.com/",
+                        --model = "deepseek-coder",
+                    --},
+                --},
                 -- add any opts here
                 behaviour = {
                     auto_suggestions = true, -- Experimental stage
@@ -1159,6 +1243,16 @@ require("lazy").setup(
                 },
             },
          },
+        --NOTEBOOK SUPPORT 
+        {
+            "benlubas/molten-nvim",
+            version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
+            build = ":UpdateRemotePlugins",
+            init = function()
+                -- this is an example, not a default. Please see the readme for more configuration options
+                vim.g.molten_output_win_max_height = 12
+            end,
+        },
         {
             "GCBallesteros/jupytext.nvim",
             config = true,
