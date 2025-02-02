@@ -553,59 +553,20 @@ require("lazy").setup(
             event = { "BufReadPost", "BufNewFile" }, -- Optional: you can load it on file events or keep it key-based only
         },
         -- Python-specific plugins
-        --{
-            --"neovim/nvim-lspconfig",
-            --config = function()
-                --require("lspconfig").pyright.setup {
-                    --settings = {
-                        --python = {
-                            --analysis = {
-                                --typeCheckingMode = "basic"
-                            --}
-                        --}
-                    --}
-                --}
-            --end
-        --},
         {
             "neovim/nvim-lspconfig",
-            opts = {
-                servers = {
-                    ruff = {
-                        cmd_env = { RUFF_TRACE = "messages" },
-                        init_options = {
-                            settings = {
-                                logLevel = "error",
-                            },
-                        },
-                        keys = {
-                            {
-                                "<leader>co",
-                                LazyVim.lsp.action["source.organizeImports"],
-                                desc = "Organize Imports",
-                            },
-                        },
-                    },
-                    ruff_lsp = {
-                        keys = {
-                            {
-                                "<leader>co",
-                                LazyVim.lsp.action["source.organizeImports"],
-                                desc = "Organize Imports",
-                            },
-                        },
-                    },
-                },
-                setup = {
-                    [ruff] = function()
-                        LazyVim.lsp.on_attach(function(client, _)
-                            -- Disable hover in favor of Pyright
-                            client.server_capabilities.hoverProvider = false
-                        end, ruff)
-                    end,
-                },
-            },
-        }, 
+            config = function()
+                require("lspconfig").pyright.setup {
+                    settings = {
+                        python = {
+                            analysis = {
+                                typeCheckingMode = "basic"
+                            }
+                        }
+                    }
+                }
+            end
+        },
         {
             "hrsh7th/nvim-cmp",
             dependencies = {
@@ -1119,8 +1080,9 @@ require("lazy").setup(
                 provider = "copilot",
                 copilot = {
                     model = "claude-3.5-sonnet",
-                    timeout = 30000, -- Timeout in milliseconds
-                    max_tokens = 4096,
+                    --timeout = 30000, -- Timeout in milliseconds
+                    temperature = 0,
+                    max_tokens = 8192,
                 },
                 --provider = "openai",
                 --auto_suggestions_provider = "openai", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
@@ -1136,10 +1098,16 @@ require("lazy").setup(
                 --vendors = {
                     --deepseek = {
                         --__inherited_from = "openai",
-                        --api_key_name = "sk-79c9a4b8298f48ae897693c2899d4216",
+                        --api_key_name = "api",
                         --endpoint = "https://api.deepseek.com/",
                         --model = "deepseek-coder",
                     --},
+                --},
+                --openrouter = {
+                    --__inherited_from = "openai",
+                    --api_key_name = "OPENROUTER_API_KEY",
+                    --endpoint = "https://openrouter.ai/api/v1/chat/completions",
+                    --model = "deepseek/deepseek-chat",
                 --},
                 -- add any opts here
                 behaviour = {
@@ -1259,7 +1227,37 @@ require("lazy").setup(
             -- Depending on your nvim distro or config you may need to make the loading not lazy
             -- lazy=false,
         },
-     }
+        {
+            'geg2102/nvim-jupyter-client',
+            config = function()
+                require('nvim-jupyter-client').setup({})
+            
+            -- Add cells
+            vim.keymap.set("n", "<leader>ja", "<cmd>JupyterAddCellBelow<CR>", { desc = "Add Jupyter cell below" })
+            vim.keymap.set("n", "<leader>jA", "<cmd>JupyterAddCellAbove<CR>", { desc = "Add Jupyter cell above" })
+            
+            -- Cell operations
+            vim.keymap.set("n", "<leader>jd", "<cmd>JupyterRemoveCell<CR>", { desc = "Remove current Jupyter cell" })
+            vim.keymap.set("n", "<leader>jm", "<cmd>JupyterMergeCellAbove<CR>", { desc = "Merge with cell above" })
+            vim.keymap.set("n", "<leader>jM", "<cmd>JupyterMergeCellBelow<CR>", { desc = "Merge with cell below" })
+            vim.keymap.set("n", "<leader>jt", "<cmd>JupyterConvertCellType<CR>", { desc = "Convert cell type (code/markdown)" })
+            vim.keymap.set("v", "<leader>jm", "<cmd>JupyterMergeVisual<CR>", { desc = "Merge selected cells" })
+            vim.keymap.set("n", "<leader>jD", "<cmd>JupyterDeleteCell<CR>", { desc = "Delete cell under cursor and store in register" })
+            end
+        },
+        {
+            "geg2102/nvim-python-repl",
+            dependencies = "nvim-treesitter",
+            ft = {"python", "lua", "scala"}, 
+            config = function()
+                require("nvim-python-repl").setup({
+                    vim.keymap.set("n", "<leader> ,js", function() require('nvim-python-repl').send_current_cell_to_repl() end, { desc = "Sends the cell under cursor to repl"}),
+                    execute_on_send = false,
+                    vsplit = false,
+                })
+            end
+        },
+    }
 )
 
 --------------------------------------------------------------------------------
@@ -1319,6 +1317,7 @@ vim.keymap.set('n', '<Right>', ':AerialToggle!<CR>', { noremap = true, silent = 
 --vim.cmd [[
 --autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4 colorcolumn=88
 --]]
+-- nvim-jupyter-client
 
 -- configuration for Windows Subsystem for Linux (WSL) 
 in_wsl = os.getenv('WSL_DISTRO_NAME') ~= nil
