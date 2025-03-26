@@ -117,21 +117,6 @@ vim.cmd(
     set showcmd " show the command being typed
     set showmatch " show matching brackets
     set sidescrolloff=10 " Keep 5 lines at the size
-    set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
-    "              | | | | |  |   |      |  |     |    |
-    "              | | | | |  |   |      |  |     |    + current
-    "              | | | | |  |   |      |  |     |       column
-    "              | | | | |  |   |      |  |     +-- current line
-    "              | | | | |  |   |      |  +-- current % into file
-    "              | | | | |  |   |      +-- current syntax in
-    "              | | | | |  |   |          square brackets
-    "              | | | | |  |   +-- current fileformat
-    "              | | | | |  +-- number of lines
-    "              | | | | +-- preview flag in square brackets
-    "              | | | +-- help flag in square brackets
-    "              | | +-- readonly flag in square brackets
-    "              | +-- rodified flag in square brackets
-    "              +-- full path to file in the buffer
     set so=7 " Set 7 lines to the curors - when moving vertical..
     "set cmdheight=2 " The commandbar height
     set magic "Set magic on, for regular expressions
@@ -242,9 +227,9 @@ require("lazy").setup(
             "tpope/vim-sleuth",
             "nvim-tree/nvim-tree.lua",
             "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim"
-        },
-        {
+            "williamboman/mason-lspconfig.nvim",
+        --},
+        --{
             "folke/which-key.nvim",
             event = "VeryLazy",
             opts = {
@@ -281,11 +266,12 @@ require("lazy").setup(
         },
         {
             "Mofiqul/adwaita.nvim",
+            cond=(function() return not vim.g.vscode end),
             lazy = false,
             priority = 1000,
             -- configure and set on startup
             config = function()
-                vim.g.adwaita_darker = true -- for darker version
+                vim.g.adwaita_darker = false-- for darker version
                 vim.g.adwaita_disable_cursorline = true -- to disable cursorline
                 vim.g.adwaita_transparent = true -- makes the background transparent
                 vim.cmd("colorscheme adwaita")
@@ -293,6 +279,7 @@ require("lazy").setup(
         },
         {
             "nvim-lualine/lualine.nvim",
+            cond=(function() return not vim.g.vscode end),
             dependencies = {"nvim-tree/nvim-web-devicons"},
             config = function()
                 require("lualine").setup {
@@ -337,7 +324,7 @@ require("lazy").setup(
                 }
             end
         },
-        {"preservim/nerdcommenter"},
+        {"preservim/nerdcommenter", },
         {
             "kylechui/nvim-surround",
             version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -369,6 +356,7 @@ require("lazy").setup(
         -- TODO telescope can't find . files, doesn't open using ,ff on new files and end of files
         {
             "nvim-telescope/telescope.nvim",
+            cond=(function() return not vim.g.vscode end),
             dependencies = {"nvim-lua/plenary.nvim", "BurntSushi/ripgrep"},
             keys = {
                 {"<leader>ff", " <cmd>Telescope find_files<cr>", desc = "Telescope Find Files"},
@@ -380,6 +368,7 @@ require("lazy").setup(
         },
         {
             "debugloop/telescope-undo.nvim",
+            cond=(function() return not vim.g.vscode end),
             dependencies = {"nvim-telescope/telescope.nvim"},
             keys = {
                 {
@@ -404,6 +393,7 @@ require("lazy").setup(
         },
         {
             "gbprod/yanky.nvim",
+            cond=(function() return not vim.g.vscode end),
             opts = {},
             keys = {
                 {"<leader>p", function()
@@ -451,6 +441,7 @@ require("lazy").setup(
         --},
         {
             "zbirenbaum/copilot.lua",
+            cond=(function() return not vim.g.vscode end),
             cmd = "Copilot",
             event = "InsertEnter",
             config = function()
@@ -501,12 +492,14 @@ require("lazy").setup(
         },
         {
             "zbirenbaum/copilot-cmp",
+            cond=(function() return not vim.g.vscode end),
             config = function ()
                 require("copilot_cmp").setup()
             end
         },
         {
             "stevearc/aerial.nvim",
+            cond=(function() return not vim.g.vscode end),
             opts = function()
                 --local icons = vim.deepcopy(LazyVim.config.icons.kinds)
 
@@ -555,6 +548,7 @@ require("lazy").setup(
         -- Python-specific plugins
         {
             "neovim/nvim-lspconfig",
+            cond=(function() return not vim.g.vscode end),
             config = function()
                 require("lspconfig").pyright.setup {
                     settings = {
@@ -569,6 +563,7 @@ require("lazy").setup(
         },
         {
             "hrsh7th/nvim-cmp",
+            cond=(function() return not vim.g.vscode end),
             dependencies = {
                 "hrsh7th/cmp-nvim-lsp",
                 "hrsh7th/cmp-buffer",
@@ -666,6 +661,7 @@ require("lazy").setup(
         },
         {
             "benlubas/molten-nvim",
+            cond=(function() return not vim.g.vscode end),
             version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
             --dependencies = { "3rd/image.nvim" },
             build = ":UpdateRemotePlugins",
@@ -698,6 +694,7 @@ require("lazy").setup(
         -- following line to the REPL, like we would do with other vim operators.
         {
             "Vigemus/iron.nvim",
+            cond=(function() return not vim.g.vscode end),
             keys = {
                 {"<leader>i", vim.cmd.IronRepl, desc = "󱠤 Toggle REPL"},
                 {"<leader>I", vim.cmd.IronRestart, desc = "󱠤 Restart REPL"},
@@ -754,6 +751,7 @@ require("lazy").setup(
         -- - auto-installs the parser for python
         {
             "nvim-treesitter/nvim-treesitter",
+            cond=(function() return not vim.g.vscode end),
             -- automatically update the parsers with every new release of treesitter
             build = ":TSUpdate",
             -- since treesitter's setup call is `require("nvim-treesitter.configs").setup`,
@@ -814,6 +812,7 @@ require("lazy").setup(
         -- working config from https://github.com/igorlfs/dotfiles/blob/main/nvim/.config/nvim/lua/plugins/nvim-dap.lua
         {
         "mfussenegger/nvim-dap",
+            cond=(function() return not vim.g.vscode end),
             dependencies = {
                 -- Runs preLaunchTask / postDebugTask if present
                 {"stevearc/overseer.nvim", config = true},
@@ -927,6 +926,7 @@ require("lazy").setup(
         -- - toggle debugger UI manually with `<leader>du`
         {
             "rcarriga/nvim-dap-ui",
+            cond=(function() return not vim.g.vscode end),
             dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"},
             opts = {
                 icons = {
@@ -988,6 +988,7 @@ require("lazy").setup(
         -- - uses the debugpy installation from mason
         {
             "mfussenegger/nvim-dap-python",
+            cond=(function() return not vim.g.vscode end),
             keys = {
                 {
                     mode = "n",
@@ -1025,6 +1026,7 @@ require("lazy").setup(
         --},
         {
             "linux-cultist/venv-selector.nvim",
+            cond=(function() return not vim.g.vscode end),
             dependencies = {
                 "neovim/nvim-lspconfig",
                 "mfussenegger/nvim-dap",
@@ -1074,12 +1076,13 @@ require("lazy").setup(
         },
         {
             "yetone/avante.nvim",
+            cond=(function() return not vim.g.vscode end),
             event = "VeryLazy",
             build = "make",
             opts = {
                 provider = "copilot",
                 copilot = {
-                    model = "claude-3.5-sonnet",
+                    model = "claude-3.7-sonnet",
                     --timeout = 30000, -- Timeout in milliseconds
                     temperature = 0,
                     max_tokens = 8192,
@@ -1214,6 +1217,7 @@ require("lazy").setup(
         --NOTEBOOK SUPPORT 
         {
             "benlubas/molten-nvim",
+            cond=(function() return not vim.g.vscode end),
             version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
             build = ":UpdateRemotePlugins",
             init = function()
@@ -1227,36 +1231,38 @@ require("lazy").setup(
             -- Depending on your nvim distro or config you may need to make the loading not lazy
             -- lazy=false,
         },
-        {
-            'geg2102/nvim-jupyter-client',
-            config = function()
-                require('nvim-jupyter-client').setup({})
+        --{
+            --'geg2102/nvim-jupyter-client',
+            --cond=(function() return not vim.g.vscode end),
+            --config = function()
+                --require('nvim-jupyter-client').setup({})
             
-            -- Add cells
-            vim.keymap.set("n", "<leader>ja", "<cmd>JupyterAddCellBelow<CR>", { desc = "Add Jupyter cell below" })
-            vim.keymap.set("n", "<leader>jA", "<cmd>JupyterAddCellAbove<CR>", { desc = "Add Jupyter cell above" })
+            ---- Add cells
+            --vim.keymap.set("n", "<leader>ja", "<cmd>JupyterAddCellBelow<CR>", { desc = "Add Jupyter cell below" })
+            --vim.keymap.set("n", "<leader>jA", "<cmd>JupyterAddCellAbove<CR>", { desc = "Add Jupyter cell above" })
             
-            -- Cell operations
-            vim.keymap.set("n", "<leader>jd", "<cmd>JupyterRemoveCell<CR>", { desc = "Remove current Jupyter cell" })
-            vim.keymap.set("n", "<leader>jm", "<cmd>JupyterMergeCellAbove<CR>", { desc = "Merge with cell above" })
-            vim.keymap.set("n", "<leader>jM", "<cmd>JupyterMergeCellBelow<CR>", { desc = "Merge with cell below" })
-            vim.keymap.set("n", "<leader>jt", "<cmd>JupyterConvertCellType<CR>", { desc = "Convert cell type (code/markdown)" })
-            vim.keymap.set("v", "<leader>jm", "<cmd>JupyterMergeVisual<CR>", { desc = "Merge selected cells" })
-            vim.keymap.set("n", "<leader>jD", "<cmd>JupyterDeleteCell<CR>", { desc = "Delete cell under cursor and store in register" })
-            end
-        },
-        {
-            "geg2102/nvim-python-repl",
-            dependencies = "nvim-treesitter",
-            ft = {"python", "lua", "scala"}, 
-            config = function()
-                require("nvim-python-repl").setup({
-                    vim.keymap.set("n", "<leader> ,js", function() require('nvim-python-repl').send_current_cell_to_repl() end, { desc = "Sends the cell under cursor to repl"}),
-                    execute_on_send = false,
-                    vsplit = false,
-                })
-            end
-        },
+            ---- Cell operations
+            --vim.keymap.set("n", "<leader>jd", "<cmd>JupyterRemoveCell<CR>", { desc = "Remove current Jupyter cell" })
+            --vim.keymap.set("n", "<leader>jm", "<cmd>JupyterMergeCellAbove<CR>", { desc = "Merge with cell above" })
+            --vim.keymap.set("n", "<leader>jM", "<cmd>JupyterMergeCellBelow<CR>", { desc = "Merge with cell below" })
+            --vim.keymap.set("n", "<leader>jt", "<cmd>JupyterConvertCellType<CR>", { desc = "Convert cell type (code/markdown)" })
+            --vim.keymap.set("v", "<leader>jm", "<cmd>JupyterMergeVisual<CR>", { desc = "Merge selected cells" })
+            --vim.keymap.set("n", "<leader>jD", "<cmd>JupyterDeleteCell<CR>", { desc = "Delete cell under cursor and store in register" })
+            --end
+        --},
+        --{
+            --"geg2102/nvim-python-repl",
+            --cond=(function() return not vim.g.vscode end),
+            --dependencies = "nvim-treesitter",
+            --ft = {"python", "lua", "scala"}, 
+            --config = function()
+                --require("nvim-python-repl").setup({
+                    --execute_on_send = true,
+                    --vsplit = true,
+                --})
+            --vim.keymap.set("n", "<leader>js", function() require('nvim-python-repl').send_current_cell_to_repl() end, { desc = "Sends the cell under cursor to repl"})
+            --end
+        --},
     }
 )
 
