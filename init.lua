@@ -228,8 +228,8 @@ require("lazy").setup(
             "nvim-tree/nvim-tree.lua",
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
-        --},
-        --{
+        },
+        {
             "folke/which-key.nvim",
             event = "VeryLazy",
             opts = {
@@ -246,6 +246,17 @@ require("lazy").setup(
                     desc = "Buffer Local Keymaps (which-key)",
                 },
             },
+        },
+        {
+            "ellisonleao/dotenv.nvim",
+            lazy = false,
+            config = function()
+                require("dotenv").setup({
+                    enable_on_load = true,       -- Load .env file on startup
+                    file_names = { ".env" },     -- Specify the .env file name
+                    path = "~/.env",             -- Path to your global .env file (if not in project directories)
+                })
+            end,
         },
         {
             "WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -266,7 +277,6 @@ require("lazy").setup(
         },
         {
             "Mofiqul/adwaita.nvim",
-            cond=(function() return not vim.g.vscode end),
             lazy = false,
             priority = 1000,
             -- configure and set on startup
@@ -279,7 +289,6 @@ require("lazy").setup(
         },
         {
             "nvim-lualine/lualine.nvim",
-            cond=(function() return not vim.g.vscode end),
             dependencies = {"nvim-tree/nvim-web-devicons"},
             config = function()
                 require("lualine").setup {
@@ -353,22 +362,75 @@ require("lazy").setup(
         --end
         --},
         {"Raimondi/delimitMate"},
-        -- TODO telescope can't find . files, doesn't open using ,ff on new files and end of files
         {
             "nvim-telescope/telescope.nvim",
-            cond=(function() return not vim.g.vscode end),
-            dependencies = {"nvim-lua/plenary.nvim", "BurntSushi/ripgrep"},
+            dependencies = { "nvim-lua/plenary.nvim", "BurntSushi/ripgrep" },
             keys = {
-                {"<leader>ff", " <cmd>Telescope find_files<cr>", desc = "Telescope Find Files"},
-                {"<leader>fg", " <cmd>Telescope live_grep<cr>", desc = "Telescope Live Grep"},
-                {"<leader>fb", " <cmd>Telescope buffers<cr>", desc = "Telescope Buffers"},
-                {"<leader>fh", " <cmd>Telescope help_tags<cr>", desc = "Telescope Help Tags"},
-                {"<leader>ss", "<cmd>Telescope aerial<cr>", desc = "Goto Symbol (Aerial)",}
-            }
+                { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Telescope Find Files" },
+                { "<leader>fg", "<cmd>Telescope live_grep<CR>", desc = "Telescope Live Grep" },
+                { "<leader>fb", "<cmd>Telescope buffers<CR>", desc = "Telescope Buffers" },
+                { "<leader>fh", "<cmd>Telescope help_tags<CR>", desc = "Telescope Help Tags" },
+                { "<leader>ss", "<cmd>Telescope aerial<CR>", desc = "Goto Symbol (Aerial)" },
+            },
+            config = function()
+                local actions = require("telescope.actions")
+                local action_state = require("telescope.actions.state")
+
+                require("telescope").setup({
+                    defaults = {
+                        -- General Telescope settings
+                        prompt_prefix = "🔍 ",
+                        selection_caret = "➤ ",
+                        layout_strategy = "horizontal",
+                        layout_config = {
+                            horizontal = {
+                                preview_width = 0.5, -- Adjust preview window size
+                            },
+                        },
+                        mappings = {
+                            i = {
+                                -- Custom action for Enter key: create new file if no selection
+                                ["<CR>"] = function(prompt_bufnr)
+                                    local selection = action_state.get_selected_entry()
+                                    if selection == nil then
+                                        local entry = action_state.get_current_line()
+                                        actions.close(prompt_bufnr)
+                                        vim.cmd("edit " .. entry) -- Open new file
+                                    else
+                                        actions.select_default(prompt_bufnr) -- Open existing file
+                                    end
+                                    vim.cmd("normal! gg") -- Move cursor to top
+                                end,
+                                ["<C-u>"] = actions.preview_scrolling_up,
+                                ["<C-d>"] = actions.preview_scrolling_down,
+                            },
+                            n = {
+                                ["<CR>"] = actions.select_default,
+                                ["q"] = actions.close,
+                            },
+                        },
+                    },
+                    pickers = {
+                        find_files = {
+                            hidden = true, -- Show dotfiles
+                            no_ignore = true, -- Ignore .gitignore
+                            find_command = { "rg", "--files", "--hidden", "--glob", "!.git/*" }, -- Use ripgrep
+                        },
+                        live_grep = {
+                            additional_args = function()
+                                return { "--hidden", "--glob", "!.git/*" } -- Grep hidden files, exclude .git
+                            end,
+                        },
+                        buffers = {
+                            sort_lastused = true, -- Show recently used buffers first
+                            ignore_current_buffer = true, -- Skip current buffer in list
+                        },
+                    },
+                })
+            end,
         },
         {
             "debugloop/telescope-undo.nvim",
-            cond=(function() return not vim.g.vscode end),
             dependencies = {"nvim-telescope/telescope.nvim"},
             keys = {
                 {
@@ -393,7 +455,6 @@ require("lazy").setup(
         },
         {
             "gbprod/yanky.nvim",
-            cond=(function() return not vim.g.vscode end),
             opts = {},
             keys = {
                 {"<leader>p", function()
@@ -418,30 +479,8 @@ require("lazy").setup(
                 {"=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter"}
             }
         },
-        --{
-            --"zbirenbaum/copilot.lua",
-            --cmd = "Copilot",
-            --build = ":Copilot auth",
-            --opts = {
-                --suggestion = {
-                    --enabled = not vim.g.ai_cmp,
-                    --auto_trigger = true,
-                    --keymap = {
-                        --accept = false, -- handled by nvim-cmp / blink.cmp
-                        --next = "<M-]>",
-                        --prev = "<M-[>",
-                    --},
-                --},
-                --panel = { enabled = false },
-                --filetypes = {
-                    --markdown = true,
-                    --help = true,
-                --},
-            --},
-        --},
         {
             "zbirenbaum/copilot.lua",
-            cond=(function() return not vim.g.vscode end),
             cmd = "Copilot",
             event = "InsertEnter",
             config = function()
@@ -492,14 +531,12 @@ require("lazy").setup(
         },
         {
             "zbirenbaum/copilot-cmp",
-            cond=(function() return not vim.g.vscode end),
             config = function ()
                 require("copilot_cmp").setup()
             end
         },
         {
             "stevearc/aerial.nvim",
-            cond=(function() return not vim.g.vscode end),
             opts = function()
                 --local icons = vim.deepcopy(LazyVim.config.icons.kinds)
 
@@ -510,9 +547,9 @@ require("lazy").setup(
                 ---@type table<string, string[]>|false
                 local filter_kind = false
                 --if LazyVim.config.kind_filter then
-                    --filter_kind = assert(vim.deepcopy(LazyVim.config.kind_filter))
-                    --filter_kind._ = filter_kind.default
-                    --filter_kind.default = nil
+                --filter_kind = assert(vim.deepcopy(LazyVim.config.kind_filter))
+                --filter_kind._ = filter_kind.default
+                --filter_kind.default = nil
                 --end
 
                 local opts = {
@@ -548,7 +585,6 @@ require("lazy").setup(
         -- Python-specific plugins
         {
             "neovim/nvim-lspconfig",
-            cond=(function() return not vim.g.vscode end),
             config = function()
                 require("lspconfig").pyright.setup {
                     settings = {
@@ -562,8 +598,30 @@ require("lazy").setup(
             end
         },
         {
+            "folke/neodev.nvim",
+            opts = {
+            library = {
+                plugins = { "nvim-dap-ui" },
+                types = true,
+            },
+            setup_jsonls = true,
+            lspconfig = true,
+            }
+        },
+        {
+            "hrsh7th/vim-vsnip",
+            dependencies = {"hrsh7th/nvim-cmp"},
+            config = function()
+            vim.g.vsnip_filetypes = {
+                python = {"python"}
+            }
+            end
+        },
+        {
+        -- TODO: I would like to see help/docuemntation information always, event after creating a fuction for example when I'm editing it
+        -- TODO: I would like to use also in the terminal and other buffers, such as avante, git commit message etc
+        -- TODO: complition of buffer not always working? should confirm
             "hrsh7th/nvim-cmp",
-            cond=(function() return not vim.g.vscode end),
             dependencies = {
                 "hrsh7th/cmp-nvim-lsp",
                 "hrsh7th/cmp-buffer",
@@ -598,7 +656,7 @@ require("lazy").setup(
                             --{name = "luasnip"},
                             {name = "copilot"},
                             {name = 'vsnip'},
-                }, {
+                        }, {
                             {name = "buffer"},
                             {name = "path"}
                         }
@@ -608,13 +666,13 @@ require("lazy").setup(
         },
         { "rafamadriz/friendly-snippets" },
         --{
-            --"saadparwaiz1/cmp_luasnip",
-            --dependencies = {
-                --"L3MON4D3/LuaSnip"
-            --},
-            --config = function()
-                --require("luasnip.loaders.from_vscode").lazy_load()
-            --end
+        --"saadparwaiz1/cmp_luasnip",
+        --dependencies = {
+        --"L3MON4D3/LuaSnip"
+        --},
+        --config = function()
+        --require("luasnip.loaders.from_vscode").lazy_load()
+        --end
         --},
         {
             "folke/trouble.nvim",
@@ -659,31 +717,6 @@ require("lazy").setup(
                 }
             }
         },
-        {
-            "benlubas/molten-nvim",
-            cond=(function() return not vim.g.vscode end),
-            version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
-            --dependencies = { "3rd/image.nvim" },
-            build = ":UpdateRemotePlugins",
-            init = function()
-                -- these are examples, not defaults. Please see the readme
-                --vim.g.molten_image_provider = "image.nvim"
-                vim.g.molten_output_win_max_height = 20
-            end,
-        },
-        --{
-            ---- see the image.nvim readme for more information about configuring this plugin
-            --"3rd/image.nvim",
-            --opts = {
-                --backend = "kitty", -- whatever backend you would like to use
-                --max_width = 100,
-                --max_height = 12,
-                --max_height_window_percentage = math.huge,
-                --max_width_window_percentage = math.huge,
-                --window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
-                --window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
-            --},
-        --},
         -----------------------------------------------------------------------------
         -- PYTHON REPL
         -- A basic REPL that opens up as a horizontal split
@@ -694,7 +727,6 @@ require("lazy").setup(
         -- following line to the REPL, like we would do with other vim operators.
         {
             "Vigemus/iron.nvim",
-            cond=(function() return not vim.g.vscode end),
             keys = {
                 {"<leader>i", vim.cmd.IronRepl, desc = "󱠤 Toggle REPL"},
                 {"<leader>I", vim.cmd.IronRestart, desc = "󱠤 Restart REPL"},
@@ -751,7 +783,6 @@ require("lazy").setup(
         -- - auto-installs the parser for python
         {
             "nvim-treesitter/nvim-treesitter",
-            cond=(function() return not vim.g.vscode end),
             -- automatically update the parsers with every new release of treesitter
             build = ":TSUpdate",
             -- since treesitter's setup call is `require("nvim-treesitter.configs").setup`,
@@ -811,8 +842,7 @@ require("lazy").setup(
         -- - terminate the debugger `<leader>dt`
         -- working config from https://github.com/igorlfs/dotfiles/blob/main/nvim/.config/nvim/lua/plugins/nvim-dap.lua
         {
-        "mfussenegger/nvim-dap",
-            cond=(function() return not vim.g.vscode end),
+            "mfussenegger/nvim-dap",
             dependencies = {
                 -- Runs preLaunchTask / postDebugTask if present
                 {"stevearc/overseer.nvim", config = true},
@@ -926,7 +956,6 @@ require("lazy").setup(
         -- - toggle debugger UI manually with `<leader>du`
         {
             "rcarriga/nvim-dap-ui",
-            cond=(function() return not vim.g.vscode end),
             dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"},
             opts = {
                 icons = {
@@ -935,11 +964,11 @@ require("lazy").setup(
                     current_frame = "󰅂"
                 },
                 --layouts = {
-                    --{
-                        --elements = {"console", "watches"},
-                        --position = "bottom",
-                        --size = 10
-                    --}
+                --{
+                --elements = {"console", "watches"},
+                --position = "bottom",
+                --size = 10
+                --}
                 --},
                 expand_lines = false,
                 controls = {
@@ -975,10 +1004,10 @@ require("lazy").setup(
                     dapui.open({})
                 end
                 --dap.listeners.before.event_terminated["dapui_config"] = function()
-                    --dapui.close({})
+                --dapui.close({})
                 --end
                 --dap.listeners.before.event_exited["dapui_config"] = function()
-                    --dapui.close({})
+                --dapui.close({})
                 --end
                 require("dapui").setup(opts)
             end
@@ -988,7 +1017,6 @@ require("lazy").setup(
         -- - uses the debugpy installation from mason
         {
             "mfussenegger/nvim-dap-python",
-            cond=(function() return not vim.g.vscode end),
             keys = {
                 {
                     mode = "n",
@@ -1006,27 +1034,8 @@ require("lazy").setup(
         -- select virtual environments
         -- - makes pyright and debugpy aware of the selected virtual environment
         -- - Select a virtual environment with `:VenvSelect`
-        --{
-            --"linux-cultist/venv-selector.nvim",
-            --dependencies = {
-                --"neovim/nvim-lspconfig",
-                --"nvim-telescope/telescope.nvim",
-                --"mfussenegger/nvim-dap-python",
-                --"nvim-telescope/telescope.nvim",
-            --},
-            --config = function()
-                --require("venv-selector").setup()
-            --end,
-            --keys = {
-                --{",v", "<cmd>VenvSelect<cr>"}
-            --},
-            --opts = {
-                --dap_enabled = true -- makes the debugger work with venv
-            --}
-        --},
         {
             "linux-cultist/venv-selector.nvim",
-            cond=(function() return not vim.g.vscode end),
             dependencies = {
                 "neovim/nvim-lspconfig",
                 "mfussenegger/nvim-dap",
@@ -1050,7 +1059,7 @@ require("lazy").setup(
         {
             "chrisgrieser/nvim-various-textobjs",
             event = "UIEnter",
-            opts = { useDefaultKeymaps = true },
+            opts = { useDefaults = true },
             --opts = { keymaps.useDefaults = true },
         },
         --  Markdown
@@ -1074,52 +1083,75 @@ require("lazy").setup(
                 }
             }
         },
+        -- AI
         {
             "yetone/avante.nvim",
-            cond=(function() return not vim.g.vscode end),
             event = "VeryLazy",
             build = "make",
             opts = {
-                provider = "copilot",
+                provider = "copilot", 
+                auto_suggestions_provider = "copilot", -- Use copilot for auto-suggestions to avoid API errors
+                vendors = {
+                    deepseek = {
+                        __inherited_from = "openai",
+                        api_key_name = "DEEPSEEK_API_KEY", -- Make sure this env var is set
+                        endpoint = "https://api.deepseek.com/",
+                        model = "deepseek-coder",
+                    },
+                    openrouter = {
+                        __inherited_from = "openai",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        model = "google/gemini-2.5-pro-exp-03-25:free",
+                    },
+                    ["claude-3.5-sonnet"] = {
+                        __inherited_from = "copilot",
+                        model = "claude-3.5-sonnet",
+                        display_name = "claude-3.5-sonnet"
+                    },
+                    ["claude-3.7-sonnet"] = {
+                        __inherited_from = "copilot",
+                        model = "claude-3.7-sonnet",
+                        max_tokens = 20000,
+                        display_name = "claude-3.7-sonnet"
+                    },
+                    ["claude-3.7-sonnet-thought"] = {
+                        __inherited_from = "copilot",
+                        model = "claude-3.7-sonnet-thought",
+                        max_tokens = 20000,
+                        display_name = "claude-3.7-sonnet-thought",
+                    },
+                    ["o3-mini"] = {
+                        __inherited_from = "copilot",
+                        model = "o3-mini",
+                        display_name = "o3-mini",
+                    },
+                    ["gemini-2.0-flash"] = {
+                        __inherited_from = "copilot",
+                        model = "gemini-2.0-flash-001",
+                        display_name = "gemini-2.0-flash",
+                    },
+                    ["gpt-4o"] = {
+                        __inherited_from = "copilot",
+                        model = "gpt-4o",
+                        display_name = "gtp-4o",
+                    },
+                },
                 copilot = {
                     model = "claude-3.7-sonnet",
-                    --timeout = 30000, -- Timeout in milliseconds
+
                     temperature = 0,
-                    max_tokens = 8192,
                 },
-                --provider = "openai",
-                --auto_suggestions_provider = "openai", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
-                --openai = {
-                    --endpoint = "https://api.deepseek.com/v3",
-                    --model = "deepseek-chat",
-                    --timeout = 30000, -- Timeout in milliseconds
-                    --temperature = 0,
-                    --max_tokens = 4096,
-                    --["local"] = false,
-                --}, 
-                --provider = "deepseek",
-                --vendors = {
-                    --deepseek = {
-                        --__inherited_from = "openai",
-                        --api_key_name = "api",
-                        --endpoint = "https://api.deepseek.com/",
-                        --model = "deepseek-coder",
-                    --},
-                --},
-                --openrouter = {
-                    --__inherited_from = "openai",
-                    --api_key_name = "OPENROUTER_API_KEY",
-                    --endpoint = "https://openrouter.ai/api/v1/chat/completions",
-                    --model = "deepseek/deepseek-chat",
-                --},
-                -- add any opts here
                 behaviour = {
-                    auto_suggestions = true, -- Experimental stage
+                    auto_suggestions = false, -- Experimental stage
                     auto_set_highlight_group = true,
                     auto_set_keymaps = true,
                     auto_apply_diff_after_generation = false,
                     support_paste_from_clipboard = true,
                     minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
+                },
+                web_search_engine = {
+                    provider = "google",
                 },
                 mappings = {
                     ask = "<leader>aa",
@@ -1157,10 +1189,10 @@ require("lazy").setup(
                 windows = {
                     wrap = true, -- similar to vim.o.wrap
                     width = 40, -- default % based on available width
-                    --sidebar_header = {
-                        --align = "center", -- left, center, right for title
-                        --rounded = true,
-                    --},
+                    sidebar_header = {
+                        align = "center", -- left, center, right for title
+                        rounded = true,
+                    },
                 },
                 highlights = {
                     ---@type AvanteConflictHighlights
@@ -1181,12 +1213,14 @@ require("lazy").setup(
                 },
             },
             dependencies = {
+                "ellisonleao/dotenv.nvim", -- Make sure dotenv loads before avante
                 "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
                 "stevearc/dressing.nvim",
                 "nvim-lua/plenary.nvim",
                 "MunifTanjim/nui.nvim",
                 "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
                 "zbirenbaum/copilot.lua", -- for providers='copilot'
+                "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
                 {
                     -- support for image pasting
                     "HakonHarnes/img-clip.nvim",
@@ -1213,11 +1247,10 @@ require("lazy").setup(
                     ft = { "markdown", "Avante" },
                 },
             },
-         },
+        },
         --NOTEBOOK SUPPORT 
         {
             "benlubas/molten-nvim",
-            cond=(function() return not vim.g.vscode end),
             version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
             build = ":UpdateRemotePlugins",
             init = function()
@@ -1231,38 +1264,6 @@ require("lazy").setup(
             -- Depending on your nvim distro or config you may need to make the loading not lazy
             -- lazy=false,
         },
-        --{
-            --'geg2102/nvim-jupyter-client',
-            --cond=(function() return not vim.g.vscode end),
-            --config = function()
-                --require('nvim-jupyter-client').setup({})
-            
-            ---- Add cells
-            --vim.keymap.set("n", "<leader>ja", "<cmd>JupyterAddCellBelow<CR>", { desc = "Add Jupyter cell below" })
-            --vim.keymap.set("n", "<leader>jA", "<cmd>JupyterAddCellAbove<CR>", { desc = "Add Jupyter cell above" })
-            
-            ---- Cell operations
-            --vim.keymap.set("n", "<leader>jd", "<cmd>JupyterRemoveCell<CR>", { desc = "Remove current Jupyter cell" })
-            --vim.keymap.set("n", "<leader>jm", "<cmd>JupyterMergeCellAbove<CR>", { desc = "Merge with cell above" })
-            --vim.keymap.set("n", "<leader>jM", "<cmd>JupyterMergeCellBelow<CR>", { desc = "Merge with cell below" })
-            --vim.keymap.set("n", "<leader>jt", "<cmd>JupyterConvertCellType<CR>", { desc = "Convert cell type (code/markdown)" })
-            --vim.keymap.set("v", "<leader>jm", "<cmd>JupyterMergeVisual<CR>", { desc = "Merge selected cells" })
-            --vim.keymap.set("n", "<leader>jD", "<cmd>JupyterDeleteCell<CR>", { desc = "Delete cell under cursor and store in register" })
-            --end
-        --},
-        --{
-            --"geg2102/nvim-python-repl",
-            --cond=(function() return not vim.g.vscode end),
-            --dependencies = "nvim-treesitter",
-            --ft = {"python", "lua", "scala"}, 
-            --config = function()
-                --require("nvim-python-repl").setup({
-                    --execute_on_send = true,
-                    --vsplit = true,
-                --})
-            --vim.keymap.set("n", "<leader>js", function() require('nvim-python-repl').send_current_cell_to_repl() end, { desc = "Sends the cell under cursor to repl"})
-            --end
-        --},
     }
 )
 
