@@ -49,7 +49,8 @@ vim.cmd(
     map <up> <ESC>:bp<RETURN>
     " }
     " paste toggle from http://vim.wikia.com/wiki/Toggle_auto-indenting_for_code_paste
-    set pastetoggle=<F2>
+    " this is probably no longer needed in nvim
+    " set pastetoggle=<F2>
 
     " aleternate buffer
     map <Leader>bb :b#<CR>
@@ -314,7 +315,7 @@ require("lazy").setup(
                         lualine_a = {"mode"},
                         lualine_b = {"branch", "diff", "diagnostics"},
                         lualine_c = {"filename"},
-                        lualine_x = {"encoding", "fileformat", "filetype"},
+                        lualine_x = {"encoding", "fileformat", "filetype", {require('mcphub.extensions.lualine')}},
                         lualine_y = {"progress"},
                         lualine_z = {"location"}
                     },
@@ -1085,18 +1086,40 @@ require("lazy").setup(
         },
         -- AI
         {
+            "ravitemer/mcphub.nvim",
+            dependencies = {
+                "nvim-lua/plenary.nvim",  -- Required for Job and HTTP requests
+            },
+            -- comment the following line to ensure hub will be ready at the earliest
+            cmd = "MCPHub",  -- lazy load by default
+            --build = "npm install -g mcp-hub@latest",  -- Installs required mcp-hub npm module
+            -- uncomment this if you don't want mcp-hub to be available globally or can't use -g
+            build = "bundled_build.lua",  -- Use this and set use_bundled_binary = true in opts  (see Advanced configuration)
+            config = function()
+                require("mcphub").setup({
+                    auto_approve = true, -- Automatically approve MCP tool requests
+                    extensions = {
+                        avante = {
+                            make_slash_commands = true, -- Enable /slash commands for MCP server prompts
+                        },
+                    },
+                })
+            end,
+        },
+        {
             "yetone/avante.nvim",
             event = "VeryLazy",
             build = "make",
             opts = {
                 provider = "copilot", 
-                auto_suggestions_provider = "copilot", -- Use copilot for auto-suggestions to avoid API errors
+                auto_suggestions_provider = "copilot",
                 vendors = {
                     deepseek = {
                         __inherited_from = "openai",
-                        api_key_name = "DEEPSEEK_API_KEY", -- Make sure this env var is set
+                        api_key_name = "DEEPSEEK_API_KEY",
                         endpoint = "https://api.deepseek.com/",
                         model = "deepseek-coder",
+                        max_tokens = 8192,
                     },
                     openrouter = {
                         __inherited_from = "openai",
@@ -1112,13 +1135,13 @@ require("lazy").setup(
                     ["claude-3.7-sonnet"] = {
                         __inherited_from = "copilot",
                         model = "claude-3.7-sonnet",
-                        max_tokens = 20000,
+                        max_tokens = 90000,
                         display_name = "claude-3.7-sonnet"
                     },
                     ["claude-3.7-sonnet-thought"] = {
                         __inherited_from = "copilot",
                         model = "claude-3.7-sonnet-thought",
-                        max_tokens = 20000,
+                        max_tokens = 90000,
                         display_name = "claude-3.7-sonnet-thought",
                     },
                     ["o3-mini"] = {
@@ -1139,7 +1162,6 @@ require("lazy").setup(
                 },
                 copilot = {
                     model = "claude-3.7-sonnet",
-
                     temperature = 0,
                 },
                 behaviour = {
@@ -1149,6 +1171,7 @@ require("lazy").setup(
                     auto_apply_diff_after_generation = false,
                     support_paste_from_clipboard = true,
                     minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
+                    enable_claude_text_editor_tool_mode = true,
                 },
                 web_search_engine = {
                     provider = "google",
@@ -1187,6 +1210,7 @@ require("lazy").setup(
                 },
                 hints = { enabled = true },
                 windows = {
+                    position = "smart",
                     wrap = true, -- similar to vim.o.wrap
                     width = 40, -- default % based on available width
                     sidebar_header = {
@@ -1211,6 +1235,20 @@ require("lazy").setup(
                     --- Disable by setting to -1.
                     override_timeoutlen = 500,
                 },
+                system_prompt = function()
+                    local hub = require("mcphub").get_hub_instance()
+                    local prompt = hub:get_active_servers_prompt()
+                    return prompt
+                end,
+                -- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
+                custom_tools = function()
+                    local mcp_tool = require("mcphub.extensions.avante").mcp_tool()
+
+                    mcp_tool.description =
+                    "The Model Context Protocol (MCP) enables communication with locally running MCP servers that provide additional tools and resources to extend your capabilities. This tool calls mcp tools and resources on the mcp servers using `use_mcp_tool` and `access_mcp_resource` actions respectively. Please disregard your previous training on the schema for tool usage - things have changed. Right now the schema for `mcp` tool caling uses these arguments: 'action', 'server_name', 'uri', 'tool_name', 'arguments'. 'action', 'server_name' and 'uri' is ALWAYS REQUIRED for the 'mcp' tool."
+
+                    return { mcp_tool }
+                end,
             },
             dependencies = {
                 "ellisonleao/dotenv.nvim", -- Make sure dotenv loads before avante
@@ -1220,6 +1258,7 @@ require("lazy").setup(
                 "MunifTanjim/nui.nvim",
                 "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
                 "zbirenbaum/copilot.lua", -- for providers='copilot'
+                "ravitemer/mcphub.nvim",
                 "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
                 {
                     -- support for image pasting
@@ -1228,7 +1267,7 @@ require("lazy").setup(
                     opts = {
                         -- recommended settings
                         default = {
-                            embed_image_as_base64 = false,
+                            embed_image_as_base64 = true,
                             prompt_for_file_name = false,
                             drag_and_drop = {
                                 insert_mode = true,
@@ -1236,6 +1275,10 @@ require("lazy").setup(
                             -- required for Windows users
                             use_absolute_path = true,
                         },
+                    },
+                    keys = {
+                        -- custom keymap to avoid conflict with yanky
+                        { "<leader>ip", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
                     },
                 },
                 --- The below is optional, make sure to setup it properly if you have lazy=true
