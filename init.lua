@@ -267,12 +267,22 @@ require("lazy").setup(
             },
             opts = {
                 ensure_installed = {
+                    -- Python
                     "pyright", -- LSP for python
                     "ruff", -- linter for python (includes flake8, pep8, etc.)
                     "debugpy", -- debugger
                     "black", -- formatter
                     "isort", -- organize imports
-                    "taplo" -- LSP for toml (for pyproject.toml files)
+                    "taplo", -- LSP for toml (for pyproject.toml files)
+                    
+                    -- TypeScript/React
+                    "typescript-language-server", -- LSP for TypeScript/JavaScript
+                    "eslint-lsp", -- ESLint Language Server 
+                    "prettier", -- Formatter for JS/TS/JSX/TSX
+                    "css-lsp", -- CSS Language Server
+                    "html-lsp", -- HTML Language Server
+                    "stylelint-lsp", -- Stylelint Language Server
+                    "tailwindcss-language-server" -- TailwindCSS Language Server (if using tailwind)
                 }
             }
         },
@@ -372,6 +382,9 @@ require("lazy").setup(
                 { "<leader>fb", "<cmd>Telescope buffers<CR>", desc = "Telescope Buffers" },
                 { "<leader>fh", "<cmd>Telescope help_tags<CR>", desc = "Telescope Help Tags" },
                 { "<leader>ss", "<cmd>Telescope aerial<CR>", desc = "Goto Symbol (Aerial)" },
+                { "<leader>fw", function() 
+                    require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>") })
+                  end, desc = "Search Current Word" },
             },
             config = function()
                 local actions = require("telescope.actions")
@@ -587,6 +600,7 @@ require("lazy").setup(
         {
             "neovim/nvim-lspconfig",
             config = function()
+                -- Python LSP setup
                 require("lspconfig").pyright.setup {
                     settings = {
                         python = {
@@ -596,6 +610,65 @@ require("lazy").setup(
                         }
                     }
                 }
+                
+                -- TypeScript/React LSP setup (using typescript-language-server)
+                -- Note: tsserver is deprecated, we use typescript-language-server via Mason
+                require("lspconfig").ts_ls.setup({
+                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/typescript-language-server", "--stdio" },
+                    settings = {
+                        typescript = {
+                            inlayHints = {
+                                includeInlayParameterNameHints = "all",
+                                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                                includeInlayFunctionParameterTypeHints = true,
+                                includeInlayVariableTypeHints = true,
+                                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                                includeInlayPropertyDeclarationTypeHints = true,
+                                includeInlayFunctionLikeReturnTypeHints = true,
+                                includeInlayEnumMemberValueHints = true,
+                            }
+                        },
+                        javascript = {
+                            inlayHints = {
+                                includeInlayParameterNameHints = "all",
+                                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                                includeInlayFunctionParameterTypeHints = true,
+                                includeInlayVariableTypeHints = true,
+                                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                                includeInlayPropertyDeclarationTypeHints = true,
+                                includeInlayFunctionLikeReturnTypeHints = true,
+                                includeInlayEnumMemberValueHints = true,
+                            }
+                        }
+                    }
+                })
+                
+                -- ESLint LSP setup
+                require("lspconfig").eslint.setup({
+                    -- If you want ESLint to automatically fix issues on save
+                    on_attach = function(client, bufnr)
+                        vim.api.nvim_create_autocmd("BufWritePre", {
+                            buffer = bufnr,
+                            command = "EslintFixAll",
+                        })
+                    end,
+                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-eslint-language-server", "--stdio" }
+                })
+                
+                -- CSS LSP setup
+                require("lspconfig").cssls.setup({
+                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-css-language-server", "--stdio" }
+                })
+                
+                -- HTML LSP setup
+                require("lspconfig").html.setup({
+                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-html-language-server", "--stdio" }
+                })
+                
+                -- Tailwind CSS LSP setup
+                require("lspconfig").tailwindcss.setup({
+                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/tailwindcss-language-server", "--stdio" }
+                })
             end
         },
         {
@@ -699,15 +772,23 @@ require("lazy").setup(
             },
             opts = {
                 formatters_by_ft = {
-                    -- first use isort and then black
+                    -- Python formatters
                     python = {"isort", "black"},
+                    
+                    -- TypeScript/React formatters
+                    typescript = {"prettier"},
+                    javascript = {"prettier"},
+                    javascriptreact = {"prettier"},
+                    typescriptreact = {"prettier"},
+                    css = {"prettier"},
+                    html = {"prettier"},
+                    json = {"prettier"},
+                    yaml = {"prettier"},
+                    markdown = {"prettier", "inject"},
+                    
                     -- "inject" is a special formatter from conform.nvim, which
                     -- formats treesitter-injected code. basically, this makes
                     -- conform.nvim format python codeblocks inside a markdown file.
-                    markdown = {"inject"},
-                    javascript = { "prettierd", "prettier", stop_after_first = true },
-                    json = { "prettier" },
-                    charts = { "prettier --parser json" }, -- treat mongodb atlas charts exports `.charts` like `.json`
                 },
                 -- enable format-on-save
                 format_on_save = {
@@ -800,6 +881,15 @@ require("lazy").setup(
                     "rst",
                     "ninja",
                     "lua",
+                    
+                    -- JavaScript/TypeScript/React
+                    "javascript",
+                    "typescript",
+                    "tsx",
+                    "css",
+                    "html",
+                    "json",
+                    
                     -- needed for formatting code-blockcs inside markdown via conform.nvim
                     "markdown",
                     "markdown_inline"
@@ -1362,6 +1452,43 @@ vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = 
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { noremap = true, silent = true })
 vim.keymap.set('n', '<Right>', ':AerialToggle!<CR>', { noremap = true, silent = true })
 
+-- Set up filetype-specific configurations
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = {"typescript", "javascript", "typescriptreact", "javascriptreact", "css", "html"},
+    callback = function()
+        -- Use 2 spaces for indentation for web-related files
+        vim.opt_local.expandtab = true
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt_local.softtabstop = 2
+    end
+})
+
+-- LSP specific keybindings
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local bufnr = args.buf
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        
+        -- Code navigation
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "Go to Definition" })
+        vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "Go to References" })
+        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr, desc = "Go to Implementation" })
+        vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "Go to Type Definition" })
+        
+        -- Documentation
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "Show Documentation" })
+        
+        -- Code actions
+        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Code Action" })
+        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename Symbol" })
+        
+        -- Diagnostics
+        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { buffer = bufnr, desc = "Previous Diagnostic" })
+        vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { buffer = bufnr, desc = "Next Diagnostic" })
+        vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { buffer = bufnr, desc = "Show Diagnostics" })
+    end,
+})
 
 -- Python-specific configurations
 --vim.cmd [[
