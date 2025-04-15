@@ -543,12 +543,13 @@ require("lazy").setup(
                     server_opts_overrides = {},})
             end,
         },
-        {
-            "zbirenbaum/copilot-cmp",
-            config = function ()
-                require("copilot_cmp").setup()
-            end
-        },
+        -- No longer needed as we use blink.compat for copilot integration
+        -- {
+        --    "zbirenbaum/copilot-cmp",
+        --    config = function ()
+        --        require("copilot_cmp").setup()
+        --    end
+        -- },
         {
             "stevearc/aerial.nvim",
             opts = function()
@@ -608,7 +609,8 @@ require("lazy").setup(
                                 typeCheckingMode = "basic"
                             }
                         }
-                    }
+                    },
+                    capabilities = require("blink.lsp").make_capabilities(),
                 }
                 
                 -- TypeScript/React LSP setup (using typescript-language-server)
@@ -640,7 +642,8 @@ require("lazy").setup(
                                 includeInlayEnumMemberValueHints = true,
                             }
                         }
-                    }
+                    },
+                    capabilities = require("blink.lsp").make_capabilities(),
                 })
                 
                 -- ESLint LSP setup
@@ -652,22 +655,26 @@ require("lazy").setup(
                             command = "EslintFixAll",
                         })
                     end,
-                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-eslint-language-server", "--stdio" }
+                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-eslint-language-server", "--stdio" },
+                    capabilities = require("blink.lsp").make_capabilities(),
                 })
                 
                 -- CSS LSP setup
                 require("lspconfig").cssls.setup({
-                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-css-language-server", "--stdio" }
+                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-css-language-server", "--stdio" },
+                    capabilities = require("blink.lsp").make_capabilities(),
                 })
                 
                 -- HTML LSP setup
                 require("lspconfig").html.setup({
-                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-html-language-server", "--stdio" }
+                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-html-language-server", "--stdio" },
+                    capabilities = require("blink.lsp").make_capabilities(),
                 })
                 
                 -- Tailwind CSS LSP setup
                 require("lspconfig").tailwindcss.setup({
-                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/tailwindcss-language-server", "--stdio" }
+                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/tailwindcss-language-server", "--stdio" },
+                    capabilities = require("blink.lsp").make_capabilities(),
                 })
             end
         },
@@ -692,62 +699,136 @@ require("lazy").setup(
             end
         },
         {
-        -- TODO: I would like to see help/docuemntation information always, event after creating a fuction for example when I'm editing it
-        -- TODO: I would like to use also in the terminal and other buffers, such as avante, git commit message etc
-        -- TODO: complition of buffer not always working? should confirm
-            "hrsh7th/nvim-cmp",
-            dependencies = {
-                "hrsh7th/cmp-nvim-lsp",
-                "hrsh7th/cmp-buffer",
-                "hrsh7th/cmp-path",
-                "hrsh7th/cmp-cmdline",
-                "hrsh7th/cmp-vsnip",
-                "hrsh7th/vim-vsnip",
-                "saadparwaiz1/cmp_luasnip",
-                "L3MON4D3/LuaSnip"
-            },
-            config = function()
-                local cmp = require("cmp")
-                cmp.setup {
-                    snippet = {
-                        expand = function(args)
-                            vim.fn["vsnip#anonymous"](args.body)
-                            --require('luasnip').lsp_expand(args.body)
-                        end,
-                    },
-                    mapping = cmp.mapping.preset.insert(
-                        {
-                            ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-                            ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                            ["<C-Space>"] = cmp.mapping.complete(),
-                            ["<C-e>"] = cmp.mapping.abort(),
-                            ["<CR>"] = cmp.mapping.confirm({select = true})
-                        }
-                    ),
-                    sources = cmp.config.sources(
-                        {
-                            {name = "nvim_lsp"},
-                            --{name = "luasnip"},
-                            {name = "copilot"},
-                            {name = 'vsnip'},
-                        }, {
-                            {name = "buffer"},
-                            {name = "path"}
-                        }
-                    )
-                }
+        -- Replacement for nvim-cmp using Blink
+            "saghen/blink.cmp",
+            version = "*", -- Use stable version
+            build = function()
+                if vim.fn.executable("cargo") == 1 then
+                    return "cargo build --release"
+                end
             end,
+            dependencies = {
+                -- Keep friendly-snippets as you had it before
+                "rafamadriz/friendly-snippets",
+                -- Add blink.compat for compatibility with some nvim-cmp sources
+                {
+                    "saghen/blink.compat",
+                    opts = {},
+                    version = "*",
+                },
+                -- Keep vsnip for snippet support
+                "hrsh7th/vim-vsnip",
+            },
+            opts = {
+                -- Setup rendering
+                render = {
+                    offset = {
+                        horizontal = 0,
+                        vertical = 1,
+                    },
+                    max_width = 80,
+                    max_height = 20,
+                    scrollbar = true,
+                },
+                filtering = {
+                    -- Adjust behavior to be similar to nvim-cmp
+                    use_regex = false,
+                    use_fuzzy_filtering = true,
+                },
+                -- Mapping similar to your nvim-cmp configuration
+                mapping = {
+                    ["<C-b>"] = "scroll_docs_up",
+                    ["<C-f>"] = "scroll_docs_down",
+                    ["<C-Space>"] = "complete",
+                    ["<C-e>"] = "abort",
+                    ["<CR>"] = "confirm",
+                    ["<Tab>"] = "select_next_or_expand",
+                    ["<S-Tab>"] = "select_prev",
+                },
+                -- Sources configuration
+                sources = {
+                    -- Default providers
+                    default = {
+                        "buffer",
+                        "path",
+                        "lsp",
+                        "vsnip",
+                        "copilot",
+                        "avante_commands",
+                        "avante_mentions",
+                        "avante_files",
+                    },
+                    -- Enable completion in specific contexts
+                    completion = {
+                        enabled_providers = {
+                            "*", -- Enable in all contexts
+                        }
+                    },
+                    -- Configure compatibility with nvim-cmp sources
+                    compat = {
+                        "copilot",
+                    },
+                },
+                -- Configure individual providers
+                providers = {
+                    -- LSP completion (native to blink)
+                    lsp = {
+                        name = "lsp",
+                        module = "blink.lsp.source",
+                        score_offset = 50,
+                        opts = {
+                            trigger_characters = {},
+                            resolve_documentation = true,
+                        }
+                    },
+                    -- Buffer completion (native to blink)
+                    buffer = {
+                        name = "buffer",
+                        module = "blink.buffer.source",
+                        score_offset = 10,
+                    },
+                    -- Path completion (native to blink)
+                    path = {
+                        name = "path",
+                        module = "blink.path.source",
+                        score_offset = 20,
+                    },
+                    -- Snippet completion through vsnip
+                    vsnip = {
+                        name = "vsnip",
+                        module = "blink.vsnip.source",
+                        score_offset = 30,
+                    },
+                    -- Copilot completion via compat
+                    copilot = {
+                        name = "copilot",
+                        module = "blink.compat.source",
+                        score_offset = 100, -- Higher priority than LSP
+                        opts = {},
+                    },
+                    -- Avante integration
+                    avante_commands = {
+                        name = "avante_commands",
+                        module = "blink.compat.source",
+                        score_offset = 90,
+                        opts = {},
+                    },
+                    avante_files = {
+                        name = "avante_files",
+                        module = "blink.compat.source",
+                        score_offset = 100,
+                        opts = {},
+                    },
+                    avante_mentions = {
+                        name = "avante_mentions",
+                        module = "blink.compat.source",
+                        score_offset = 1000,
+                        opts = {},
+                    }
+                },
+            },
         },
         { "rafamadriz/friendly-snippets" },
-        --{
-        --"saadparwaiz1/cmp_luasnip",
-        --dependencies = {
-        --"L3MON4D3/LuaSnip"
-        --},
-        --config = function()
-        --require("luasnip.loaders.from_vscode").lazy_load()
-        --end
-        --},
         {
             "folke/trouble.nvim",
             config = function()
@@ -1203,6 +1284,9 @@ require("lazy").setup(
             opts = {
                 provider = "copilot", 
                 auto_suggestions_provider = "copilot",
+                selector = {
+                    provider = "fzf",  -- Using fzf selector for better performance
+                },
                 vendors = {
                     deepseek = {
                         __inherited_from = "openai",
