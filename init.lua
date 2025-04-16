@@ -500,7 +500,7 @@ require("lazy").setup(
             config = function()
                 require("copilot").setup({
                     panel = {
-                        enabled = true,
+                        enabled = false,
                         auto_refresh = false,
                         keymap = {
                             jump_prev = "[[",
@@ -515,7 +515,7 @@ require("lazy").setup(
                         },
                     },
                     suggestion = {
-                        enabled = true,
+                        enabled = false,
                         auto_trigger = false,
                         hide_during_completion = true,
                         debounce = 75,
@@ -601,6 +601,31 @@ require("lazy").setup(
         {
             "neovim/nvim-lspconfig",
             config = function()
+                -- Define standard capabilities for LSP
+                local capabilities = vim.lsp.protocol.make_client_capabilities()
+                capabilities = vim.tbl_deep_extend("force", capabilities, {
+                    textDocument = {
+                        completion = {
+                            completionItem = {
+                                snippetSupport = true,
+                                preselectSupport = true,
+                                insertReplaceSupport = true,
+                                labelDetailsSupport = true,
+                                deprecatedSupport = true,
+                                commitCharactersSupport = true,
+                                tagSupport = { valueSet = { 1 } },
+                                resolveSupport = {
+                                    properties = {
+                                        "documentation",
+                                        "detail",
+                                        "additionalTextEdits",
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+                
                 -- Python LSP setup
                 require("lspconfig").pyright.setup {
                     settings = {
@@ -610,7 +635,7 @@ require("lazy").setup(
                             }
                         }
                     },
-                    capabilities = require("blink.lsp").make_capabilities(),
+                    capabilities = capabilities,
                 }
                 
                 -- TypeScript/React LSP setup (using typescript-language-server)
@@ -643,7 +668,7 @@ require("lazy").setup(
                             }
                         }
                     },
-                    capabilities = require("blink.lsp").make_capabilities(),
+                    capabilities = capabilities,
                 })
                 
                 -- ESLint LSP setup
@@ -656,60 +681,56 @@ require("lazy").setup(
                         })
                     end,
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-eslint-language-server", "--stdio" },
-                    capabilities = require("blink.lsp").make_capabilities(),
+                    capabilities = capabilities,
                 })
                 
                 -- CSS LSP setup
                 require("lspconfig").cssls.setup({
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-css-language-server", "--stdio" },
-                    capabilities = require("blink.lsp").make_capabilities(),
+                    capabilities = capabilities,
                 })
-                
+
                 -- HTML LSP setup
                 require("lspconfig").html.setup({
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-html-language-server", "--stdio" },
-                    capabilities = require("blink.lsp").make_capabilities(),
+                    capabilities = capabilities,
                 })
-                
+
                 -- Tailwind CSS LSP setup
                 require("lspconfig").tailwindcss.setup({
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/tailwindcss-language-server", "--stdio" },
-                    capabilities = require("blink.lsp").make_capabilities(),
+                    capabilities = capabilities,
                 })
             end
         },
         {
             "folke/neodev.nvim",
             opts = {
-            library = {
-                plugins = { "nvim-dap-ui" },
-                types = true,
-            },
-            setup_jsonls = true,
-            lspconfig = true,
+                library = {
+                    plugins = { "nvim-dap-ui" },
+                    types = true,
+                },
+                setup_jsonls = true,
+                lspconfig = true,
             }
         },
+        --{
+            --"hrsh7th/vim-vsnip",
+            --dependencies = {"hrsh7th/nvim-cmp"},
+            --config = function()
+                --vim.g.vsnip_filetypes = {
+                    --python = {"python"}
+                --}
+            --end
+        --},
         {
-            "hrsh7th/vim-vsnip",
-            dependencies = {"hrsh7th/nvim-cmp"},
-            config = function()
-            vim.g.vsnip_filetypes = {
-                python = {"python"}
-            }
-            end
-        },
-        {
-        -- Replacement for nvim-cmp using Blink
             "saghen/blink.cmp",
-            version = "*", -- Use stable version
-            build = function()
-                if vim.fn.executable("cargo") == 1 then
-                    return "cargo build --release"
-                end
-            end,
+            --dependencies = { 'rafamadriz/friendly-snippets' },
             dependencies = {
                 -- Keep friendly-snippets as you had it before
                 "rafamadriz/friendly-snippets",
+                'Kaiser-Yang/blink-cmp-avante',
+                "fang2hou/blink-copilot",
                 -- Add blink.compat for compatibility with some nvim-cmp sources
                 {
                     "saghen/blink.compat",
@@ -719,112 +740,54 @@ require("lazy").setup(
                 -- Keep vsnip for snippet support
                 "hrsh7th/vim-vsnip",
             },
+            build = function()
+                if vim.fn.executable("cargo") == 1 then
+                    return "cargo build --release"
+                end
+            end,
+            -- use a release tag to download pre-built binaries
+            --version = '1.*',
+            version = "*", -- blink.cmp requires a release tag for its rust binary
+            --build = 'cargo build --release',
             opts = {
-                -- Setup rendering
-                render = {
-                    offset = {
-                        horizontal = 0,
-                        vertical = 1,
-                    },
-                    max_width = 80,
-                    max_height = 20,
-                    scrollbar = true,
-                },
-                filtering = {
-                    -- Adjust behavior to be similar to nvim-cmp
-                    use_regex = false,
-                    use_fuzzy_filtering = true,
-                },
-                -- Mapping similar to your nvim-cmp configuration
-                mapping = {
-                    ["<C-b>"] = "scroll_docs_up",
-                    ["<C-f>"] = "scroll_docs_down",
-                    ["<C-Space>"] = "complete",
-                    ["<C-e>"] = "abort",
-                    ["<CR>"] = "confirm",
-                    ["<Tab>"] = "select_next_or_expand",
-                    ["<S-Tab>"] = "select_prev",
-                },
-                -- Sources configuration
+                -- 'default' for mappings similar to built-in vim completion
+                -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
+                -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
+                --
+                -- All presets have the following mappings:
+                -- C-space: Open menu or open docs if already open
+                -- C-n/C-p or Up/Down: Select next/previous item
+                -- C-e: Hide menu
+                -- C-k: Toggle signature help (if signature.enabled = true)
+                keymap = { preset = "super-tab" },
+                signature = { enabled = true },
+                completion = { documentation = { auto_show = true } },
+                ---- Sources configuration
                 sources = {
                     -- Default providers
                     default = {
                         "buffer",
                         "path",
                         "lsp",
-                        "vsnip",
+                        --"vsnip",
                         "copilot",
-                        "avante_commands",
-                        "avante_mentions",
-                        "avante_files",
+                        "avante",
                     },
-                    -- Enable completion in specific contexts
-                    completion = {
-                        enabled_providers = {
-                            "*", -- Enable in all contexts
-                        }
+                    providers = {
+                        avante = {
+                            module = 'blink-cmp-avante',
+                            name = 'Avante',
+                            opts = {
+                                -- options for blink-cmp-avante
+                            },
+                        },
+                        copilot = {
+                            name = "copilot",
+                            module = "blink-copilot",
+                            score_offset = 100,
+                            async = true,
+                        },
                     },
-                    -- Configure compatibility with nvim-cmp sources
-                    compat = {
-                        "copilot",
-                    },
-                },
-                -- Configure individual providers
-                providers = {
-                    -- LSP completion (native to blink)
-                    lsp = {
-                        name = "lsp",
-                        module = "blink.lsp.source",
-                        score_offset = 50,
-                        opts = {
-                            trigger_characters = {},
-                            resolve_documentation = true,
-                        }
-                    },
-                    -- Buffer completion (native to blink)
-                    buffer = {
-                        name = "buffer",
-                        module = "blink.buffer.source",
-                        score_offset = 10,
-                    },
-                    -- Path completion (native to blink)
-                    path = {
-                        name = "path",
-                        module = "blink.path.source",
-                        score_offset = 20,
-                    },
-                    -- Snippet completion through vsnip
-                    vsnip = {
-                        name = "vsnip",
-                        module = "blink.vsnip.source",
-                        score_offset = 30,
-                    },
-                    -- Copilot completion via compat
-                    copilot = {
-                        name = "copilot",
-                        module = "blink.compat.source",
-                        score_offset = 100, -- Higher priority than LSP
-                        opts = {},
-                    },
-                    -- Avante integration
-                    avante_commands = {
-                        name = "avante_commands",
-                        module = "blink.compat.source",
-                        score_offset = 90,
-                        opts = {},
-                    },
-                    avante_files = {
-                        name = "avante_files",
-                        module = "blink.compat.source",
-                        score_offset = 100,
-                        opts = {},
-                    },
-                    avante_mentions = {
-                        name = "avante_mentions",
-                        module = "blink.compat.source",
-                        score_offset = 1000,
-                        opts = {},
-                    }
                 },
             },
         },
