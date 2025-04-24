@@ -543,13 +543,6 @@ require("lazy").setup(
                     server_opts_overrides = {},})
             end,
         },
-        -- No longer needed as we use blink.compat for copilot integration
-        -- {
-        --    "zbirenbaum/copilot-cmp",
-        --    config = function ()
-        --        require("copilot_cmp").setup()
-        --    end
-        -- },
         {
             "stevearc/aerial.nvim",
             opts = function()
@@ -714,15 +707,6 @@ require("lazy").setup(
                 lspconfig = true,
             }
         },
-        --{
-            --"hrsh7th/vim-vsnip",
-            --dependencies = {"hrsh7th/nvim-cmp"},
-            --config = function()
-                --vim.g.vsnip_filetypes = {
-                    --python = {"python"}
-                --}
-            --end
-        --},
         {
             "saghen/blink.cmp",
             --dependencies = { 'rafamadriz/friendly-snippets' },
@@ -746,9 +730,7 @@ require("lazy").setup(
                 end
             end,
             -- use a release tag to download pre-built binaries
-            --version = '1.*',
             version = "*", -- blink.cmp requires a release tag for its rust binary
-            --build = 'cargo build --release',
             opts = {
                 -- 'default' for mappings similar to built-in vim completion
                 -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
@@ -761,7 +743,23 @@ require("lazy").setup(
                 -- C-k: Toggle signature help (if signature.enabled = true)
                 keymap = { preset = "super-tab" },
                 signature = { enabled = true },
-                completion = { documentation = { auto_show = true } },
+                --fuzzy = { implementation = "prefer_rust_with_warning" },
+                completion = {
+                    documentation = { auto_show = true },
+                    keyword = { range = 'full' },
+                    menu = {
+                        -- Don't automatically show the completion menu
+                        auto_show = true,
+
+                        -- nvim-cmp style menu
+                        draw = {
+                            columns = {
+                                { "label", "label_description", gap = 1 },
+                                { "kind_icon", "kind" }
+                            },
+                        }
+                    },
+                },
                 ---- Sources configuration
                 sources = {
                     -- Default providers
@@ -1248,7 +1246,7 @@ require("lazy").setup(
                 provider = "copilot", 
                 auto_suggestions_provider = "copilot",
                 selector = {
-                    provider = "fzf",  -- Using fzf selector for better performance
+                    provider = "telescope",
                 },
                 vendors = {
                     deepseek = {
@@ -1258,12 +1256,12 @@ require("lazy").setup(
                         model = "deepseek-coder",
                         max_tokens = 8192,
                     },
-                    openrouter = {
-                        __inherited_from = "openai",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        model = "google/gemini-2.5-pro-exp-03-25:free",
-                    },
+                    --openrouter = {
+                        --__inherited_from = "openai",
+                        --api_key_name = "OPENROUTER_API_KEY",
+                        --endpoint = "https://openrouter.ai/api/v1",
+                        --model = "google/gemini-2.5-pro-exp-03-25:free",
+                    --},
                     ["claude-3.5-sonnet"] = {
                         __inherited_from = "copilot",
                         model = "claude-3.5-sonnet",
@@ -1272,13 +1270,13 @@ require("lazy").setup(
                     ["claude-3.7-sonnet"] = {
                         __inherited_from = "copilot",
                         model = "claude-3.7-sonnet",
-                        max_tokens = 90000,
+                        max_tokens = 2000000,
                         display_name = "claude-3.7-sonnet"
                     },
                     ["claude-3.7-sonnet-thought"] = {
                         __inherited_from = "copilot",
                         model = "claude-3.7-sonnet-thought",
-                        max_tokens = 90000,
+                        max_tokens = 2000000,
                         display_name = "claude-3.7-sonnet-thought",
                     },
                     ["o3-mini"] = {
@@ -1289,12 +1287,22 @@ require("lazy").setup(
                     ["gemini-2.0-flash"] = {
                         __inherited_from = "copilot",
                         model = "gemini-2.0-flash-001",
-                        display_name = "gemini-2.0-flash",
+                        display_name = "copilot-gemini-2.0-flash",
+                    },
+                    ["gemini-2.5-pro"] = {
+                        __inherited_from = "copilot",
+                        model = "gemini-2.5-pro",
+                        display_name = "copilot-gemini-2.5-pro",
                     },
                     ["gpt-4o"] = {
                         __inherited_from = "copilot",
                         model = "gpt-4o",
                         display_name = "gtp-4o",
+                    },
+                    ["gpt-4.1"] = {
+                        __inherited_from = "copilot",
+                        model = "gpt-4.1",
+                        display_name = "gtp-4.1",
                     },
                 },
                 copilot = {
@@ -1393,7 +1401,6 @@ require("lazy").setup(
                 "stevearc/dressing.nvim",
                 "nvim-lua/plenary.nvim",
                 "MunifTanjim/nui.nvim",
-                "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
                 "zbirenbaum/copilot.lua", -- for providers='copilot'
                 "ravitemer/mcphub.nvim",
                 "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
