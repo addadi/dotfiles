@@ -193,7 +193,7 @@ vim.cmd(
 "    endfunction
 "    "From http://vim.wikia.com/wiki/Folding
 "    "In normal mode, press Space to toggle the current fold open/closed.
-"    "However, if the cursor is not in a fold, move to the right 
+"    "However, if the cursor is not in a fold, move to the right
 "    "(the default behavior).
 "    nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 "    vnoremap <Space> zf
@@ -253,35 +253,35 @@ require("lazy").setup(
             lazy = false,
             config = function()
                 require("dotenv").setup({
-                    enable_on_load = true,       -- Load .env file on startup
-                    file_names = { ".env" },     -- Specify the .env file name
-                    path = "~/.env",             -- Path to your global .env file (if not in project directories)
+                    enable_on_load = true,   -- Load .env file on startup
+                    file_names = { ".env" }, -- Specify the .env file name
+                    path = "~/.env",         -- Path to your global .env file (if not in project directories)
                 })
             end,
         },
         {
             "WhoIsSethDaniel/mason-tool-installer.nvim",
             dependencies = {
-                {"williamboman/mason.nvim", opts = true},
-                {"williamboman/mason-lspconfig.nvim", opts = true}
+                { "williamboman/mason.nvim",           opts = true },
+                { "williamboman/mason-lspconfig.nvim", opts = true }
             },
             opts = {
                 ensure_installed = {
                     -- Python
                     "pyright", -- LSP for python
-                    "ruff", -- linter for python (includes flake8, pep8, etc.)
+                    "ruff",    -- linter for python (includes flake8, pep8, etc.)
                     "debugpy", -- debugger
-                    "black", -- formatter
-                    "isort", -- organize imports
-                    "taplo", -- LSP for toml (for pyproject.toml files)
-                    
+                    "black",   -- formatter
+                    "isort",   -- organize imports
+                    "taplo",   -- LSP for toml (for pyproject.toml files)
+
                     -- TypeScript/React
                     "typescript-language-server", -- LSP for TypeScript/JavaScript
-                    "eslint-lsp", -- ESLint Language Server 
-                    "prettier", -- Formatter for JS/TS/JSX/TSX
-                    "css-lsp", -- CSS Language Server
-                    "html-lsp", -- HTML Language Server
-                    "stylelint-lsp", -- Stylelint Language Server
+                    "eslint-lsp",                 -- ESLint Language Server
+                    "prettier",                   -- Formatter for JS/TS/JSX/TSX
+                    "css-lsp",                    -- CSS Language Server
+                    "html-lsp",                   -- HTML Language Server
+                    "stylelint-lsp",              -- Stylelint Language Server
                     "tailwindcss-language-server" -- TailwindCSS Language Server (if using tailwind)
                 }
             }
@@ -292,22 +292,22 @@ require("lazy").setup(
             priority = 1000,
             -- configure and set on startup
             config = function()
-                vim.g.adwaita_darker = false-- for darker version
+                vim.g.adwaita_darker = false            -- for darker version
                 vim.g.adwaita_disable_cursorline = true -- to disable cursorline
-                vim.g.adwaita_transparent = true -- makes the background transparent
+                vim.g.adwaita_transparent = true        -- makes the background transparent
                 vim.cmd("colorscheme adwaita")
             end
         },
         {
             "nvim-lualine/lualine.nvim",
-            dependencies = {"nvim-tree/nvim-web-devicons"},
+            dependencies = { "nvim-tree/nvim-web-devicons" },
             config = function()
                 require("lualine").setup {
                     options = {
                         icons_enabled = true,
                         theme = "auto",
-                        component_separators = {left = "", right = ""},
-                        section_separators = {left = "", right = ""},
+                        component_separators = { left = "", right = "" },
+                        section_separators = { left = "", right = "" },
                         disabled_filetypes = {
                             statusline = {},
                             winbar = {}
@@ -322,18 +322,18 @@ require("lazy").setup(
                         }
                     },
                     sections = {
-                        lualine_a = {"mode"},
-                        lualine_b = {"branch", "diff", "diagnostics"},
-                        lualine_c = {"filename"},
-                        lualine_x = {"encoding", "fileformat", "filetype", {require('mcphub.extensions.lualine')}},
-                        lualine_y = {"progress"},
-                        lualine_z = {"location"}
+                        lualine_a = { "mode" },
+                        lualine_b = { "branch", "diff", "diagnostics" },
+                        lualine_c = { "filename" },
+                        lualine_x = { "encoding", "fileformat", "filetype", { require('mcphub.extensions.lualine') } },
+                        lualine_y = { "progress" },
+                        lualine_z = { "location" }
                     },
                     inactive_sections = {
                         lualine_a = {},
                         lualine_b = {},
-                        lualine_c = {"filename"},
-                        lualine_x = {"location"},
+                        lualine_c = { "filename" },
+                        lualine_x = { "location" },
                         lualine_y = {},
                         lualine_z = {}
                     },
@@ -344,7 +344,7 @@ require("lazy").setup(
                 }
             end
         },
-        {"preservim/nerdcommenter", },
+        { "preservim/nerdcommenter", },
         {
             "kylechui/nvim-surround",
             version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -353,9 +353,9 @@ require("lazy").setup(
                 require("nvim-surround").setup({})
             end
         },
-        {"lambdalisue/suda.vim"},
-        {"lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {}},
-        {"Darazaki/indent-o-matic"},
+        { "lambdalisue/suda.vim" },
+        { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
+        { "Darazaki/indent-o-matic" },
         --{"Darazaki/indent-o-matic",
         --config = function()
         --require('indent-o-matic').setup ({
@@ -372,19 +372,23 @@ require("lazy").setup(
         --})
         --end
         --},
-        {"Raimondi/delimitMate"},
+        { "Raimondi/delimitMate" },
         {
             "nvim-telescope/telescope.nvim",
             dependencies = { "nvim-lua/plenary.nvim", "BurntSushi/ripgrep" },
             keys = {
                 { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Telescope Find Files" },
-                { "<leader>fg", "<cmd>Telescope live_grep<CR>", desc = "Telescope Live Grep" },
-                { "<leader>fb", "<cmd>Telescope buffers<CR>", desc = "Telescope Buffers" },
-                { "<leader>fh", "<cmd>Telescope help_tags<CR>", desc = "Telescope Help Tags" },
-                { "<leader>ss", "<cmd>Telescope aerial<CR>", desc = "Goto Symbol (Aerial)" },
-                { "<leader>fw", function() 
-                    require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>") })
-                  end, desc = "Search Current Word" },
+                { "<leader>fg", "<cmd>Telescope live_grep<CR>",  desc = "Telescope Live Grep" },
+                { "<leader>fb", "<cmd>Telescope buffers<CR>",    desc = "Telescope Buffers" },
+                { "<leader>fh", "<cmd>Telescope help_tags<CR>",  desc = "Telescope Help Tags" },
+                { "<leader>ss", "<cmd>Telescope aerial<CR>",     desc = "Goto Symbol (Aerial)" },
+                {
+                    "<leader>fw",
+                    function()
+                        require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>") })
+                    end,
+                    desc = "Search Current Word"
+                },
             },
             config = function()
                 local actions = require("telescope.actions")
@@ -409,11 +413,11 @@ require("lazy").setup(
                                     if selection == nil then
                                         local entry = action_state.get_current_line()
                                         actions.close(prompt_bufnr)
-                                        vim.cmd("edit " .. entry) -- Open new file
+                                        vim.cmd("edit " .. entry)            -- Open new file
                                     else
                                         actions.select_default(prompt_bufnr) -- Open existing file
                                     end
-                                    vim.cmd("normal! gg") -- Move cursor to top
+                                    vim.cmd("normal! gg")                    -- Move cursor to top
                                 end,
                                 ["<C-u>"] = actions.preview_scrolling_up,
                                 ["<C-d>"] = actions.preview_scrolling_down,
@@ -426,8 +430,8 @@ require("lazy").setup(
                     },
                     pickers = {
                         find_files = {
-                            hidden = true, -- Show dotfiles
-                            no_ignore = true, -- Ignore .gitignore
+                            hidden = true,                                                       -- Show dotfiles
+                            no_ignore = true,                                                    -- Ignore .gitignore
                             find_command = { "rg", "--files", "--hidden", "--glob", "!.git/*" }, -- Use ripgrep
                         },
                         live_grep = {
@@ -436,7 +440,7 @@ require("lazy").setup(
                             end,
                         },
                         buffers = {
-                            sort_lastused = true, -- Show recently used buffers first
+                            sort_lastused = true,         -- Show recently used buffers first
                             ignore_current_buffer = true, -- Skip current buffer in list
                         },
                     },
@@ -445,7 +449,7 @@ require("lazy").setup(
         },
         {
             "debugloop/telescope-undo.nvim",
-            dependencies = {"nvim-telescope/telescope.nvim"},
+            dependencies = { "nvim-telescope/telescope.nvim" },
             keys = {
                 {
                     -- lazy style key map
@@ -471,26 +475,30 @@ require("lazy").setup(
             "gbprod/yanky.nvim",
             opts = {},
             keys = {
-                {"<leader>p", function()
-                    require("telescope").extensions.yank_history.yank_history({})
-                end, desc = "Open Yank History"},
-                {"y", "<Plug>(YankyYank)", mode = {"n", "x"}, desc = "Yank text"},
-                {"p", "<Plug>(YankyPutAfter)", mode = {"n", "x"}, desc = "Put yanked text after cursor"},
-                {"P", "<Plug>(YankyPutBefore)", mode = {"n", "x"}, desc = "Put yanked text before cursor"},
-                {"gp", "<Plug>(YankyGPutAfter)", mode = {"n", "x"}, desc = "Put yanked text after selection"},
-                {"gP", "<Plug>(YankyGPutBefore)", mode = {"n", "x"}, desc = "Put yanked text before selection"},
-                {"[y", "<Plug>(YankyCycleForward)", desc = "Cycle forward through yank history"},
-                {"]y", "<Plug>(YankyCycleBackward)", desc = "Cycle backward through yank history"},
-                {"]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)"},
-                {"[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)"},
-                {"]P", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)"},
-                {"[P", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)"},
-                {">p", "<Plug>(YankyPutIndentAfterShiftRight)", desc = "Put and indent right"},
-                {"<p", "<Plug>(YankyPutIndentAfterShiftLeft)", desc = "Put and indent left"},
-                {">P", "<Plug>(YankyPutIndentBeforeShiftRight)", desc = "Put before and indent right"},
-                {"<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put before and indent left"},
-                {"=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after applying a filter"},
-                {"=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter"}
+                {
+                    "<leader>p",
+                    function()
+                        require("telescope").extensions.yank_history.yank_history({})
+                    end,
+                    desc = "Open Yank History"
+                },
+                { "y",  "<Plug>(YankyYank)",                      mode = { "n", "x" },                           desc = "Yank text" },
+                { "p",  "<Plug>(YankyPutAfter)",                  mode = { "n", "x" },                           desc = "Put yanked text after cursor" },
+                { "P",  "<Plug>(YankyPutBefore)",                 mode = { "n", "x" },                           desc = "Put yanked text before cursor" },
+                { "gp", "<Plug>(YankyGPutAfter)",                 mode = { "n", "x" },                           desc = "Put yanked text after selection" },
+                { "gP", "<Plug>(YankyGPutBefore)",                mode = { "n", "x" },                           desc = "Put yanked text before selection" },
+                { "[y", "<Plug>(YankyCycleForward)",              desc = "Cycle forward through yank history" },
+                { "]y", "<Plug>(YankyCycleBackward)",             desc = "Cycle backward through yank history" },
+                { "]p", "<Plug>(YankyPutIndentAfterLinewise)",    desc = "Put indented after cursor (linewise)" },
+                { "[p", "<Plug>(YankyPutIndentBeforeLinewise)",   desc = "Put indented before cursor (linewise)" },
+                { "]P", "<Plug>(YankyPutIndentAfterLinewise)",    desc = "Put indented after cursor (linewise)" },
+                { "[P", "<Plug>(YankyPutIndentBeforeLinewise)",   desc = "Put indented before cursor (linewise)" },
+                { ">p", "<Plug>(YankyPutIndentAfterShiftRight)",  desc = "Put and indent right" },
+                { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)",   desc = "Put and indent left" },
+                { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)", desc = "Put before and indent right" },
+                { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)",  desc = "Put before and indent left" },
+                { "=p", "<Plug>(YankyPutAfterFilter)",            desc = "Put after applying a filter" },
+                { "=P", "<Plug>(YankyPutBeforeFilter)",           desc = "Put before applying a filter" }
             }
         },
         {
@@ -540,7 +548,8 @@ require("lazy").setup(
                         ["."] = false,
                     },
                     copilot_node_command = 'node', -- Node.js version must be > 18.x
-                    server_opts_overrides = {},})
+                    server_opts_overrides = {},
+                })
             end,
         },
         {
@@ -587,7 +596,7 @@ require("lazy").setup(
             keys = {
                 { "<leader>cs", "<cmd>AerialToggle<cr>", desc = "Aerial (Symbols)" },
             },
-            lazy = true, -- Ensure the plugin is loaded lazily
+            lazy = true,                             -- Ensure the plugin is loaded lazily
             event = { "BufReadPost", "BufNewFile" }, -- Optional: you can load it on file events or keep it key-based only
         },
         -- Python-specific plugins
@@ -618,7 +627,7 @@ require("lazy").setup(
                         }
                     }
                 })
-                
+
                 -- Python LSP setup
                 require("lspconfig").pyright.setup {
                     settings = {
@@ -630,7 +639,7 @@ require("lazy").setup(
                     },
                     capabilities = capabilities,
                 }
-                
+
                 -- TypeScript/React LSP setup (using typescript-language-server)
                 -- Note: tsserver is deprecated, we use typescript-language-server via Mason
                 require("lspconfig").ts_ls.setup({
@@ -663,7 +672,7 @@ require("lazy").setup(
                     },
                     capabilities = capabilities,
                 })
-                
+
                 -- ESLint LSP setup
                 require("lspconfig").eslint.setup({
                     -- If you want ESLint to automatically fix issues on save
@@ -676,7 +685,7 @@ require("lazy").setup(
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-eslint-language-server", "--stdio" },
                     capabilities = capabilities,
                 })
-                
+
                 -- CSS LSP setup
                 require("lspconfig").cssls.setup({
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-css-language-server", "--stdio" },
@@ -754,7 +763,7 @@ require("lazy").setup(
                         -- nvim-cmp style menu
                         draw = {
                             columns = {
-                                { "label", "label_description", gap = 1 },
+                                { "label",     "label_description", gap = 1 },
                                 { "kind_icon", "kind" }
                             },
                         }
@@ -807,7 +816,7 @@ require("lazy").setup(
                 {
                     "<leader>c",
                     function()
-                        require("conform").format({lsp_fallback = true})
+                        require("conform").format({ lsp_fallback = true })
                     end,
                     desc = "format"
                 }
@@ -815,19 +824,19 @@ require("lazy").setup(
             opts = {
                 formatters_by_ft = {
                     -- Python formatters
-                    python = {"isort", "black"},
-                    
+                    python = { "isort", "black" },
+
                     -- TypeScript/React formatters
-                    typescript = {"prettier"},
-                    javascript = {"prettier"},
-                    javascriptreact = {"prettier"},
-                    typescriptreact = {"prettier"},
-                    css = {"prettier"},
-                    html = {"prettier"},
-                    json = {"prettier"},
-                    yaml = {"prettier"},
-                    markdown = {"prettier", "inject"},
-                    
+                    typescript = { "prettier" },
+                    javascript = { "prettier" },
+                    javascriptreact = { "prettier" },
+                    typescriptreact = { "prettier" },
+                    css = { "prettier" },
+                    html = { "prettier" },
+                    json = { "prettier" },
+                    yaml = { "prettier" },
+                    markdown = { "prettier", "inject" },
+
                     -- "inject" is a special formatter from conform.nvim, which
                     -- formats treesitter-injected code. basically, this makes
                     -- conform.nvim format python codeblocks inside a markdown file.
@@ -852,12 +861,12 @@ require("lazy").setup(
         {
             "Vigemus/iron.nvim",
             keys = {
-                {"<leader>i", vim.cmd.IronRepl, desc = "󱠤 Toggle REPL"},
-                {"<leader>I", vim.cmd.IronRestart, desc = "󱠤 Restart REPL"},
+                { "<leader>i", vim.cmd.IronRepl, desc = "󱠤 Toggle REPL" },
+                { "<leader>I", vim.cmd.IronRestart, desc = "󱠤 Restart REPL" },
                 -- these keymaps need no right-hand-side, since that is defined by the
                 -- plugin config further below
-                {"+", mode = {"n", "x"}, desc = "󱠤 Send-to-REPL Operator"},
-                {"++", desc = "󱠤 Send Line to REPL"}
+                { "+", mode = { "n", "x" }, desc = "󱠤 Send-to-REPL Operator" },
+                { "++", desc = "󱠤 Send Line to REPL" }
             },
             -- since irons's setup call is `require("iron.core").setup`, instead of
             -- `require("iron").setup` like other plugins would do, we need to tell
@@ -901,6 +910,28 @@ require("lazy").setup(
                 }
             }
         },
+
+        -- Define python_format function for REPL formatting
+        config = function()
+            _G.python_format = function(text)
+                -- Clean up REPL interactions to handle indentation
+                if string.find(text, "^\n*%s*$") then
+                    return "\n"
+                end
+                text = string.gsub(text, "\n%s*$", "")
+
+                if vim.bo.filetype == "python" then
+                    -- Indent after certain patterns for Python
+                    local should_indent = string.find(text, "[%({[]%s*$") or
+                        string.find(text, "%:$") or
+                        string.find(text, "%:%s*#.*$")
+                    if should_indent then
+                        return text .. "\n"
+                    end
+                end
+                return text
+            end
+        end,
         -- SYNTAX HIGHLIGHTING
 
         -- treesitter for syntax highlighting
@@ -914,8 +945,8 @@ require("lazy").setup(
             -- need to tell lazy.nvim which module to via the `main` key
             main = "nvim-treesitter.configs",
             opts = {
-                highlight = {enable = true}, -- enable treesitter syntax highlighting
-                indent = {enable = true},
+                highlight = { enable = true }, -- enable treesitter syntax highlighting
+                indent = { enable = true },
                 ensure_installed = {
                     -- auto-install the Treesitter parser for python and related languages
                     "python",
@@ -923,7 +954,7 @@ require("lazy").setup(
                     "rst",
                     "ninja",
                     "lua",
-                    
+
                     -- JavaScript/TypeScript/React
                     "javascript",
                     "typescript",
@@ -931,7 +962,7 @@ require("lazy").setup(
                     "css",
                     "html",
                     "json",
-                    
+
                     -- needed for formatting code-blockcs inside markdown via conform.nvim
                     "markdown",
                     "markdown_inline"
@@ -965,7 +996,7 @@ require("lazy").setup(
         -- better indentation behavior
         -- by default, vim has some weird indentation behavior in some edge cases,
         -- which this plugin fixes
-        {"Vimjas/vim-python-pep8-indent"},
+        { "Vimjas/vim-python-pep8-indent" },
         -----------------------------------------------------------------------------
         -- DEBUGGING
 
@@ -978,7 +1009,7 @@ require("lazy").setup(
             "mfussenegger/nvim-dap",
             dependencies = {
                 -- Runs preLaunchTask / postDebugTask if present
-                {"stevearc/overseer.nvim", config = true},
+                { "stevearc/overseer.nvim", config = true },
                 "rcarriga/nvim-dap-ui"
             },
             keys = {
@@ -986,30 +1017,38 @@ require("lazy").setup(
                     "<leader>ds",
                     function()
                         local widgets = require("dap.ui.widgets")
-                        widgets.centered_float(widgets.scopes, {border = "rounded"})
+                        widgets.centered_float(widgets.scopes, { border = "rounded" })
                     end,
                     desc = "DAP Scopes"
                 },
-                {"<F2>", function()
-                    require("dap.ui.widgets").hover(nil, {border = "rounded"})
-                end},
-                {"<F4>", "<CMD>DapDisconnect<CR>", desc = "DAP Disconnect"},
-                {"<leader>dt", "<CMD>DapTerminate<CR>", desc = "DAP Terminate"},
-                {"<leader>dc", "<CMD>DapContinue<CR>", desc = "DAP Continue"},
+                { "<F2>", function()
+                    require("dap.ui.widgets").hover(nil, { border = "rounded" })
+                end },
+                { "<F4>",       "<CMD>DapDisconnect<CR>",             desc = "DAP Disconnect" },
+                { "<leader>dt", "<CMD>DapTerminate<CR>",              desc = "DAP Terminate" },
+                { "<leader>dc", "<CMD>DapContinue<CR>",               desc = "DAP Continue" },
                 { "<leader>dj", function() require("dap").down() end, desc = "Down" },
-                { "<leader>dk", function() require("dap").up() end, desc = "Up" },
-                {"<leader>dl", function()
-                    require("dap").run_last()
-                end, desc = "Run Last"},
-                {"<leader>dC", function()
-                    require("dap").run_to_cursor()
-                end, desc = "Run to Cursor"},
-                {"<leader>db", "<CMD>DapToggleBreakpoint<CR>", desc = "Toggle Breakpoint"},
+                { "<leader>dk", function() require("dap").up() end,   desc = "Up" },
+                {
+                    "<leader>dl",
+                    function()
+                        require("dap").run_last()
+                    end,
+                    desc = "Run Last"
+                },
+                {
+                    "<leader>dC",
+                    function()
+                        require("dap").run_to_cursor()
+                    end,
+                    desc = "Run to Cursor"
+                },
+                { "<leader>db", "<CMD>DapToggleBreakpoint<CR>",              desc = "Toggle Breakpoint" },
                 {
                     "<leader>dB",
                     function()
                         vim.ui.input(
-                            {prompt = "Breakpoint condition: "},
+                            { prompt = "Breakpoint condition: " },
                             function(input)
                                 require("dap").set_breakpoint(input)
                             end
@@ -1017,11 +1056,11 @@ require("lazy").setup(
                     end,
                     desc = "Conditional Breakpoint"
                 },
-                {"<leader>dO", "<CMD>DapStepOver<CR>", desc = "Step Over"},
+                { "<leader>dO", "<CMD>DapStepOver<CR>",                      desc = "Step Over" },
                 --{"<leader>di", "<CMD>DapStepInto<CR>", desc = "Step Into"},
                 --{"<leader>do", "<CMD>DapStepOut<CR>", desc = "Step Out"},
-                { "<leader>do", function() require("dap").step_out() end, desc = "Step Out" },
-                { "<leader>dO", function() require("dap").step_over() end, desc = "Step Over" },
+                { "<leader>do", function() require("dap").step_out() end,    desc = "Step Out" },
+                { "<leader>dO", function() require("dap").step_over() end,   desc = "Step Over" },
                 { "<leader>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
             },
             config = function()
@@ -1035,7 +1074,7 @@ require("lazy").setup(
                     "DapLogPoint"
                 }
                 for _, group in pairs(dap_round_groups) do
-                    sign(group, {text = "●", texthl = group})
+                    sign(group, { text = "●", texthl = group })
                 end
 
                 local dap = require("dap")
@@ -1089,7 +1128,7 @@ require("lazy").setup(
         -- - toggle debugger UI manually with `<leader>du`
         {
             "rcarriga/nvim-dap-ui",
-            dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"},
+            dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
             opts = {
                 icons = {
                     expanded = "󰅀",
@@ -1118,16 +1157,29 @@ require("lazy").setup(
             },
             --opts = {},
             keys = {
-                {"<leader>du", function()
-                    require("dapui").toggle({})
-                end, desc = "Dap UI"},
-                {"<leader>de", function()
-                    require("dapui").eval()
-                end, desc = "Eval", mode = {"n", "v"}},
-                {"<leader>Dc", function()
-                    require("dapui").close({})
-                    require("dap").disconnect()  -- Close the DAP terminal
-                end, desc = "Close DAP UI and Terminal"}   
+                {
+                    "<leader>du",
+                    function()
+                        require("dapui").toggle({})
+                    end,
+                    desc = "Dap UI"
+                },
+                {
+                    "<leader>de",
+                    function()
+                        require("dapui").eval()
+                    end,
+                    desc = "Eval",
+                    mode = { "n", "v" }
+                },
+                {
+                    "<leader>Dc",
+                    function()
+                        require("dapui").close({})
+                        require("dap").disconnect() -- Close the DAP terminal
+                    end,
+                    desc = "Close DAP UI and Terminal"
+                }
             },
             config = function(_, opts)
                 local dap = require("dap")
@@ -1173,7 +1225,7 @@ require("lazy").setup(
                 "neovim/nvim-lspconfig",
                 "mfussenegger/nvim-dap",
                 "mfussenegger/nvim-dap-python", --optional
-                {"nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = {"nvim-lua/plenary.nvim"}}
+                { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } }
             },
             lazy = false,
             branch = "regexp", -- This is the regexp branch, use this for the new version
@@ -1181,7 +1233,7 @@ require("lazy").setup(
                 require("venv-selector").setup()
             end,
             keys = {
-                {",v", "<cmd>VenvSelect<cr>"}
+                { ",v", "<cmd>VenvSelect<cr>" }
             },
             opts = {
                 dap_enabled = true -- makes the debugger work with venv
@@ -1200,7 +1252,7 @@ require("lazy").setup(
             "iamcco/markdown-preview.nvim",
             --build = function() vim.fn["mkdp#util#install"]() end,
             ft = "markdown",
-            keys = {{"<A-o>", "<CMD>MarkdownPreviewToggle<CR>", desc = "Toggle Markdown Preview"}}
+            keys = { { "<A-o>", "<CMD>MarkdownPreviewToggle<CR>", desc = "Toggle Markdown Preview" } }
         },
         -- CSV
         {
@@ -1220,16 +1272,17 @@ require("lazy").setup(
         {
             "ravitemer/mcphub.nvim",
             dependencies = {
-                "nvim-lua/plenary.nvim",  -- Required for Job and HTTP requests
+                "nvim-lua/plenary.nvim", -- Required for Job and HTTP requests
             },
             -- comment the following line to ensure hub will be ready at the earliest
-            cmd = "MCPHub",  -- lazy load by default
-            --build = "npm install -g mcp-hub@latest",  -- Installs required mcp-hub npm module
+            --cmd = "MCPHub",  -- lazy load by default
+            build = "npm install -g mcp-hub@latest", -- Installs required mcp-hub npm module
             -- uncomment this if you don't want mcp-hub to be available globally or can't use -g
-            build = "bundled_build.lua",  -- Use this and set use_bundled_binary = true in opts  (see Advanced configuration)
+            --build = "bundled_build.lua",  -- Use this and set use_bundled_binary = true in opts  (see Advanced configuration)
             config = function()
                 require("mcphub").setup({
-                    auto_approve = true, -- Automatically approve MCP tool requests
+                    auto_approve = true,            -- Automatically approve MCP tool requests
+                    auto_toggle_mcp_servers = true, -- Let LLMs start and stop MCP servers automatically
                     extensions = {
                         avante = {
                             make_slash_commands = true, -- Enable /slash commands for MCP server prompts
@@ -1243,10 +1296,14 @@ require("lazy").setup(
             event = "VeryLazy",
             build = "make",
             opts = {
-                provider = "copilot", 
+                provider = "copilot",
                 auto_suggestions_provider = "copilot",
                 selector = {
                     provider = "telescope",
+                },
+                copilot = {
+                    model = "claude-3.7-sonnet",
+                    temperature = 0,
                 },
                 vendors = {
                     deepseek = {
@@ -1254,60 +1311,79 @@ require("lazy").setup(
                         api_key_name = "DEEPSEEK_API_KEY",
                         endpoint = "https://api.deepseek.com/",
                         model = "deepseek-coder",
-                        max_tokens = 8192,
                     },
                     --openrouter = {
-                        --__inherited_from = "openai",
-                        --api_key_name = "OPENROUTER_API_KEY",
-                        --endpoint = "https://openrouter.ai/api/v1",
-                        --model = "google/gemini-2.5-pro-exp-03-25:free",
+                    --__inherited_from = "openai",
+                    --api_key_name = "OPENROUTER_API_KEY",
+                    --endpoint = "https://openrouter.ai/api/v1",
+                    --model = "google/gemini-2.5-pro-exp-03-25:free",
                     --},
-                    ["claude-3.5-sonnet"] = {
+                    ["gpt-4"] = {
                         __inherited_from = "copilot",
-                        model = "claude-3.5-sonnet",
-                        display_name = "claude-3.5-sonnet"
-                    },
-                    ["claude-3.7-sonnet"] = {
-                        __inherited_from = "copilot",
-                        model = "claude-3.7-sonnet",
-                        max_tokens = 2000000,
-                        display_name = "claude-3.7-sonnet"
-                    },
-                    ["claude-3.7-sonnet-thought"] = {
-                        __inherited_from = "copilot",
-                        model = "claude-3.7-sonnet-thought",
-                        max_tokens = 2000000,
-                        display_name = "claude-3.7-sonnet-thought",
-                    },
-                    ["o3-mini"] = {
-                        __inherited_from = "copilot",
-                        model = "o3-mini",
-                        display_name = "o3-mini",
-                    },
-                    ["gemini-2.0-flash"] = {
-                        __inherited_from = "copilot",
-                        model = "gemini-2.0-flash-001",
-                        display_name = "copilot-gemini-2.0-flash",
-                    },
-                    ["gemini-2.5-pro"] = {
-                        __inherited_from = "copilot",
-                        model = "gemini-2.5-pro",
-                        display_name = "copilot-gemini-2.5-pro",
-                    },
-                    ["gpt-4o"] = {
-                        __inherited_from = "copilot",
-                        model = "gpt-4o",
-                        display_name = "gtp-4o",
+                        model = "gpt-4",
+                        max_tokens = 32768,
+                        display_name = "Copilot GPT-4"
                     },
                     ["gpt-4.1"] = {
                         __inherited_from = "copilot",
                         model = "gpt-4.1",
-                        display_name = "gtp-4.1",
+                        max_tokens = 1047576,
+                        display_name = "Copilot GPT-4.1"
                     },
-                },
-                copilot = {
-                    model = "claude-3.7-sonnet",
-                    temperature = 0,
+                    ["gpt-4o"] = {
+                        __inherited_from = "copilot",
+                        model = "gpt-4o",
+                        max_tokens = 64000,
+                        display_name = "Copilot GPT-4o"
+                    },
+                    ["o3-mini"] = {
+                        __inherited_from = "copilot",
+                        model = "o3-mini",
+                        max_tokens = 64000,
+                        display_name = "Copilot o3-mini"
+                    },
+                    ["o1"] = {
+                        __inherited_from = "copilot",
+                        model = "o1",
+                        max_tokens = 20000,
+                        display_name = "Copilot o1"
+                    },
+                    ["claude-3-5-sonnet"] = {
+                        __inherited_from = "copilot",
+                        model = "claude-3-5-sonnet",
+                        max_tokens = 200000,
+                        display_name = "copilot Claude 3.5 Sonnet"
+                    },
+                    ["claude-3-7-sonnet"] = {
+                        __inherited_from = "copilot",
+                        model = "claude-3-7-sonnet",
+                        max_tokens = 90000,
+                        display_name = "copilot claude 3.7 Sonnet"
+                    },
+                    ["claude-3.7-sonnet-thought"] = {
+                        __inherited_from = "copilot",
+                        model = "claude-3.7-sonnet-thought",
+                        max_tokens = 90000,
+                        display_name = "copilot Claude 3.7 Sonnet Thinking"
+                    },
+                    ["gemini-2.0-flash-001"] = {
+                        __inherited_from = "copilot",
+                        model = "gemini-2.0-flash-001",
+                        max_tokens = 128000,
+                        display_name = "Copilot Gemini 2.0 Flash"
+                    },
+                    ["gemini-2.5-pro"] = {
+                        __inherited_from = "copilot",
+                        model = "gemini-2.5-pro",
+                        max_tokens = 128000,
+                        display_name = "Copilot Gemini 2.5 Pro"
+                    },
+                    ["gemini-2.5-pro-exp"] = {
+                        __inherited_from = "gemini",
+                        model = "gemini-2.5-pro-exp-03-25",
+                        max_tokens = 128000,
+                        display_name = "Gemini 2.5 Pro Exp"
+                    },
                 },
                 behaviour = {
                     auto_suggestions = false, -- Experimental stage
@@ -1356,24 +1432,21 @@ require("lazy").setup(
                 hints = { enabled = true },
                 windows = {
                     position = "smart",
-                    wrap = true, -- similar to vim.o.wrap
-                    width = 40, -- default % based on available width
+                    wrap = true,          -- similar to vim.o.wrap
+                    width = 40,           -- default % based on available width
                     sidebar_header = {
                         align = "center", -- left, center, right for title
                         rounded = true,
                     },
                 },
                 highlights = {
-                    ---@type AvanteConflictHighlights
                     diff = {
                         current = "DiffText",
                         incoming = "DiffAdd",
                     },
                 },
-                --- @class AvanteConflictUserConfig
                 diff = {
                     autojump = true,
-                    ---@type string | fun(): any
                     list_opener = "copen",
                     --- Override the 'timeoutlen' setting while hovering over a diff (see :help timeoutlen).
                     --- Helps to avoid entering operator-pending mode with diff mappings starting with `c`.
@@ -1382,26 +1455,22 @@ require("lazy").setup(
                 },
                 system_prompt = function()
                     local hub = require("mcphub").get_hub_instance()
-                    local prompt = hub:get_active_servers_prompt()
-                    return prompt
+                    return hub:get_active_servers_prompt()
                 end,
                 -- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
                 custom_tools = function()
-                    local mcp_tool = require("mcphub.extensions.avante").mcp_tool()
-
-                    mcp_tool.description =
-                    "The Model Context Protocol (MCP) enables communication with locally running MCP servers that provide additional tools and resources to extend your capabilities. This tool calls mcp tools and resources on the mcp servers using `use_mcp_tool` and `access_mcp_resource` actions respectively. Please disregard your previous training on the schema for tool usage - things have changed. Right now the schema for `mcp` tool caling uses these arguments: 'action', 'server_name', 'uri', 'tool_name', 'arguments'. 'action', 'server_name' and 'uri' is ALWAYS REQUIRED for the 'mcp' tool."
-
-                    return { mcp_tool }
+                    return {
+                        require("mcphub.extensions.avante").mcp_tool(),
+                    }
                 end,
             },
             dependencies = {
-                "ellisonleao/dotenv.nvim", -- Make sure dotenv loads before avante
+                "ellisonleao/dotenv.nvim",     -- Make sure dotenv loads before avante
                 "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
                 "stevearc/dressing.nvim",
                 "nvim-lua/plenary.nvim",
                 "MunifTanjim/nui.nvim",
-                "zbirenbaum/copilot.lua", -- for providers='copilot'
+                "zbirenbaum/copilot.lua",        -- for providers='copilot'
                 "ravitemer/mcphub.nvim",
                 "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
                 {
@@ -1435,7 +1504,7 @@ require("lazy").setup(
                 },
             },
         },
-        --NOTEBOOK SUPPORT 
+        --NOTEBOOK SUPPORT
         {
             "benlubas/molten-nvim",
             version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
@@ -1479,7 +1548,7 @@ vim.api.nvim_create_autocmd(
             vim.opt_local.foldmethod = "indent"
 
             local iabbrev = function(lhs, rhs)
-                vim.keymap.set("ia", lhs, rhs, {buffer = true})
+                vim.keymap.set("ia", lhs, rhs, { buffer = true })
             end
             -- automatically capitalize boolean values. Useful if you come from a
             -- different language, and lowercase them out of habit.
@@ -1508,7 +1577,7 @@ vim.keymap.set('n', '<Right>', ':AerialToggle!<CR>', { noremap = true, silent = 
 
 -- Set up filetype-specific configurations
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = {"typescript", "javascript", "typescriptreact", "javascriptreact", "css", "html"},
+    pattern = { "typescript", "javascript", "typescriptreact", "javascriptreact", "css", "html" },
     callback = function()
         -- Use 2 spaces for indentation for web-related files
         vim.opt_local.expandtab = true
@@ -1523,20 +1592,20 @@ vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
         local bufnr = args.buf
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        
+
         -- Code navigation
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "Go to Definition" })
         vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "Go to References" })
         vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr, desc = "Go to Implementation" })
         vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "Go to Type Definition" })
-        
+
         -- Documentation
         vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "Show Documentation" })
-        
+
         -- Code actions
         vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Code Action" })
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename Symbol" })
-        
+
         -- Diagnostics
         vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { buffer = bufnr, desc = "Previous Diagnostic" })
         vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { buffer = bufnr, desc = "Next Diagnostic" })
@@ -1550,14 +1619,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 --]]
 -- nvim-jupyter-client
 
--- configuration for Windows Subsystem for Linux (WSL) 
-in_wsl = os.getenv('WSL_DISTRO_NAME') ~= nil
+-- configuration for Windows Subsystem for Linux (WSL)
+local in_wsl = os.getenv('WSL_DISTRO_NAME') ~= nil
 
 if in_wsl then
-
     vim.g.clipboard = {
         name = 'wsl clipboard',
-        copy =  { ["+"] = { "clip.exe" },   ["*"] = { "clip.exe" } },
+        copy = { ["+"] = { "clip.exe" }, ["*"] = { "clip.exe" } },
         paste = { ["+"] = { "nvim_paste" }, ["*"] = { "nvim_paste" } },
         cache_enabled = true
     }

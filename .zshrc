@@ -88,6 +88,7 @@ case `uname -a` in
         export DOCKER_HOST=tcp://0.0.0.0:2375
         ;;
 esac
-export EDITOR='vim'
+export EDITOR='nvim'
 export PATH="$HOME/java/bin:$HOME/bin:$PATH"
+export PATH=~/.npm-global/bin:$PATH
 export DISPLAY=:0
