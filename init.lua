@@ -356,6 +356,37 @@ require("lazy").setup(
         { "lambdalisue/suda.vim" },
         { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
         { "Darazaki/indent-o-matic" },
+        -- Database plugins
+        {
+            "tpope/vim-dadbod",
+            dependencies = {
+                "kristijanhusak/vim-dadbod-ui",
+                "kristijanhusak/vim-dadbod-completion",
+            },
+            config = function()
+                -- Set up autocomplete for SQL files
+                vim.api.nvim_create_autocmd("FileType", {
+                    pattern = { "sql", "mysql", "plsql" },
+                    callback = function()
+                        vim.opt_local.omnifunc = "vim_dadbod_completion#omni"
+                        -- Enable blink.cmp source for SQL files if using blink.cmp
+                        require("blink.cmp").setup.sources.buffer.filetypes.sql = true
+                    end
+                })
+                
+                -- Set up DBUI
+                vim.g.db_ui_save_location = vim.fn.stdpath("data") .. "/db_ui"
+                vim.g.db_ui_use_nerd_fonts = 1
+                vim.g.db_ui_show_database_icon = 1
+                vim.g.db_ui_force_echo_notifications = 1
+                
+                -- Add some useful keymaps
+                vim.api.nvim_set_keymap("n", "<leader>dqu", ":DBUIToggle<CR>", { noremap = true, silent = true })
+                vim.api.nvim_set_keymap("n", "<leader>dqf", ":DBUIFindBuffer<CR>", { noremap = true, silent = true })
+                vim.api.nvim_set_keymap("n", "<leader>dqr", ":DBUIRenameBuffer<CR>", { noremap = true, silent = true })
+                vim.api.nvim_set_keymap("n", "<leader>dql", ":DBUILastQueryInfo<CR>", { noremap = true, silent = true })
+            end,
+        },
         --{"Darazaki/indent-o-matic",
         --config = function()
         --require('indent-o-matic').setup ({
