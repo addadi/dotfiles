@@ -218,6 +218,26 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Define python_format function for REPL formatting
+_G.python_format = function(text)
+    -- Clean up REPL interactions to handle indentation
+    if string.find(text, "^\n*%s*$") then
+        return "\n"
+    end
+    text = string.gsub(text, "\n%s*$", "")
+
+    if vim.bo.filetype == "python" then
+        -- Indent after certain patterns for Python
+        local should_indent = string.find(text, "[%({[]%s*$") or
+            string.find(text, "%:$") or
+            string.find(text, "%:%s*#.*$")
+        if should_indent then
+            return text .. "\n"
+        end
+    end
+    return text
+end
+
 -- Lazy.nvim configuration
 require("lazy").setup(
     {
@@ -878,60 +898,37 @@ require("lazy").setup(
                     visual_send = "+",
                     send_motion = "+"
                 },
-                config = {
-                    -- this defined how the repl is opened. Here we set the REPL window
-                    -- to open in a horizontal split to a bottom, with a height of 10
-                    -- cells.
-                    repl_open_cmd = "vertical botright 80 vsplit",
-                    -- This defines which binary to use for the REPL. If `ipython` is
-                    -- available, it will use `ipython`, otherwise it will use `python3`.
-                    -- since the python repl does not play well with indents, it's
-                    -- preferable to use `ipython` or `bypython` here.
-                    -- (see: https://github.com/Vigemus/iron.nvim/issues/348)
-                    repl_definition = {
-                        python = {
-                            command = function()
-                                local ipythonAvailable = vim.fn.executable("ipython") == 1
-                                if ipythonAvailable then
-                                    return { "ipython", "--no-autoindent" }
-                                else
-                                    return { "python3" }
-                                end
-                            end,
-                            format = python_format
-                        }
-                    },
-                    -- If the highlight is on, you can change how it looks
-                    -- For the available options, check nvim_set_hl
-                    highlight = {
-                        italic = true
-                    },
-                    ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
-                }
+                -- this defined how the repl is opened. Here we set the REPL window
+                -- to open in a horizontal split to a bottom, with a height of 10
+                -- cells.
+                repl_open_cmd = "vertical botright 80 vsplit",
+                -- This defines which binary to use for the REPL. If `ipython` is
+                -- available, it will use `ipython`, otherwise it will use `python3`.
+                -- since the python repl does not play well with indents, it's
+                -- preferable to use `ipython` or `bypython` here.
+                -- (see: https://github.com/Vigemus/iron.nvim/issues/348)
+                repl_definition = {
+                    python = {
+                        command = function()
+                            local ipythonAvailable = vim.fn.executable("ipython") == 1
+                            if ipythonAvailable then
+                                return { "ipython", "--no-autoindent" }
+                            else
+                                return { "python3" }
+                            end
+                        end,
+                        format = python_format
+                    }
+                },
+                -- If the highlight is on, you can change how it looks
+                -- For the available options, check nvim_set_hl
+                highlight = {
+                    italic = true
+                },
+                ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
             }
         },
 
-        -- Define python_format function for REPL formatting
-        config = function()
-            _G.python_format = function(text)
-                -- Clean up REPL interactions to handle indentation
-                if string.find(text, "^\n*%s*$") then
-                    return "\n"
-                end
-                text = string.gsub(text, "\n%s*$", "")
-
-                if vim.bo.filetype == "python" then
-                    -- Indent after certain patterns for Python
-                    local should_indent = string.find(text, "[%({[]%s*$") or
-                        string.find(text, "%:$") or
-                        string.find(text, "%:%s*#.*$")
-                    if should_indent then
-                        return text .. "\n"
-                    end
-                end
-                return text
-            end
-        end,
         -- SYNTAX HIGHLIGHTING
 
         -- treesitter for syntax highlighting
@@ -1516,9 +1513,9 @@ vim.api.nvim_create_autocmd(
             vim.opt_local.tabstop = 4
             vim.opt_local.softtabstop = 4
 
-            -- folds based on indentation https://neovim.io/doc/user/fold.html#fold-indent
-            -- if you are a heavy user of folds, consider using `nvim-ufo`
-            vim.opt_local.foldmethod = "indent"
+            -- Use treesitter for folding, which is more reliable with syntax highlighting
+            vim.opt_local.foldmethod = "expr"
+            vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
 
             local iabbrev = function(lhs, rhs)
                 vim.keymap.set("ia", lhs, rhs, { buffer = true })
@@ -1565,6 +1562,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
         local bufnr = args.buf
         local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+        -- Ensure Treesitter highlighting is enabled for the buffer, which can sometimes
+        -- fail to apply automatically when jumping between files.
+        if pcall(require, "nvim-treesitter.highlight") then
+            vim.cmd("TSBufEnable highlight")
+        end
 
         -- Code navigation
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "Go to Definition" })
