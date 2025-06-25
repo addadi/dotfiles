@@ -1010,7 +1010,12 @@ require("lazy").setup(
             dependencies = {
                 -- Runs preLaunchTask / postDebugTask if present
                 { "stevearc/overseer.nvim", config = true },
-                "rcarriga/nvim-dap-ui"
+                "rcarriga/nvim-dap-ui",
+                -- virtual text for the debugger
+                {
+                    "theHamsta/nvim-dap-virtual-text",
+                    opts = {},
+                },
             },
             keys = {
                 {
@@ -1057,11 +1062,13 @@ require("lazy").setup(
                     desc = "Conditional Breakpoint"
                 },
                 { "<leader>dO", "<CMD>DapStepOver<CR>",                      desc = "Step Over" },
-                --{"<leader>di", "<CMD>DapStepInto<CR>", desc = "Step Into"},
+                {"<leader>di", "<CMD>DapStepInto<CR>", desc = "Step Into"},
                 --{"<leader>do", "<CMD>DapStepOut<CR>", desc = "Step Out"},
                 { "<leader>do", function() require("dap").step_out() end,    desc = "Step Out" },
                 { "<leader>dO", function() require("dap").step_over() end,   desc = "Step Over" },
                 { "<leader>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
+                { "<leader>drst", function() require("dap").restart() end, desc = "DAP Restart" },
+                { "<leader>dlp", function() require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end, desc = "DAP Log Point" },
             },
             config = function()
                 -- Signs
@@ -1135,13 +1142,26 @@ require("lazy").setup(
                     collapsed = "󰅂",
                     current_frame = "󰅂"
                 },
-                --layouts = {
-                --{
-                --elements = {"console", "watches"},
-                --position = "bottom",
-                --size = 10
-                --}
-                --},
+                layouts = {
+                    {
+                        elements = {
+                            { id = "scopes", size = 0.25 },
+                            { id = "breakpoints", size = 0.25 },
+                            { id = "stacks", size = 0.25 },
+                            { id = "watches", size = 0.25 },
+                        },
+                        size = 40,
+                        position = "right",
+                    },
+                    {
+                        elements = {
+                            { id = "repl", size = 0.5 },
+                            { id = "console", size = 0.5 },
+                        },
+                        size = 12,
+                        position = "bottom",
+                    },
+                },
                 expand_lines = false,
                 controls = {
                     enabled = true
@@ -1185,16 +1205,16 @@ require("lazy").setup(
                 local dap = require("dap")
                 local dapui = require("dapui")
                 dapui.setup(opts)
-                dap.listeners.after.event_initialized["dapui_config"] = function()
-                    dapui.open({})
-                end
+                -- dap.listeners.after.event_initialized["dapui_config"] = function()
+                --     dapui.open({})
+                -- end
                 --dap.listeners.before.event_terminated["dapui_config"] = function()
                 --dapui.close({})
                 --end
                 --dap.listeners.before.event_exited["dapui_config"] = function()
                 --dapui.close({})
                 --end
-                require("dapui").setup(opts)
+                -- require("dapui").setup(opts) -- This is redundant
             end
         },
         -- Configuration for the python debugger
@@ -1274,18 +1294,17 @@ require("lazy").setup(
             dependencies = {
                 "nvim-lua/plenary.nvim", -- Required for Job and HTTP requests
             },
-            -- comment the following line to ensure hub will be ready at the earliest
-            --cmd = "MCPHub",  -- lazy load by default
-            build = "npm install -g mcp-hub@latest", -- Installs required mcp-hub npm module
-            -- uncomment this if you don't want mcp-hub to be available globally or can't use -g
-            --build = "bundled_build.lua",  -- Use this and set use_bundled_binary = true in opts  (see Advanced configuration)
+            -- Use the bundled build script instead of a global npm install
+            build = "bundled_build.lua",
             config = function()
                 require("mcphub").setup({
-                    auto_approve = true,            -- Automatically approve MCP tool requests
-                    auto_toggle_mcp_servers = true, -- Let LLMs start and stop MCP servers automatically
+                    -- Tell mcphub to use the executable installed by the bundled_build.lua script
+                    use_bundled_binary = true,
+                    auto_approve = true,
+                    auto_toggle_mcp_servers = true,
                     extensions = {
                         avante = {
-                            make_slash_commands = true, -- Enable /slash commands for MCP server prompts
+                            make_slash_commands = true,
                         },
                     },
                 })
@@ -1301,89 +1320,43 @@ require("lazy").setup(
                 selector = {
                     provider = "telescope",
                 },
-                copilot = {
-                    model = "claude-3.7-sonnet",
-                    temperature = 0,
-                },
-                vendors = {
+                providers = {
                     deepseek = {
                         __inherited_from = "openai",
                         api_key_name = "DEEPSEEK_API_KEY",
                         endpoint = "https://api.deepseek.com/",
                         model = "deepseek-coder",
                     },
+                    copilot = {
+                        model = "gemini-2.5-pro",
+                        timeout = 30000,
+                        --extra_request_body = {
+                            --options = {
+                                --temperature = 0,
+                            --},
+                        --},
+                    },
+
                     --openrouter = {
                     --__inherited_from = "openai",
                     --api_key_name = "OPENROUTER_API_KEY",
                     --endpoint = "https://openrouter.ai/api/v1",
                     --model = "google/gemini-2.5-pro-exp-03-25:free",
                     --},
-                    ["gpt-4"] = {
-                        __inherited_from = "copilot",
-                        model = "gpt-4",
-                        max_tokens = 32768,
-                        display_name = "Copilot GPT-4"
-                    },
-                    ["gpt-4.1"] = {
-                        __inherited_from = "copilot",
-                        model = "gpt-4.1",
-                        max_tokens = 1047576,
-                        display_name = "Copilot GPT-4.1"
-                    },
-                    ["gpt-4o"] = {
-                        __inherited_from = "copilot",
-                        model = "gpt-4o",
-                        max_tokens = 64000,
-                        display_name = "Copilot GPT-4o"
-                    },
-                    ["o3-mini"] = {
-                        __inherited_from = "copilot",
-                        model = "o3-mini",
-                        max_tokens = 64000,
-                        display_name = "Copilot o3-mini"
-                    },
-                    ["o1"] = {
-                        __inherited_from = "copilot",
-                        model = "o1",
-                        max_tokens = 20000,
-                        display_name = "Copilot o1"
-                    },
-                    ["claude-3-5-sonnet"] = {
-                        __inherited_from = "copilot",
-                        model = "claude-3-5-sonnet",
-                        max_tokens = 200000,
-                        display_name = "copilot Claude 3.5 Sonnet"
-                    },
-                    ["claude-3-7-sonnet"] = {
-                        __inherited_from = "copilot",
-                        model = "claude-3-7-sonnet",
-                        max_tokens = 90000,
-                        display_name = "copilot claude 3.7 Sonnet"
-                    },
-                    ["claude-3.7-sonnet-thought"] = {
-                        __inherited_from = "copilot",
-                        model = "claude-3.7-sonnet-thought",
-                        max_tokens = 90000,
-                        display_name = "copilot Claude 3.7 Sonnet Thinking"
-                    },
-                    ["gemini-2.0-flash-001"] = {
-                        __inherited_from = "copilot",
-                        model = "gemini-2.0-flash-001",
-                        max_tokens = 128000,
-                        display_name = "Copilot Gemini 2.0 Flash"
-                    },
-                    ["gemini-2.5-pro"] = {
-                        __inherited_from = "copilot",
-                        model = "gemini-2.5-pro",
-                        max_tokens = 128000,
-                        display_name = "Copilot Gemini 2.5 Pro"
-                    },
-                    ["gemini-2.5-pro-exp"] = {
+                    --["gemini-2.5-pro-exp"] = {
+                        --__inherited_from = "gemini",
+                        --model = "gemini-2.5-pro-exp-03-25",
+                        ----max_tokens = 128000,
+                        ----display_name = "Gemini 2.5 Pro Exp"
+                    --},
+                    gemini = {
                         __inherited_from = "gemini",
-                        model = "gemini-2.5-pro-exp-03-25",
-                        max_tokens = 128000,
-                        display_name = "Gemini 2.5 Pro Exp"
-                    },
+                        --model = "gemini-2.5-pro-exp-03-25",
+                        --extra_request_body = {
+                            --options = {
+                                --temperature = 0,
+                            --},
+                    }
                 },
                 behaviour = {
                     auto_suggestions = false, -- Experimental stage
