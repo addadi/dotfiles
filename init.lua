@@ -266,120 +266,114 @@ require("lazy").setup(
                     end,
                     desc = "Buffer Local Keymaps (which-key)",
                 },
+                ask = {
+                    floating = false, -- Open the 'AvanteAsk' prompt in a floating window
+                    start_insert = true, -- Start insert mode when opening the ask window
+                    border = "rounded",
+                    height = 30, -- Enlarged height
+                },
             },
         },
-        {
-            "ellisonleao/dotenv.nvim",
-            lazy = false,
-            config = function()
-                require("dotenv").setup({
-                    enable_on_load = true,   -- Load .env file on startup
-                    file_names = { ".env" }, -- Specify the .env file name
-                    path = "~/.env",         -- Path to your global .env file (if not in project directories)
-                })
-            end,
-        },
-        {
-            "WhoIsSethDaniel/mason-tool-installer.nvim",
-            dependencies = {
-                { "williamboman/mason.nvim",           opts = true },
-                { "williamboman/mason-lspconfig.nvim", opts = true }
-            },
-            opts = {
-                ensure_installed = {
-                    -- Python
-                    "pyright", -- LSP for python
-                    "ruff",    -- linter for python (includes flake8, pep8, etc.)
-                    "debugpy", -- debugger
-                    "black",   -- formatter
-                    "isort",   -- organize imports
-                    "taplo",   -- LSP for toml (for pyproject.toml files)
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		dependencies = {
+			{ "williamboman/mason.nvim",           opts = true },
+			{ "williamboman/mason-lspconfig.nvim", opts = true }
+		},
+		opts = {
+			ensure_installed = {
+				-- Python
+				"pyright", -- LSP for python
+				"ruff",    -- linter for python (includes flake8, pep8, etc.)
+				"debugpy", -- debugger
+				"black",   -- formatter
+				"isort",   -- organize imports
+				"taplo",   -- LSP for toml (for pyproject.toml files)
 
-                    -- TypeScript/React
-                    "typescript-language-server", -- LSP for TypeScript/JavaScript
-                    "eslint-lsp",                 -- ESLint Language Server
-                    "prettier",                   -- Formatter for JS/TS/JSX/TSX
-                    "css-lsp",                    -- CSS Language Server
-                    "html-lsp",                   -- HTML Language Server
-                    "stylelint-lsp",              -- Stylelint Language Server
-                    "tailwindcss-language-server" -- TailwindCSS Language Server (if using tailwind)
-                }
-            }
-        },
-        {
-            "Mofiqul/adwaita.nvim",
-            lazy = false,
-            priority = 1000,
-            -- configure and set on startup
-            config = function()
-                vim.g.adwaita_darker = false            -- for darker version
-                vim.g.adwaita_disable_cursorline = true -- to disable cursorline
-                vim.g.adwaita_transparent = true        -- makes the background transparent
-                vim.cmd("colorscheme adwaita")
-            end
-        },
-        {
-            "nvim-lualine/lualine.nvim",
-            dependencies = { "nvim-tree/nvim-web-devicons" },
-            config = function()
-                require("lualine").setup {
-                    options = {
-                        icons_enabled = true,
-                        theme = "auto",
-                        component_separators = { left = "", right = "" },
-                        section_separators = { left = "", right = "" },
-                        disabled_filetypes = {
-                            statusline = {},
-                            winbar = {}
-                        },
-                        ignore_focus = {},
-                        always_divide_middle = true,
-                        globalstatus = false,
-                        refresh = {
-                            statusline = 1000,
-                            tabline = 1000,
-                            winbar = 1000
-                        }
-                    },
-                    sections = {
-                        lualine_a = { "mode" },
-                        lualine_b = { "branch", "diff", "diagnostics" },
-                        lualine_c = { "filename" },
-                        lualine_x = { "encoding", "fileformat", "filetype", { require('mcphub.extensions.lualine') } },
-                        lualine_y = { "progress" },
-                        lualine_z = { "location" }
-                    },
-                    inactive_sections = {
-                        lualine_a = {},
-                        lualine_b = {},
-                        lualine_c = { "filename" },
-                        lualine_x = { "location" },
-                        lualine_y = {},
-                        lualine_z = {}
-                    },
-                    tabline = {},
-                    winbar = {},
-                    inactive_winbar = {},
-                    extensions = {}
-                }
-            end
-        },
-        { "preservim/nerdcommenter", },
-        {
-            "kylechui/nvim-surround",
-            version = "*", -- Use for stability; omit to use `main` branch for the latest features
-            event = "VeryLazy",
-            config = function()
-                require("nvim-surround").setup({})
-            end
-        },
-        { "lambdalisue/suda.vim" },
-        { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
-        { "Darazaki/indent-o-matic" },
-        --{"Darazaki/indent-o-matic",
-        --config = function()
-        --require('indent-o-matic').setup ({
-        ---- The values indicated here are the defaults
+				-- TypeScript/React
+				"typescript-language-server", -- LSP for TypeScript/JavaScript
+				"eslint-lsp",                 -- ESLint Language Server
+				"prettier",                   -- Formatter for JS/TS/JSX/TSX
+				"css-lsp",                    -- CSS Language Server
+				"html-lsp",                   -- HTML Language Server
+				"stylelint-lsp",              -- Stylelint Language Server
+				"tailwindcss-language-server" -- TailwindCSS Language Server (if using tailwind)
+			}
+		}
+	},
+	{
+		"Mofiqul/adwaita.nvim",
+		lazy = false,
+		priority = 1000,
+		-- configure and set on startup
+		config = function()
+			vim.g.adwaita_darker = false            -- for darker version
+			vim.g.adwaita_disable_cursorline = true -- to disable cursorline
+			vim.g.adwaita_transparent = true        -- makes the background transparent
+			vim.cmd("colorscheme adwaita")
+		end
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("lualine").setup {
+				options = {
+					icons_enabled = true,
+					theme = "auto",
+					component_separators = { left = "", right = "" },
+					section_separators = { left = "", right = "" },
+					disabled_filetypes = {
+						statusline = {},
+						winbar = {}
+					},
+					ignore_focus = {},
+					always_divide_middle = true,
+					globalstatus = false,
+					refresh = {
+						statusline = 1000,
+						tabline = 1000,
+						winbar = 1000
+					}
+				},
+				sections = {
+					lualine_a = { "mode" },
+					lualine_b = { "branch", "diff", "diagnostics" },
+					lualine_c = { "filename" },
+					lualine_y = { "progress" },
+					lualine_z = { "location" }
+				},
+				inactive_sections = {
+					lualine_a = {},
+					lualine_b = {},
+					lualine_c = { "filename" },
+					lualine_x = { "location" },
+					lualine_y = {},
+					lualine_z = {}
+				},
+				tabline = {},
+				winbar = {},
+				inactive_winbar = {},
+				extensions = {}
+			}
+		end
+	},
+	{ "preservim/nerdcommenter", },
+	{
+		"kylechui/nvim-surround",
+		version = "*", -- Use for stability; omit to use `main` branch for the latest features
+		event = "VeryLazy",
+		config = function()
+			require("nvim-surround").setup({})
+		end
+	},
+	{ "lambdalisue/suda.vim" },
+	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
+	{ "Darazaki/indent-o-matic" },
+	--{"Darazaki/indent-o-matic",
+	--config = function()
+		--require('indent-o-matic').setup ({
+			---- The values indicated here are the defaults
 
         ---- Number of lines without indentation before giving up (use -1 for infinite)
         --max_lines = 2048,
@@ -800,6 +794,9 @@ require("lazy").setup(
                         "copilot",
                         "avante",
                     },
+                    per_filetype = {
+                        codecompanion = { "codecompanion" },
+                    },
                     providers = {
                         avante = {
                             module = 'blink-cmp-avante',
@@ -962,7 +959,8 @@ require("lazy").setup(
 
                     -- needed for formatting code-blockcs inside markdown via conform.nvim
                     "markdown",
-                    "markdown_inline"
+                    "markdown_inline",
+                    "yaml",
                 }
             }
         },
@@ -1060,7 +1058,6 @@ require("lazy").setup(
                 },
                 { "<leader>dO", "<CMD>DapStepOver<CR>",                      desc = "Step Over" },
                 {"<leader>di", "<CMD>DapStepInto<CR>", desc = "Step Into"},
-                --{"<leader>do", "<CMD>DapStepOut<CR>", desc = "Step Out"},
                 { "<leader>do", function() require("dap").step_out() end,    desc = "Step Out" },
                 { "<leader>dO", function() require("dap").step_over() end,   desc = "Step Over" },
                 { "<leader>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
@@ -1236,26 +1233,26 @@ require("lazy").setup(
         -- select virtual environments
         -- - makes pyright and debugpy aware of the selected virtual environment
         -- - Select a virtual environment with `:VenvSelect`
-        {
-            "linux-cultist/venv-selector.nvim",
-            dependencies = {
-                "neovim/nvim-lspconfig",
-                "mfussenegger/nvim-dap",
-                "mfussenegger/nvim-dap-python", --optional
-                { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } }
-            },
-            lazy = false,
-            branch = "regexp", -- This is the regexp branch, use this for the new version
-            config = function()
-                require("venv-selector").setup()
-            end,
-            keys = {
-                { ",v", "<cmd>VenvSelect<cr>" }
-            },
-            opts = {
-                dap_enabled = true -- makes the debugger work with venv
-            }
-        },
+        -- {
+        --     "linux-cultist/venv-selector.nvim",
+        --     dependencies = {
+        --         "neovim/nvim-lspconfig",
+        --         "mfussenegger/nvim-dap",
+        --         "mfussenegger/nvim-dap-python", --optional
+        --         { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } }
+        --     },
+        --     lazy = false,
+        --     branch = "regexp", -- This is the regexp branch, use this for the new version
+        --     config = function()
+        --         require("venv-selector").setup({})
+        --     end,
+        --     keys = {
+        --         { ",v", "<cmd>VenvSelect<cr>" }
+        --     },
+        --     opts = {
+        --         dap_enabled = true -- makes the debugger work with venv
+        --     }
+        -- },
         -- additional python text objects
         -- https://github.com/chrisgrieser/nvim-various-textobjs?
         {
@@ -1323,9 +1320,10 @@ require("lazy").setup(
                         api_key_name = "DEEPSEEK_API_KEY",
                         endpoint = "https://api.deepseek.com/",
                         model = "deepseek-coder",
+                        mode = legacy,
                     },
                     copilot = {
-                        model = "gemini-2.5-pro",
+                        model = "gpt-4o",
                         timeout = 30000,
                         --extra_request_body = {
                             --options = {
@@ -1333,7 +1331,23 @@ require("lazy").setup(
                             --},
                         --},
                     },
-
+                    ollama = {
+                        endpoint = "http://127.0.0.1:11434",
+                        timeout = 30000, -- Timeout in milliseconds
+                        extra_request_body = {
+                            options = {
+                                temperature = 0.75,
+                                num_ctx = 20480,
+                                keep_alive = "5m",
+                            },
+                        },
+                    },
+                    --jetstream = {
+                        --__inherited_from = "openai",
+                        --api_key_name = "JETSTREAM_API_KEY",
+                        --endpoint = "https://llm.jetstream-cloud.org/sglang/v1",
+                        --model = "DeepSeek-R1",
+                    --},
                     --openrouter = {
                     --__inherited_from = "openai",
                     --api_key_name = "OPENROUTER_API_KEY",
@@ -1347,12 +1361,13 @@ require("lazy").setup(
                         ----display_name = "Gemini 2.5 Pro Exp"
                     --},
                     gemini = {
-                        __inherited_from = "gemini",
+                        --__inherited_from = "gemini",
+                        use_ReAct_prompt = true,
                         --model = "gemini-2.5-pro-exp-03-25",
                         --extra_request_body = {
-                            --options = {
-                                --temperature = 0,
-                            --},
+                        --options = {
+                        --temperature = 0,
+                        --},
                     }
                 },
                 behaviour = {
@@ -1401,12 +1416,16 @@ require("lazy").setup(
                 },
                 hints = { enabled = true },
                 windows = {
-                    position = "smart",
+                    position = "right",
                     wrap = true,          -- similar to vim.o.wrap
                     width = 40,           -- default % based on available width
                     sidebar_header = {
                         align = "center", -- left, center, right for title
                         rounded = true,
+                    },
+                    input = {
+                        prefix = "> ",
+                        height = 12, -- Height of the input window in vertical layout
                     },
                 },
                 highlights = {
@@ -1468,9 +1487,70 @@ require("lazy").setup(
                 {
                     'MeanderingProgrammer/render-markdown.nvim',
                     opts = {
-                        file_types = { "markdown", "Avante" },
+                        file_types = { "markdown", "Avante", "codecompanion"},
                     },
                     ft = { "markdown", "Avante" },
+                },
+            },
+        },
+        {
+            "olimorris/codecompanion.nvim",
+            opts = {},
+            dependencies = {
+                "nvim-lua/plenary.nvim",
+                "nvim-treesitter/nvim-treesitter",
+                "ravitemer/mcphub.nvim",
+            },
+            config = function()
+                require("codecompanion").setup({
+                    extensions = {
+                        mcphub = {
+                            callback = "mcphub.extensions.codecompanion",
+                            opts = {
+                                make_vars = true,
+                                make_slash_commands = true,
+                                show_result_in_chat = true
+                            }
+                        }
+                    },
+                    adapters = {
+                        deepseek = function()
+                            return require("codecompanion.adapters").extend("deepseek", {
+                                env = {
+                                    api_key = function()
+                                        return os.getenv("DEEPSEEK_API_KEY")
+                                    end,
+                                },
+                            })
+                        end,
+                    },
+                    strategies = {
+                        chat = { adapter = "deepseek", },
+                        inline = { adapter = "deepseek" },
+                        agent = { adapter = "deepseek" },
+                    },
+                })
+            end
+        },
+        {
+            "echasnovski/mini.diff",
+            config = function()
+                local diff = require("mini.diff")
+                diff.setup({
+                    -- Disabled by default
+                    source = diff.gen_source.none(),
+                })
+            end,
+        },
+        {
+            "HakonHarnes/img-clip.nvim",
+            opts = {
+                filetypes = {
+                    codecompanion = {
+                        prompt_for_file_name = false,
+                        template = "[Image]($FILE_PATH)",
+                        use_absolute_path = true,
+                    },
                 },
             },
         },
