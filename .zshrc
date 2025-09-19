@@ -32,7 +32,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git node npm colorize colored-man-pages tmux docker cp systemd docker-compose httpie ssh yarn archlinux rsync python pip history-substring-search vi-mode dotenv)
+plugins=(git node npm colorize colored-man-pages tmux docker cp systemd docker-compose httpie ssh yarn archlinux rsync python pip history-substring-search vi-mode dotenv) #  zsh-autosuggestions smart-suggestion)
 
 # Source Oh-My-Zsh. This needs to be done after setting plugins.
 source $ZSH/oh-my-zsh.sh
@@ -48,7 +48,7 @@ export MANPAGER="less -R --use-color -Dd+r -Du+b"
 export MANROFFOPT="-P -c"
 
 # Set PATH
-export PATH="$HOME/java/bin:$HOME/bin:~/.npm-global/bin:$PATH"
+export PATH="$HOME/java/bin:$HOME/bin:$HOME/.npm-global/bin:$PATH"
 
 # Docker host configuration
 case `uname -a` in

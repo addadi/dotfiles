@@ -96,7 +96,7 @@ vim.cmd(
     set cursorline " highlight current line
     set incsearch " BUT do highlight as you type you
     " search phrase
-    set laststatus=2 " always show the status line
+    set laststatus=3 " always show the status line
     set lazyredraw " do not redraw while running macros
     set linespace=0 " don't insert any extra pixel lines
     " betweens rows
@@ -883,7 +883,7 @@ require("lazy").setup(
                 -- these keymaps need no right-hand-side, since that is defined by the
                 -- plugin config further below
                 { "+", mode = { "n", "x" }, desc = "󱠤 Send-to-REPL Operator" },
-                { "++", desc = "󱠤 Send Line to REPL" }
+{ "++", desc = "󱠤 Send Line to REPL" }
             },
             -- since irons's setup call is `require("iron.core").setup`, instead of
             -- `require("iron").setup` like other plugins would do, we need to tell
@@ -1233,26 +1233,22 @@ require("lazy").setup(
         -- select virtual environments
         -- - makes pyright and debugpy aware of the selected virtual environment
         -- - Select a virtual environment with `:VenvSelect`
-        -- {
-        --     "linux-cultist/venv-selector.nvim",
-        --     dependencies = {
-        --         "neovim/nvim-lspconfig",
-        --         "mfussenegger/nvim-dap",
-        --         "mfussenegger/nvim-dap-python", --optional
-        --         { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } }
-        --     },
-        --     lazy = false,
-        --     branch = "regexp", -- This is the regexp branch, use this for the new version
-        --     config = function()
-        --         require("venv-selector").setup({})
-        --     end,
-        --     keys = {
-        --         { ",v", "<cmd>VenvSelect<cr>" }
-        --     },
-        --     opts = {
-        --         dap_enabled = true -- makes the debugger work with venv
-        --     }
-        -- },
+	 {
+	     "linux-cultist/venv-selector.nvim",
+	     dependencies = {
+		 "neovim/nvim-lspconfig",
+		 "mfussenegger/nvim-dap",
+		 "mfussenegger/nvim-dap-python", --optional
+		 { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } }
+	     },
+	     ft = "python", -- Load when opening Python files
+	     keys = {
+		 { ",v", "<cmd>VenvSelect<cr>" }, -- Open picker on keymap
+	     },
+	     opts = {
+		 dap_enabled = true -- makes the debugger work with venv
+	     },
+	 },
         -- additional python text objects
         -- https://github.com/chrisgrieser/nvim-various-textobjs?
         {
@@ -1315,6 +1311,15 @@ require("lazy").setup(
                     provider = "telescope",
                 },
                 providers = {
+                    gemini = {
+                        endpoint = "https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent",
+                        api_key_name = "GEMINI_API_KEY",
+                        models = {
+                            { id = "gemini-2.5-flash", display_name = "Gemini Flash 2.5", max_tokens = 8192 },
+                            { id = "gemini-2.5-pro-exp-03-25", display_name = "Gemini 2.5 Pro Exp", max_tokens = 128000 },
+                        },
+                    },
+                    -- Other providers...
                     deepseek = {
                         __inherited_from = "openai",
                         api_key_name = "DEEPSEEK_API_KEY",
@@ -1326,9 +1331,9 @@ require("lazy").setup(
                         model = "gpt-4o",
                         timeout = 30000,
                         --extra_request_body = {
-                            --options = {
-                                --temperature = 0,
-                            --},
+                        --options = {
+                        --temperature = 0,
+                        --},
                         --},
                     },
                     ollama = {
@@ -1343,23 +1348,23 @@ require("lazy").setup(
                         },
                     },
                     --jetstream = {
-                        --__inherited_from = "openai",
-                        --api_key_name = "JETSTREAM_API_KEY",
-                        --endpoint = "https://llm.jetstream-cloud.org/sglang/v1",
-                        --model = "DeepSeek-R1",
+                    --__inherited_from = "openai",
+                    --api_key_name = "JETSTREAM_API_KEY",
+                    --endpoint = "https://llm.jetstream-cloud.org/sglang/v1",
+                    --model = "DeepSeek-R1",
                     --},
                     --openrouter = {
                     --__inherited_from = "openai",
                     --api_key_name = "OPENROUTER_API_KEY",
                     --endpoint = "https://openrouter.ai/api/v1",
-                    --model = "google/gemini-2.5-pro-exp-03-25:free",
+                    ----model = "deepseek/deepseek-r1",
                     --},
-                    --["gemini-2.5-pro-exp"] = {
-                        --__inherited_from = "gemini",
-                        --model = "gemini-2.5-pro-exp-03-25",
-                        ----max_tokens = 128000,
-                        ----display_name = "Gemini 2.5 Pro Exp"
-                    --},
+                    ["gemini-2.5-pro-exp"] = {
+                        __inherited_from = "gemini",
+                        model = "gemini-2.5-pro-exp-06-05",
+                        --max_tokens = 128000,
+                        --display_name = "Gemini 2.5 Pro Exp"
+                    },
                     gemini = {
                         --__inherited_from = "gemini",
                         use_ReAct_prompt = true,
@@ -1368,7 +1373,103 @@ require("lazy").setup(
                         --options = {
                         --temperature = 0,
                         --},
-                    }
+                    },
+                    openai_gpt_oss_120b = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "openai/gpt-oss-120b",
+                    },
+                    openai_gpt_oss_20b_free = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "openai/gpt-oss-20b:free",
+                    },
+                    openai_gpt_oss_20b = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "openai/gpt-oss-20b",
+                    },
+                    mistralai_codestral_2508 = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "mistralai/codestral-2508",
+                    },
+                    qwen_qwen3_30b_a3b_instruct_2507 = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "qwen/qwen3-30b-a3b-instruct-2507",
+                    },
+                    z_ai_glm_4_5 = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "z-ai/glm-4.5",
+                    },
+                    z_ai_glm_4_5_air_free = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "z-ai/glm-4.5-air:free",
+                    },
+                    z_ai_glm_4_5_air = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "z-ai/glm-4.5-air",
+                    },
+                    qwen_qwen3_235b_a22b_thinking_2507 = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "qwen/qwen3-235b-a22b-thinking-2507",
+                    },
+                    qwen_qwen3_coder_free = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "qwen/qwen3-coder:free",
+                    },
+                    qwen_qwen3_coder = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "qwen/qwen3-coder",
+                    },
+                    qwen_qwen3_235b_a22b_2507 = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "qwen/qwen3-235b-a22b-2507",
+                    },
+                    moonshotai_kimi_k2_free = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "moonshotai/kimi-k2:free",
+                    },
+                    moonshotai_kimi_k2 = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "moonshotai/kimi-k2",
+                    },
+                    thudm_glm_4_1v_9b_thinking = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "thudm/glm-4.1v-9b-thinking",
+                    },
+                    tencent_hunyuan_a13b_instruct_free = {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = "tencent/hunyuan-a13b-instruct:free",
+                    },
                 },
                 behaviour = {
                     auto_suggestions = false, -- Experimental stage
@@ -1514,15 +1615,17 @@ require("lazy").setup(
                         }
                     },
                     adapters = {
-                        deepseek = function()
-                            return require("codecompanion.adapters").extend("deepseek", {
-                                env = {
-                                    api_key = function()
-                                        return os.getenv("DEEPSEEK_API_KEY")
-                                    end,
-                                },
-                            })
-                        end,
+                        http = {
+                            deepseek = function()
+                                return require("codecompanion.adapters").extend("deepseek", {
+                                    env = {
+                                        api_key = function()
+                                            return os.getenv("DEEPSEEK_API_KEY")
+                                        end,
+                                    },
+                                })
+                            end,
+                        },
                     },
                     strategies = {
                         chat = { adapter = "deepseek", },
@@ -1621,9 +1724,10 @@ vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.autoindent = true
-vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true }) -- [TEST] Disabling single <Esc> for terminal mode to test double <Esc> only
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { noremap = true, silent = true })
 vim.keymap.set('n', '<Right>', ':AerialToggle!<CR>', { noremap = true, silent = true })
+vim.keymap.set("t", "<esc><esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 
 -- Set up filetype-specific configurations
 vim.api.nvim_create_autocmd("FileType", {

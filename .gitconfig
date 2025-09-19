@@ -44,3 +44,22 @@
 [remote "origin"]
 	push = +refs/tags/*:refs/tags/*
 	push = +refs/heads/*:refs/heads/*
+[init]
+	defaultBranch = master
+[safe]
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
