@@ -643,7 +643,7 @@ require("lazy").setup(
                 })
 
                 -- Python LSP setup
-                require("lspconfig").pyright.setup {
+                vim.lsp.config('pyright', {
                     settings = {
                         python = {
                             analysis = {
@@ -652,11 +652,13 @@ require("lazy").setup(
                         }
                     },
                     capabilities = capabilities,
-                }
+                })
+                vim.lsp.enable('pyright')
 
                 -- TypeScript/React LSP setup (using typescript-language-server)
                 -- Note: tsserver is deprecated, we use typescript-language-server via Mason
-                require("lspconfig").ts_ls.setup({
+                vim.lsp.config('ts_ls', {
+                --require("lspconfig").ts_ls.setup({
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/typescript-language-server", "--stdio" },
                     settings = {
                         typescript = {
@@ -686,9 +688,11 @@ require("lazy").setup(
                     },
                     capabilities = capabilities,
                 })
+                vim.lsp.enable('ts_ls')
 
                 -- ESLint LSP setup
-                require("lspconfig").eslint.setup({
+                vim.lsp.config('eslint', {
+                --require("lspconfig").eslint.setup({
                     -- If you want ESLint to automatically fix issues on save
                     on_attach = function(client, bufnr)
                         vim.api.nvim_create_autocmd("BufWritePre", {
@@ -699,24 +703,31 @@ require("lazy").setup(
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-eslint-language-server", "--stdio" },
                     capabilities = capabilities,
                 })
+                vim.lsp.enable('eslint')
 
                 -- CSS LSP setup
-                require("lspconfig").cssls.setup({
+                vim.lsp.config('cssls', {
+                --require("lspconfig").cssls.setup({
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-css-language-server", "--stdio" },
                     capabilities = capabilities,
                 })
+                vim.lsp.enable('cssls')
 
                 -- HTML LSP setup
-                require("lspconfig").html.setup({
+                vim.lsp.enable('html', {
+                --require("lspconfig").html.setup({
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-html-language-server", "--stdio" },
                     capabilities = capabilities,
                 })
+                vim.lsp.enable('html')
 
                 -- Tailwind CSS LSP setup
-                require("lspconfig").tailwindcss.setup({
+                vim.lsp.config('tailwindcss', {
+                --require("lspconfig").tailwindcss.setup({
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/tailwindcss-language-server", "--stdio" },
                     capabilities = capabilities,
                 })
+                vim.lsp.enable('tailwindcss')
             end
         },
         {
