@@ -302,15 +302,15 @@ require("lazy").setup(
 		}
 	},
 	{
-		"Mofiqul/adwaita.nvim",
-		lazy = false,
-		priority = 1000,
-		-- configure and set on startup
-		config = function()
-			vim.g.adwaita_darker = false            -- for darker version
-			vim.g.adwaita_disable_cursorline = true -- to disable cursorline
-			vim.g.adwaita_transparent = true        -- makes the background transparent
-			vim.cmd("colorscheme adwaita")
+			"sainnhe/everforest",
+			lazy = false,
+			priority = 1000,
+			-- configure and set on startup
+			config = function()
+				vim.g.everforest_background = "soft"  -- options: hard, medium, or soft
+				vim.g.everforest_transparent_background = 1 -- makes the background transparent
+				vim.g.everforest_ui_contrast = true    -- better UI contrast for Statusline
+				vim.cmd("colorscheme everforest")
 		end
 	},
 	{
@@ -387,6 +387,38 @@ require("lazy").setup(
         --end
         --},
         { "Raimondi/delimitMate" },
+        -- Buffer management - fixes :bd behavior in splits
+        {
+            "echasnovski/mini.bufremove",
+            opts = {},
+            keys = {
+                {
+                    "<leader>bd",
+                    function()
+                        local bd = require("mini.bufremove").delete
+                        if vim.bo.modified then
+                            local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+                            if choice == 1 then -- Yes
+                                vim.cmd.write()
+                                bd(0)
+                            elseif choice == 2 then -- No
+                                bd(0, true)
+                            end
+                        else
+                            bd(0)
+                        end
+                    end,
+                    desc = "Delete Buffer"
+                },
+                {
+                    "<leader>bD",
+                    function()
+                        require("mini.bufremove").delete(0, true)
+                    end,
+                    desc = "Delete Buffer (Force)"
+                },
+            },
+        },
         {
             "nvim-telescope/telescope.nvim",
             dependencies = { "nvim-lua/plenary.nvim", "BurntSushi/ripgrep" },
@@ -692,7 +724,6 @@ require("lazy").setup(
 
                 -- ESLint LSP setup
                 vim.lsp.config('eslint', {
-                --require("lspconfig").eslint.setup({
                     -- If you want ESLint to automatically fix issues on save
                     on_attach = function(client, bufnr)
                         vim.api.nvim_create_autocmd("BufWritePre", {
@@ -707,7 +738,6 @@ require("lazy").setup(
 
                 -- CSS LSP setup
                 vim.lsp.config('cssls', {
-                --require("lspconfig").cssls.setup({
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-css-language-server", "--stdio" },
                     capabilities = capabilities,
                 })
@@ -715,7 +745,6 @@ require("lazy").setup(
 
                 -- HTML LSP setup
                 vim.lsp.enable('html', {
-                --require("lspconfig").html.setup({
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-html-language-server", "--stdio" },
                     capabilities = capabilities,
                 })
@@ -723,7 +752,6 @@ require("lazy").setup(
 
                 -- Tailwind CSS LSP setup
                 vim.lsp.config('tailwindcss', {
-                --require("lspconfig").tailwindcss.setup({
                     cmd = { vim.fn.stdpath("data") .. "/mason/bin/tailwindcss-language-server", "--stdio" },
                     capabilities = capabilities,
                 })
@@ -1606,6 +1634,34 @@ require("lazy").setup(
             },
         },
         {
+            "NickvanDyke/opencode.nvim",
+            dependencies = {
+                -- Recommended for `ask()` and `select()`.
+                -- Required for default `toggle()` implementation.
+                { "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
+            },
+            config = function()
+                ---@type opencode.Opts
+                vim.g.opencode_opts = {
+                    -- Your configuration, if any — see `lua/opencode/config.lua`, or "goto definition".
+                }
+
+                -- Required for `opts.auto_reload`.
+                vim.o.autoread = true
+
+                -- Recommended/example keymaps.
+                vim.keymap.set({ "n", "x" }, "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "Ask opencode" })
+                vim.keymap.set({ "n", "x" }, "<C-x>", function() require("opencode").select() end,                          { desc = "Execute opencode action…" })
+                vim.keymap.set({ "n", "x" },    "ga", function() require("opencode").prompt("@this") end,                   { desc = "Add to opencode" })
+                vim.keymap.set({ "n", "t" }, "<C-.>", function() require("opencode").toggle() end,                          { desc = "Toggle opencode" })
+                vim.keymap.set("n",        "<S-C-u>", function() require("opencode").command("session.half.page.up") end,   { desc = "opencode half page up" })
+                vim.keymap.set("n",        "<S-C-d>", function() require("opencode").command("session.half.page.down") end, { desc = "opencode half page down" })
+                -- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o".
+                vim.keymap.set('n', '+', '<C-a>', { desc = 'Increment', noremap = true })
+                vim.keymap.set('n', '-', '<C-x>', { desc = 'Decrement', noremap = true })
+            end,
+        },
+        {
             "olimorris/codecompanion.nvim",
             opts = {},
             dependencies = {
@@ -1751,6 +1807,35 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.softtabstop = 2
     end
 })
+
+-- Custom buffer delete command that preserves windows
+local function smart_buffer_delete()
+    local current_buf = vim.api.nvim_get_current_buf()
+    local buffers_in_window = vim.fn.getbufinfo({buflisted = 1})
+
+    -- Count buffers that are loaded and visible
+    local loaded_buffers = {}
+    for _, buf in ipairs(buffers_in_window) do
+        if buf.loaded == 1 and buf.listed == 1 and buf.bufnr ~= current_buf then
+            table.insert(loaded_buffers, buf.bufnr)
+        end
+    end
+
+    -- If there are other buffers available, switch to one before deleting
+    if #loaded_buffers > 0 then
+        vim.cmd("buffer " .. loaded_buffers[1])
+        vim.cmd("bdelete " .. current_buf)
+    else
+        -- If no other buffers, just use regular bdelete which might close window
+        vim.cmd("bdelete")
+    end
+end
+
+-- Create user command for smart buffer delete
+vim.api.nvim_create_user_command("Bd", smart_buffer_delete, { desc = "Smart buffer delete that preserves windows" })
+
+-- Override default :bd mapping to use smart delete
+vim.keymap.set("n", "<leader>q", ":Bd<CR>", { noremap = true, silent = true, desc = "Smart Buffer Delete" })
 
 -- LSP specific keybindings
 vim.api.nvim_create_autocmd("LspAttach", {

@@ -48,7 +48,7 @@ export MANPAGER="less -R --use-color -Dd+r -Du+b"
 export MANROFFOPT="-P -c"
 
 # Set PATH
-export PATH="$HOME/java/bin:$HOME/bin:$HOME/.npm-global/bin:$PATH"
+export PATH="$HOME/java/bin:$HOME/bin:$HOME/.npm-global/bin:$PATH":"$HOME/.cargo/bin"
 
 # Docker host configuration
 case `uname -a` in
