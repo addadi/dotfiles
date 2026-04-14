@@ -709,15 +709,13 @@ require("lazy").setup(
             end
         },
         {
-            "folke/neodev.nvim",
+            "folke/lazydev.nvim",
+            ft = "lua",
             opts = {
                 library = {
-                    plugins = { "nvim-dap-ui" },
-                    types = true,
+                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
                 },
-                setup_jsonls = true,
-                lspconfig = true,
-            }
+            },
         },
         {
             "saghen/blink.cmp",
