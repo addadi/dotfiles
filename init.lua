@@ -357,7 +357,7 @@ require("lazy").setup(
 			}
 		end
 	},
-	{ "preservim/nerdcommenter", },
+	{ "folke/ts-comments.nvim", opts = {} },
 	{
 		"kylechui/nvim-surround",
 		version = "*", -- Use for stability; omit to use `main` branch for the latest features
