@@ -821,7 +821,7 @@ require("lazy").setup(
                 {
                     "<leader>c",
                     function()
-                        require("conform").format({ lsp_fallback = true })
+                        require("conform").format({ lsp_format = "fallback" })
                     end,
                     desc = "format"
                 }
@@ -851,7 +851,7 @@ require("lazy").setup(
                     -- when no formatter is setup for a filetype, fallback to formatting
                     -- via the lsp. this is relevant e.g. for taplo (toml lsp), where the
                     -- lsp can handle the formatting for us
-                    lsp_fallback = true
+                    lsp_format = true
                 }
             }
         },
