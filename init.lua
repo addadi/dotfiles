@@ -308,6 +308,7 @@ require("lazy").setup(
 				vim.g.everforest_background = "soft"  -- options: hard, medium, or soft
 				vim.g.everforest_transparent_background = 1 -- makes the background transparent
 				vim.g.everforest_ui_contrast = true    -- better UI contrast for Statusline
+				vim.g.everforest_better_performance = 1
 				vim.cmd("colorscheme everforest")
 		end
 	},
