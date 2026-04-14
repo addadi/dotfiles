@@ -259,9 +259,7 @@ require("lazy").setup(
         {
             "folke/which-key.nvim",
             event = "VeryLazy",
-            opts = {
-                preset = "modern",
-            },
+            opts = {},
             keys = {
                 {
                     "<leader>?",
@@ -372,9 +370,7 @@ require("lazy").setup(
         -- Buffer management - fixes :bd behavior in splits
         {
             "echasnovski/mini.bufremove",
-            opts = {
-                preset = "modern",
-            },
+            opts = {},
             keys = {
                 {
                     "<leader>bd",
@@ -499,9 +495,7 @@ require("lazy").setup(
         },
         {
             "gbprod/yanky.nvim",
-            opts = {
-                preset = "modern",
-            },
+            opts = {},
             keys = {
                 {
                     "<leader>p",
@@ -741,9 +735,7 @@ require("lazy").setup(
                 -- Add blink.compat for compatibility with some nvim-cmp sources
                 {
                     "saghen/blink.compat",
-                    opts = {
-                preset = "modern",
-            },
+                    opts = {},
                     version = "*",
                 },
                 -- Keep vsnip for snippet support
@@ -819,9 +811,7 @@ require("lazy").setup(
         },
         {
             "folke/trouble.nvim",
-            opts = {
-                preset = "modern",
-            },
+            opts = {},
         },
         -- Formatting client: conform.nvim
         -- - configured to use black & isort in python
@@ -995,9 +985,7 @@ require("lazy").setup(
                 -- virtual text for the debugger
                 {
                     "theHamsta/nvim-dap-virtual-text",
-                    opts = {
-                preset = "modern",
-            },
+                    opts = {},
                 },
             },
             keys = {
@@ -1558,9 +1546,7 @@ require("lazy").setup(
         },
         {
             "olimorris/codecompanion.nvim",
-            opts = {
-                preset = "modern",
-            },
+            opts = {},
             dependencies = {
                 "nvim-lua/plenary.nvim",
                 "nvim-treesitter/nvim-treesitter",
