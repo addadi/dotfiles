@@ -48,8 +48,7 @@ vim.cmd(
     " map <left> <ESC>:NERDTreeToggle<RETURN>
     map <up> <ESC>:bp<RETURN>
     " }
-    " paste toggle from http://vim.wikia.com/wiki/Toggle_auto-indenting_for_code_paste
-    " this is probably no longer needed in nvim
+    " paste toggle
     " set pastetoggle=<F2>
 
     " aleternate buffer
@@ -253,11 +252,7 @@ require("lazy").setup(
         {
             "folke/which-key.nvim",
             event = "VeryLazy",
-            opts = {
-                -- your configuration comes here
-                -- or leave it empty to use the default settings
-                -- refer to the configuration section below
-            },
+            opts = {},
             keys = {
                 {
                     "<leader>?",
@@ -265,12 +260,6 @@ require("lazy").setup(
                         require("which-key").show({ global = false })
                     end,
                     desc = "Buffer Local Keymaps (which-key)",
-                },
-                ask = {
-                    floating = false, -- Open the 'AvanteAsk' prompt in a floating window
-                    start_insert = true, -- Start insert mode when opening the ask window
-                    border = "rounded",
-                    height = 30, -- Enlarged height
                 },
             },
         },
@@ -370,22 +359,6 @@ require("lazy").setup(
 	{ "lambdalisue/suda.vim" },
 	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 	{ "Darazaki/indent-o-matic" },
-	--{"Darazaki/indent-o-matic",
-	--config = function()
-		--require('indent-o-matic').setup ({
-			---- The values indicated here are the defaults
-
-        ---- Number of lines without indentation before giving up (use -1 for infinite)
-        --max_lines = 2048,
-
-        ---- Space indentations that should be detected
-        --standard_widths = { 2, 4, 8 },
-
-        ---- Skip multi-line comments and strings (more accurate detection but less performant)
-        --skip_multiline = true,
-        --})
-        --end
-        --},
         { "Raimondi/delimitMate" },
         -- Buffer management - fixes :bd behavior in splits
         {
@@ -498,24 +471,20 @@ require("lazy").setup(
             dependencies = { "nvim-telescope/telescope.nvim" },
             keys = {
                 {
-                    -- lazy style key map
                     "<leader>u",
                     "<cmd>Telescope undo<cr>",
-                    desc = "undo history"
+                    desc = "undo history",
                 },
-                opts = {
-                    extensions = {
-                        undo = {}
-                    }
-                },
-                config = function(_, opts)
-                    -- Calling telescope's setup from multiple specs does not hurt, it will happily merge the
-                    -- configs for us. We won't use data, as everything is in it's own namespace (telescope
-                    -- defaults, as well as each extension).
-                    require("telescope").setup(opts)
-                    require("telescope").load_extension("undo")
-                end
-            }
+            },
+            opts = {
+                extensions = {
+                    undo = {}
+                }
+            },
+            config = function(_, opts)
+                require("telescope").setup(opts)
+                require("telescope").load_extension("undo")
+            end
         },
         {
             "gbprod/yanky.nvim",
@@ -600,45 +569,26 @@ require("lazy").setup(
         },
         {
             "stevearc/aerial.nvim",
-            opts = function()
-                --local icons = vim.deepcopy(LazyVim.config.icons.kinds)
-
-                -- HACK: fix lua's weird choice for `Package` for control
-                -- structures like if/else/for/etc.
-                --icons.lua = { Package = icons.Control }
-
-                ---@type table<string, string[]>|false
-                local filter_kind = false
-                --if LazyVim.config.kind_filter then
-                --filter_kind = assert(vim.deepcopy(LazyVim.config.kind_filter))
-                --filter_kind._ = filter_kind.default
-                --filter_kind.default = nil
-                --end
-
-                local opts = {
-                    attach_mode = "global",
-                    backends = { "lsp", "treesitter", "markdown", "man" },
-                    show_guides = true,
-                    layout = {
-                        resize_to_content = false,
-                        win_opts = {
-                            winhl = "Normal:NormalFloat,FloatBorder:NormalFloat,SignColumn:SignColumnSB",
-                            signcolumn = "yes",
-                            statuscolumn = " ",
-                        },
+            opts = {
+                attach_mode = "global",
+                backends = { "lsp", "treesitter", "markdown", "man" },
+                show_guides = true,
+                layout = {
+                    resize_to_content = false,
+                    win_opts = {
+                        winhl = "Normal:NormalFloat,FloatBorder:NormalFloat,SignColumn:SignColumnSB",
+                        signcolumn = "yes",
+                        statuscolumn = " ",
                     },
-                    icons = icons,
-                    filter_kind = filter_kind,
-                    -- stylua: ignore
-                    guides = {
-                        mid_item   = "├╴",
-                        last_item  = "└╴",
-                        nested_top = "│ ",
-                        whitespace = "  ",
-                    },
-                }
-                return opts
-            end,
+                },
+                filter_kind = false,
+                guides = {
+                    mid_item   = "├╴",
+                    last_item  = "└╴",
+                    nested_top = "│ ",
+                    whitespace = "  ",
+                },
+            },
             keys = {
                 { "<leader>cs", "<cmd>AerialToggle<cr>", desc = "Aerial (Symbols)" },
             },
@@ -854,7 +804,6 @@ require("lazy").setup(
                 },
             },
         },
-        { "rafamadriz/friendly-snippets" },
         {
             "folke/trouble.nvim",
             config = function()
@@ -971,37 +920,22 @@ require("lazy").setup(
         -- - auto-installs the parser for python
         {
             "nvim-treesitter/nvim-treesitter",
-            -- automatically update the parsers with every new release of treesitter
+            branch = "main",
+            lazy = false,
             build = ":TSUpdate",
-            -- since treesitter's setup call is `require("nvim-treesitter.configs").setup`,
-            -- instead of `require("nvim-treesitter").setup` like other plugins do, we
-            -- need to tell lazy.nvim which module to via the `main` key
-            main = "nvim-treesitter.configs",
-            opts = {
-                highlight = { enable = true }, -- enable treesitter syntax highlighting
-                indent = { enable = true },
-                ensure_installed = {
-                    -- auto-install the Treesitter parser for python and related languages
-                    "python",
-                    "toml",
-                    "rst",
-                    "ninja",
-                    "lua",
-
-                    -- JavaScript/TypeScript/React
-                    "javascript",
-                    "typescript",
-                    "tsx",
-                    "css",
-                    "html",
-                    "json",
-
-                    -- needed for formatting code-blockcs inside markdown via conform.nvim
-                    "markdown",
-                    "markdown_inline",
-                    "yaml",
+            config = function()
+                local langs = {
+                    "python", "toml", "rst", "ninja", "lua",
+                    "javascript", "typescript", "tsx", "css", "html", "json",
+                    "markdown", "markdown_inline", "yaml",
                 }
-            }
+                require("nvim-treesitter").install(langs)
+                vim.api.nvim_create_autocmd("FileType", {
+                    callback = function()
+                        pcall(vim.treesitter.start)
+                    end,
+                })
+            end,
         },
         -----------------------------------------------------------------------------
         -- EDITING SUPPORT PLUGINS
@@ -1235,19 +1169,7 @@ require("lazy").setup(
                 }
             },
             config = function(_, opts)
-                local dap = require("dap")
-                local dapui = require("dapui")
-                dapui.setup(opts)
-                -- dap.listeners.after.event_initialized["dapui_config"] = function()
-                --     dapui.open({})
-                -- end
-                --dap.listeners.before.event_terminated["dapui_config"] = function()
-                --dapui.close({})
-                --end
-                --dap.listeners.before.event_exited["dapui_config"] = function()
-                --dapui.close({})
-                --end
-                -- require("dapui").setup(opts) -- This is redundant
+                require("dapui").setup(opts)
             end
         },
         -- Configuration for the python debugger
@@ -1278,7 +1200,7 @@ require("lazy").setup(
 		 "neovim/nvim-lspconfig",
 		 "mfussenegger/nvim-dap",
 		 "mfussenegger/nvim-dap-python", --optional
-		 { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } }
+		 { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } }
 	     },
 	     ft = "python", -- Load when opening Python files
 	     keys = {
