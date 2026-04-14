@@ -972,8 +972,6 @@ require("lazy").setup(
         },
         -- better indentation behavior
         -- by default, vim has some weird indentation behavior in some edge cases,
-        -- which this plugin fixes
-        { "Vimjas/vim-python-pep8-indent" },
         -----------------------------------------------------------------------------
         -- DEBUGGING
 
