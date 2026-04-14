@@ -1213,8 +1213,7 @@ require("lazy").setup(
         {
             "chrisgrieser/nvim-various-textobjs",
             event = "UIEnter",
-            opts = { useDefaults = true },
-            --opts = { keymaps.useDefaults = true },
+            opts = { keymaps = { useDefaults = true } },
         },
         --  Markdown
         {
