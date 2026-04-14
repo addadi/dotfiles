@@ -951,7 +951,11 @@ require("lazy").setup(
         -- - quickly create docstrings via `<leader>a`
         {
             "danymat/neogen",
-            opts = true,
+            opts = {
+                languages = {
+                    python = { template = { annotation_convention = "google_docstrings" } },
+                },
+            },
             keys = {
                 {
                     "<leader>a",
