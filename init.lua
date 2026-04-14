@@ -1055,50 +1055,6 @@ require("lazy").setup(
                 for _, group in pairs(dap_round_groups) do
                     sign(group, { text = "●", texthl = group })
                 end
-
-                local dap = require("dap")
-
-                -- Adapters
-                -- Python
-                dap.adapters.python = function(cb, config)
-                    if config.request == "attach" then
-                        ---@diagnostic disable-next-line: undefined-field
-                        local port = (config.connect or config).port
-                        ---@diagnostic disable-next-line: undefined-field
-                        local host = (config.connect or config).host or "localhost"
-                        cb(
-                            {
-                                type = "server",
-                                port = assert(port, "`connect.port` is required for a python `attach` configuration"),
-                                host = host
-                            }
-                        )
-                    else
-                        cb(
-                            {
-                                type = "executable",
-                                command = "debugpy-adapter"
-                            }
-                        )
-                    end
-                end
-                -- DAP configurations for Python
-                dap.configurations.python = {
-                    {
-                        name = "Launch",
-                        type = "python",
-                        request = "launch",
-                        program = "${file}",
-                        console = "integratedTerminal",
-                        justMyCode = false,
-                        on_exit = function(_, return_value)
-                            if return_value ~= 0 then
-                                print("Stack trace:")
-                                vim.fn.system("python -m pdb --stacktrace " .. vim.fn.expand("%"))
-                            end
-                        end
-                    },
-                }
             end,
         },
 
@@ -1192,7 +1148,7 @@ require("lazy").setup(
                 }
             },
             config = function()
-                require("dap-python").setup("~/.local/share/nvim/mason/packages/debugpy/venv/bin/python")
+                require("dap-python").setup("debugpy-adapter")
                 require("dap-python").test_runner = "pytest"
             end
         },
