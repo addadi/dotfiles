@@ -1228,6 +1228,7 @@ require("lazy").setup(
             opts = {
                 provider = "copilot",
                 auto_suggestions_provider = "copilot",
+                mode = "agentic",
                 selector = {
                     provider = "telescope",
                 },
