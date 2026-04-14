@@ -201,6 +201,9 @@ vim.cmd(
 
 ]]
 )
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- Lazy.nvim setup
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -246,6 +249,10 @@ require("lazy").setup(
             "tpope/vim-fugitive",
             "tpope/vim-sleuth",
             "nvim-tree/nvim-tree.lua",
+            dependencies = { "nvim-tree/nvim-web-devicons" },
+            config = function()
+                require("nvim-tree").setup({})
+            end,
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
         },
