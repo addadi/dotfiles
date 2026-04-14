@@ -811,9 +811,7 @@ require("lazy").setup(
         },
         {
             "folke/trouble.nvim",
-            config = function()
-                require("trouble").setup {}
-            end
+            opts = {},
         },
         -- Formatting client: conform.nvim
         -- - configured to use black & isort in python
