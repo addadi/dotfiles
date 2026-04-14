@@ -1614,7 +1614,7 @@ require("lazy").setup(
                             end,
                         },
                     },
-                    strategies = {
+                    interactions = {
                         chat = { adapter = "deepseek", },
                         inline = { adapter = "deepseek" },
                         agent = { adapter = "deepseek" },
