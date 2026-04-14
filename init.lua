@@ -368,7 +368,7 @@ require("lazy").setup(
 	},
 	{ "lambdalisue/vim-suda" },
 	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
-        { "Raimondi/delimitMate" },
+        { "echasnovski/mini.pairs", event = "VeryLazy", opts = {} },
         -- Buffer management - fixes :bd behavior in splits
         {
             "echasnovski/mini.bufremove",
