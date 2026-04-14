@@ -1212,7 +1212,9 @@ require("lazy").setup(
 		 { ",v", "<cmd>VenvSelect<cr>" }, -- Open picker on keymap
 	     },
 	     opts = {
-		 dap_enabled = true -- makes the debugger work with venv
+		 options = {
+		     dap_enabled = true,
+		 },
 	     },
 	 },
         -- additional python text objects
