@@ -368,7 +368,6 @@ require("lazy").setup(
 	},
 	{ "lambdalisue/vim-suda" },
 	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
-	{ "Darazaki/indent-o-matic" },
         { "Raimondi/delimitMate" },
         -- Buffer management - fixes :bd behavior in splits
         {
