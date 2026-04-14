@@ -366,7 +366,7 @@ require("lazy").setup(
 			require("nvim-surround").setup({})
 		end
 	},
-	{ "lambdalisue/suda.vim" },
+	{ "lambdalisue/vim-suda" },
 	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 	{ "Darazaki/indent-o-matic" },
         { "Raimondi/delimitMate" },
