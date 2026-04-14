@@ -476,26 +476,6 @@ require("lazy").setup(
             end,
         },
         {
-            "debugloop/telescope-undo.nvim",
-            dependencies = { "nvim-telescope/telescope.nvim" },
-            keys = {
-                {
-                    "<leader>u",
-                    "<cmd>Telescope undo<cr>",
-                    desc = "undo history",
-                },
-            },
-            opts = {
-                extensions = {
-                    undo = {}
-                }
-            },
-            config = function(_, opts)
-                require("telescope").setup(opts)
-                require("telescope").load_extension("undo")
-            end
-        },
-        {
             "gbprod/yanky.nvim",
             opts = {},
             keys = {
@@ -1527,7 +1507,9 @@ require("lazy").setup(
             dependencies = {
                 -- Recommended for `ask()` and `select()`.
                 -- Required for default `toggle()` implementation.
-                { "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
+                { "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} }, keys = {
+            { "<leader>u", function() Snacks.picker.undo() end, desc = "undo history" },
+        } },
             },
             config = function()
                 ---@type opencode.Opts
