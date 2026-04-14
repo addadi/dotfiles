@@ -248,11 +248,18 @@ require("lazy").setup(
             "nvim-lua/plenary.nvim",
             "tpope/vim-fugitive",
             "tpope/vim-sleuth",
-            "nvim-tree/nvim-tree.lua",
-            dependencies = { "nvim-tree/nvim-web-devicons" },
-            config = function()
-                require("nvim-tree").setup({})
-            end,
+            -- TODO: review replacing oil.nvim with snacks.explorer
+            {
+                "stevearc/oil.nvim",
+                dependencies = { "nvim-tree/nvim-web-devicons" },
+                opts = {
+                    default_file_explorer = true,
+                    view_options = { show_hidden = true },
+                },
+                keys = {
+                    { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
+                },
+            },
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
         },
