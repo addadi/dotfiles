@@ -747,7 +747,7 @@ require("lazy").setup(
                 end
             end,
             -- use a release tag to download pre-built binaries
-            version = "*", -- blink.cmp requires a release tag for its rust binary
+            version = "1.*",
             opts = {
                 -- 'default' for mappings similar to built-in vim completion
                 -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
