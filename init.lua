@@ -247,7 +247,7 @@ require("lazy").setup(
         },
         {
             "nvim-telescope/telescope.nvim",
-            dependencies = { "nvim-lua/plenary.nvim", "BurntSushi/ripgrep" },
+            dependencies = { "nvim-lua/plenary.nvim" },
             keys = {
                 { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Telescope Find Files" },
                 { "<leader>fg", "<cmd>Telescope live_grep<CR>",  desc = "Telescope Live Grep" },
@@ -616,7 +616,7 @@ require("lazy").setup(
         -- - Formatting is triggered via `<leader>f`, but also automatically on save
         {
             "stevearc/conform.nvim",
-            event = "bufwritepre", -- load the plugin before saving
+            event = "BufWritePre",
             keys = {
                 {
                     "<leader>c",
