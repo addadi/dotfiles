@@ -1346,7 +1346,7 @@ vim.api.nvim_create_autocmd(
 
             -- Use treesitter for folding, which is more reliable with syntax highlighting
             vim.opt_local.foldmethod = "expr"
-            vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+            vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
             local iabbrev = function(lhs, rhs)
                 vim.keymap.set("ia", lhs, rhs, { buffer = true })
@@ -1424,10 +1424,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- Python-specific configurations
---vim.cmd [[
---autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4 colorcolumn=88
---]]
--- nvim-jupyter-client
 
 -- configuration for Windows Subsystem for Linux (WSL)
 local in_wsl = os.getenv('WSL_DISTRO_NAME') ~= nil
