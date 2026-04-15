@@ -1128,9 +1128,6 @@ require("lazy").setup(
                     minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
                     enable_claude_text_editor_tool_mode = true,
                 },
-                web_search_engine = {
-                    provider = "google",
-                },
                 mappings = {
                     ask = "<leader>aa",
                     edit = "<leader>ae",
