@@ -1066,31 +1066,25 @@ require("lazy").setup(
                     gemini = {
                         endpoint = "https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent",
                         api_key_name = "GEMINI_API_KEY",
+                        use_ReAct_prompt = true,
                         models = {
                             { id = "gemini-2.5-flash", display_name = "Gemini Flash 2.5", max_tokens = 8192 },
-                            { id = "gemini-2.5-pro-exp-03-25", display_name = "Gemini 2.5 Pro Exp", max_tokens = 128000 },
+                            { id = "gemini-2.5-pro", display_name = "Gemini 2.5 Pro", max_tokens = 128000 },
                         },
                     },
-                    -- Other providers...
                     deepseek = {
                         __inherited_from = "openai",
                         api_key_name = "DEEPSEEK_API_KEY",
                         endpoint = "https://api.deepseek.com/",
                         model = "deepseek-coder",
-                        mode = legacy,
                     },
                     copilot = {
                         model = "gpt-4o",
                         timeout = 30000,
-                        --extra_request_body = {
-                        --options = {
-                        --temperature = 0,
-                        --},
-                        --},
                     },
                     ollama = {
                         endpoint = "http://127.0.0.1:11434",
-                        timeout = 30000, -- Timeout in milliseconds
+                        timeout = 30000,
                         extra_request_body = {
                             options = {
                                 temperature = 0.75,
@@ -1098,33 +1092,6 @@ require("lazy").setup(
                                 keep_alive = "5m",
                             },
                         },
-                    },
-                    --jetstream = {
-                    --__inherited_from = "openai",
-                    --api_key_name = "JETSTREAM_API_KEY",
-                    --endpoint = "https://llm.jetstream-cloud.org/sglang/v1",
-                    --model = "DeepSeek-R1",
-                    --},
-                    --openrouter = {
-                    --__inherited_from = "openai",
-                    --api_key_name = "OPENROUTER_API_KEY",
-                    --endpoint = "https://openrouter.ai/api/v1",
-                    ----model = "deepseek/deepseek-r1",
-                    --},
-                    ["gemini-2.5-pro-exp"] = {
-                        __inherited_from = "gemini",
-                        model = "gemini-2.5-pro-exp-06-05",
-                        --max_tokens = 128000,
-                        --display_name = "Gemini 2.5 Pro Exp"
-                    },
-                    gemini = {
-                        --__inherited_from = "gemini",
-                        use_ReAct_prompt = true,
-                        --model = "gemini-2.5-pro-exp-03-25",
-                        --extra_request_body = {
-                        --options = {
-                        --temperature = 0,
-                        --},
                     },
                     openai_gpt_oss_120b = {
                         __inherited_from = "openai",
