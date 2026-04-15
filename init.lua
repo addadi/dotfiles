@@ -1367,7 +1367,6 @@ vim.api.nvim_create_autocmd(
 
 -- Additional configurations
 -- vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true }) -- [TEST] Disabling single <Esc> for terminal mode to test double <Esc> only
-vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { noremap = true, silent = true })
 vim.keymap.set('n', '<Right>', ':AerialToggle!<CR>', { noremap = true, silent = true })
 vim.keymap.set("t", "<esc><esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 
@@ -1383,46 +1382,26 @@ vim.api.nvim_create_autocmd("FileType", {
     end
 })
 
--- Custom buffer delete command that preserves windows
-local function smart_buffer_delete()
-    local current_buf = vim.api.nvim_get_current_buf()
-    local buffers_in_window = vim.fn.getbufinfo({buflisted = 1})
-
-    -- Count buffers that are loaded and visible
-    local loaded_buffers = {}
-    for _, buf in ipairs(buffers_in_window) do
-        if buf.loaded == 1 and buf.listed == 1 and buf.bufnr ~= current_buf then
-            table.insert(loaded_buffers, buf.bufnr)
+vim.keymap.set("n", "<leader>q", function()
+    local bd = require("mini.bufremove").delete
+    if vim.bo.modified then
+        local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+        if choice == 1 then
+            vim.cmd.write()
+            bd(0)
+        elseif choice == 2 then
+            bd(0, true)
         end
-    end
-
-    -- If there are other buffers available, switch to one before deleting
-    if #loaded_buffers > 0 then
-        vim.cmd("buffer " .. loaded_buffers[1])
-        vim.cmd("bdelete " .. current_buf)
     else
-        -- If no other buffers, just use regular bdelete which might close window
-        vim.cmd("bdelete")
+        bd(0)
     end
-end
-
--- Create user command for smart buffer delete
-vim.api.nvim_create_user_command("Bd", smart_buffer_delete, { desc = "Smart buffer delete that preserves windows" })
-
--- Override default :bd mapping to use smart delete
-vim.keymap.set("n", "<leader>q", ":Bd<CR>", { noremap = true, silent = true, desc = "Smart Buffer Delete" })
+end, { noremap = true, silent = true, desc = "Smart Buffer Delete" })
 
 -- LSP specific keybindings
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
         local bufnr = args.buf
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-        -- Ensure Treesitter highlighting is enabled for the buffer, which can sometimes
-        -- fail to apply automatically when jumping between files.
-        if pcall(require, "nvim-treesitter.highlight") then
-            vim.cmd("TSBufEnable highlight")
-        end
 
         -- Code navigation
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "Go to Definition" })
