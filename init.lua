@@ -473,8 +473,6 @@ require("lazy").setup(
                 -- TypeScript/React LSP setup (using typescript-language-server)
                 -- Note: tsserver is deprecated, we use typescript-language-server via Mason
                 vim.lsp.config('ts_ls', {
-                --require("lspconfig").ts_ls.setup({
-                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/typescript-language-server", "--stdio" },
                     settings = {
                         typescript = {
                             inlayHints = {
@@ -507,35 +505,30 @@ require("lazy").setup(
 
                 -- ESLint LSP setup
                 vim.lsp.config('eslint', {
-                    -- If you want ESLint to automatically fix issues on save
                     on_attach = function(client, bufnr)
                         vim.api.nvim_create_autocmd("BufWritePre", {
                             buffer = bufnr,
                             command = "EslintFixAll",
                         })
                     end,
-                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-eslint-language-server", "--stdio" },
                     capabilities = capabilities,
                 })
                 vim.lsp.enable('eslint')
 
                 -- CSS LSP setup
                 vim.lsp.config('cssls', {
-                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-css-language-server", "--stdio" },
                     capabilities = capabilities,
                 })
                 vim.lsp.enable('cssls')
 
                 -- HTML LSP setup
                 vim.lsp.enable('html', {
-                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/vscode-html-language-server", "--stdio" },
                     capabilities = capabilities,
                 })
                 vim.lsp.enable('html')
 
                 -- Tailwind CSS LSP setup
                 vim.lsp.config('tailwindcss', {
-                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/tailwindcss-language-server", "--stdio" },
                     capabilities = capabilities,
                 })
                 vim.lsp.enable('tailwindcss')
