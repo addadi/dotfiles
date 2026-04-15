@@ -1366,12 +1366,6 @@ vim.api.nvim_create_autocmd(
 )
 
 -- Additional configurations
-vim.opt.number = true
-vim.opt.expandtab = true
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.autoindent = true
 -- vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true }) -- [TEST] Disabling single <Esc> for terminal mode to test double <Esc> only
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { noremap = true, silent = true })
 vim.keymap.set('n', '<Right>', ':AerialToggle!<CR>', { noremap = true, silent = true })
