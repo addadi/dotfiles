@@ -1055,7 +1055,16 @@ require("lazy").setup(
             "yetone/avante.nvim",
             event = "VeryLazy",
             build = "make",
-            opts = {
+            config = function()
+                local openrouter = function(model)
+                    return {
+                        __inherited_from = "openai",
+                        endpoint = "https://openrouter.ai/api/v1",
+                        api_key_name = "OPENROUTER_API_KEY",
+                        model = model,
+                    }
+                end
+                require("avante").setup({
                 provider = "copilot",
                 auto_suggestions_provider = "copilot",
                 mode = "agentic",
@@ -1093,102 +1102,22 @@ require("lazy").setup(
                             },
                         },
                     },
-                    openai_gpt_oss_120b = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "openai/gpt-oss-120b",
-                    },
-                    openai_gpt_oss_20b_free = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "openai/gpt-oss-20b:free",
-                    },
-                    openai_gpt_oss_20b = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "openai/gpt-oss-20b",
-                    },
-                    mistralai_codestral_2508 = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "mistralai/codestral-2508",
-                    },
-                    qwen_qwen3_30b_a3b_instruct_2507 = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "qwen/qwen3-30b-a3b-instruct-2507",
-                    },
-                    z_ai_glm_4_5 = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "z-ai/glm-4.5",
-                    },
-                    z_ai_glm_4_5_air_free = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "z-ai/glm-4.5-air:free",
-                    },
-                    z_ai_glm_4_5_air = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "z-ai/glm-4.5-air",
-                    },
-                    qwen_qwen3_235b_a22b_thinking_2507 = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "qwen/qwen3-235b-a22b-thinking-2507",
-                    },
-                    qwen_qwen3_coder_free = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "qwen/qwen3-coder:free",
-                    },
-                    qwen_qwen3_coder = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "qwen/qwen3-coder",
-                    },
-                    qwen_qwen3_235b_a22b_2507 = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "qwen/qwen3-235b-a22b-2507",
-                    },
-                    moonshotai_kimi_k2_free = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "moonshotai/kimi-k2:free",
-                    },
-                    moonshotai_kimi_k2 = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "moonshotai/kimi-k2",
-                    },
-                    thudm_glm_4_1v_9b_thinking = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "thudm/glm-4.1v-9b-thinking",
-                    },
-                    tencent_hunyuan_a13b_instruct_free = {
-                        __inherited_from = "openai",
-                        endpoint = "https://openrouter.ai/api/v1",
-                        api_key_name = "OPENROUTER_API_KEY",
-                        model = "tencent/hunyuan-a13b-instruct:free",
-                    },
+                    openai_gpt_oss_120b = openrouter("openai/gpt-oss-120b"),
+                    openai_gpt_oss_20b_free = openrouter("openai/gpt-oss-20b:free"),
+                    openai_gpt_oss_20b = openrouter("openai/gpt-oss-20b"),
+                    mistralai_codestral_2508 = openrouter("mistralai/codestral-2508"),
+                    qwen_qwen3_30b_a3b_instruct_2507 = openrouter("qwen/qwen3-30b-a3b-instruct-2507"),
+                    z_ai_glm_4_5 = openrouter("z-ai/glm-4.5"),
+                    z_ai_glm_4_5_air_free = openrouter("z-ai/glm-4.5-air:free"),
+                    z_ai_glm_4_5_air = openrouter("z-ai/glm-4.5-air"),
+                    qwen_qwen3_235b_a22b_thinking_2507 = openrouter("qwen/qwen3-235b-a22b-thinking-2507"),
+                    qwen_qwen3_coder_free = openrouter("qwen/qwen3-coder:free"),
+                    qwen_qwen3_coder = openrouter("qwen/qwen3-coder"),
+                    qwen_qwen3_235b_a22b_2507 = openrouter("qwen/qwen3-235b-a22b-2507"),
+                    moonshotai_kimi_k2_free = openrouter("moonshotai/kimi-k2:free"),
+                    moonshotai_kimi_k2 = openrouter("moonshotai/kimi-k2"),
+                    thudm_glm_4_1v_9b_thinking = openrouter("thudm/glm-4.1v-9b-thinking"),
+                    tencent_hunyuan_a13b_instruct_free = openrouter("tencent/hunyuan-a13b-instruct:free"),
                 },
                 behaviour = {
                     auto_suggestions = false, -- Experimental stage
@@ -1272,7 +1201,8 @@ require("lazy").setup(
                         require("mcphub.extensions.avante").mcp_tool(),
                     }
                 end,
-            },
+                })
+            end,
             dependencies = {
                 "ellisonleao/dotenv.nvim",     -- Make sure dotenv loads before avante
                 "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
