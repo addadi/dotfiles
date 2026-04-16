@@ -101,6 +101,15 @@ require("lazy").setup(
             "williamboman/mason-lspconfig.nvim",
         },
         {
+            "folke/snacks.nvim",
+            priority = 1000,
+            lazy = false,
+            opts = { input = {}, picker = {}, terminal = {} },
+            keys = {
+                { "<leader>u", function() Snacks.picker.undo() end, desc = "undo history" },
+            },
+        },
+        {
             "folke/which-key.nvim",
             event = "VeryLazy",
             opts = {
@@ -1206,6 +1215,7 @@ require("lazy").setup(
                     'MeanderingProgrammer/render-markdown.nvim',
                     opts = {
                         file_types = { "markdown", "Avante", "codecompanion"},
+                        latex = { enabled = false },
                     },
                     ft = { "markdown", "Avante" },
                 },
@@ -1216,9 +1226,6 @@ require("lazy").setup(
             dependencies = {
                 -- Recommended for `ask()` and `select()`.
                 -- Required for default `toggle()` implementation.
-                { "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} }, keys = {
-            { "<leader>u", function() Snacks.picker.undo() end, desc = "undo history" },
-        } },
             },
             config = function()
                 ---@type opencode.Opts
