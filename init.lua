@@ -1249,7 +1249,21 @@ require("lazy").setup(
             end,
         },
         {
-            "olimorris/codecompanion.nvim",
+            "carlos-algms/agentic.nvim",
+            opts = {
+                provider = "opencode-acp",
+                windows = { position = "right", width = "40%" },
+            },
+            keys = {
+                { "<leader>ag", function() require("agentic").toggle() end, mode = { "n", "v" }, desc = "Agentic: toggle chat" },
+                { "<leader>aa", function() require("agentic").add_selection_or_file_to_context() end, mode = { "n", "v" }, desc = "Agentic: add to context" },
+                { "<leader>an", function() require("agentic").new_session() end, desc = "Agentic: new session" },
+                { "<leader>ar", function() require("agentic").restore_session() end, desc = "Agentic: restore session" },
+                { "<leader>ad", function() require("agentic").add_current_line_diagnostics() end, desc = "Agentic: line diagnostic" },
+                { "<leader>aD", function() require("agentic").add_buffer_diagnostics() end, desc = "Agentic: all diagnostics" },
+            },
+        },
+        {
             opts = {},
             dependencies = {
                 "nvim-lua/plenary.nvim",
