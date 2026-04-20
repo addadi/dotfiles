@@ -1255,12 +1255,12 @@ require("lazy").setup(
                 windows = { position = "right", width = "40%" },
             },
             keys = {
-                { "<leader>ag", function() require("agentic").toggle() end, mode = { "n", "v" }, desc = "Agentic: toggle chat" },
-                { "<leader>aa", function() require("agentic").add_selection_or_file_to_context() end, mode = { "n", "v" }, desc = "Agentic: add to context" },
-                { "<leader>an", function() require("agentic").new_session() end, desc = "Agentic: new session" },
-                { "<leader>ar", function() require("agentic").restore_session() end, desc = "Agentic: restore session" },
-                { "<leader>ad", function() require("agentic").add_current_line_diagnostics() end, desc = "Agentic: line diagnostic" },
-                { "<leader>aD", function() require("agentic").add_buffer_diagnostics() end, desc = "Agentic: all diagnostics" },
+                { "<leader>gg", function() require("agentic").toggle() end, mode = { "n", "v" }, desc = "Agentic: toggle chat" },
+                { "<leader>ga", function() require("agentic").add_selection_or_file_to_context() end, mode = { "n", "v" }, desc = "Agentic: add to context" },
+                { "<leader>gn", function() require("agentic").new_session() end, desc = "Agentic: new session" },
+                { "<leader>gr", function() require("agentic").restore_session() end, desc = "Agentic: restore session" },
+                { "<leader>gd", function() require("agentic").add_current_line_diagnostics() end, desc = "Agentic: line diagnostic" },
+                { "<leader>gD", function() require("agentic").add_buffer_diagnostics() end, desc = "Agentic: all diagnostics" },
             },
         },
         {
