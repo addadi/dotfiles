@@ -63,3 +63,9 @@
 	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
 	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
 	directory = /home/guy/dev/duvdevan/actions-runner/_work/duvdevan/duvdevan
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential

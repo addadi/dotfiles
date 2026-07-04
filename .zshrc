@@ -105,3 +105,5 @@ run_scripts()
     done
 }
 # run_scripts ~/.zshrc.d
+#
+eval "$(fnm env --use-on-cd --shell zsh)"
