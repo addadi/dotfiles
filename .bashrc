@@ -196,3 +196,4 @@ run_scripts()
     done
 }
 run_scripts ~/.bashrc.d
+export HF_HOME="$HOME/models/huggingface"

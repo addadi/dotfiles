@@ -48,7 +48,7 @@ export MANPAGER="less -R --use-color -Dd+r -Du+b"
 export MANROFFOPT="-P -c"
 
 # Set PATH
-export PATH="$HOME/java/bin:$HOME/bin:$HOME/.npm-global/bin:$HOME/.bun/bin:$PATH":"$HOME/.cargo/bin"
+export PATH="$HOME/java/bin:$HOME/bin:$HOME/.npm-global/bin:$HOME/.bun/bin:$HOME/go/bin:$HOME/.cargo/bin:$PATH"
 
 # Docker host configuration
 case `uname -a` in
@@ -107,3 +107,26 @@ run_scripts()
 # run_scripts ~/.zshrc.d
 #
 eval "$(fnm env --use-on-cd --shell zsh)"
+
+# claw-code / z.ai GLM Coding Plan
+if [ -f ~/.env ]; then
+    while IFS='=' read -r key value; do
+        case "$key" in
+            '#'*|'') continue ;;
+        esac
+        export "$key=$value"
+    done < ~/.env
+fi
+export PATH="$HOME/.local/bin:$PATH"
+export ANTHROPIC_API_KEY=x
+export ANTHROPIC_BASE_URL=http://127.0.0.1:3456
+
+# Auto-start Meridian proxy when launching opencode
+opencode() {
+  if ! lsof -ti :3456 >/dev/null 2>&1; then
+    nohup meridian >/tmp/meridian.log 2>&1 &
+    disown
+    sleep 2
+  fi
+  command opencode "$@"
+}
